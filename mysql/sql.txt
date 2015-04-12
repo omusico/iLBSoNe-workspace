@@ -1,0 +1,6 @@
+create table user(id int identity(1,1) primary key,
+username varchar(50) unique not null,
+password varchar(50) not null,
+nickname varchar(50) not null)
+
+alter table user add id int identity(1,1) primary key

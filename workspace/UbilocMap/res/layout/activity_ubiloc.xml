@@ -1,0 +1,52 @@
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ubiloc.ubilocmap.UbilocActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7" >
+            <fragment 
+                android:name="com.ubiloc.ubilocmap.MessageFragment"
+                android:id="@+id/tab_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            
+            <fragment 
+                android:name="com.ubiloc.ubilocmap.MapFragment"
+                android:id="@+id/tab_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            
+            <fragment 
+                android:name="com.ubiloc.ubilocmap.FriendFragment"
+                android:id="@+id/tab_friend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            
+            <fragment 
+                android:name="com.ubiloc.ubilocmap.MeFragment"
+                android:id="@+id/tab_me"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" 
+            android:background="#dddddd">
+        </TabWidget>
+    </LinearLayout>
+
+</TabHost>

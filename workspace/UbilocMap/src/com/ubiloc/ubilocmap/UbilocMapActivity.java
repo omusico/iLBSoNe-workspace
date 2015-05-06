@@ -1,5 +1,8 @@
 package com.ubiloc.ubilocmap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.mapgenerator.MapGenerator;
@@ -7,6 +10,7 @@ import org.mapsforge.core.GeoPoint;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.example.ubilocmap.R;
 import com.ubiloc.layer.MapLayersManager;
@@ -19,6 +23,7 @@ public class UbilocMapActivity extends MapActivity {
 	private MapView mMapView;
 	private MapGenerator mapGenerator;
 	private GeoPoint mapCenter;
+	private ArrayOverlay overlays;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,10 @@ public class UbilocMapActivity extends MapActivity {
 		MapLayersManager.getInstance().initData();
 		mMapView = (MapView) findViewById(R.id.mapView);
 
+		overlays = new ArrayOverlay(this, mMapView);
 		mMapView.getOverlays().clear();
+		mMapView.getOverlays().add(overlays);
+
 		mMapView.setVisibility(View.VISIBLE);
 		mMapView.setClickable(true);
 		mMapView.getMapZoomControls().setShowMapZoomControls(true);
@@ -49,6 +57,20 @@ public class UbilocMapActivity extends MapActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		View test = findViewById(R.id.test);
+		test.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				List<GeoPoint> coords = new ArrayList<GeoPoint>();
+				double lon = 116.429838;
+				double lat = 40.14607;
+				GeoPoint temp = new GeoPoint(lat, lon);
+				coords.add(temp);
+				overlays.setCoords(coords);
+				overlays.requestRedraw();
+			}
+		});
 
 	}
 

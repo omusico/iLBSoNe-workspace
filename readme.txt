@@ -6,3 +6,5 @@ UbilocMap需要依赖程序geopaparazzilibrary、geopaparazzimapsforge、geopaparazzispa
 
 电子地图一张 存放路径为shape shop \dianzi.sqlitedb
 %===========================================================
+增加了较为原始的叠加图层功能
+%===========================================================

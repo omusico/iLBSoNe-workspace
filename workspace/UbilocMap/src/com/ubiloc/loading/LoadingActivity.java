@@ -18,7 +18,7 @@ public class LoadingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map_tab);
+		setContentView(R.layout.startpage);
 		new AsyncTask<String, Integer, byte[]>() {
 			@Override
 			protected void onPreExecute() {

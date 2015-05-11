@@ -10,7 +10,7 @@ public class UbilocFriendActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.friend_fragment);
+		setContentView(R.layout.friend_activity);
 	}
 
 	@Override

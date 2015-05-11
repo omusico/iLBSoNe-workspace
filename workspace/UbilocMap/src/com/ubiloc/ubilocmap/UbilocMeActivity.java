@@ -10,7 +10,7 @@ public class UbilocMeActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.me_fragment);
+		setContentView(R.layout.me_activity);
 	}
 
 	@Override

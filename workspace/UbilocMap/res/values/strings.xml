@@ -9,5 +9,7 @@
 	<string name="friend_tab">好友</string>
 	<string name="me_tab">我</string>
 	<string name="default_username">默认用户名</string>
-	
+	<string name="no_map_data">地图数据缺失</string>
+	<string name="ok">确定</string>
+	<string name="cancel">取消</string>
 </resources>

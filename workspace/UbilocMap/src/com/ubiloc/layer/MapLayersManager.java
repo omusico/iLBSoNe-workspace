@@ -14,10 +14,9 @@ import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
  * @author wuyf 负责管理所有图层的 添加、移除、清空、隐藏
  */
 public class MapLayersManager {
-
+	public static final int SUCCESS = 1;
+	public static final int FAILED = 0;
 	private static MapLayersManager nowLayers = null;
-	// private List<AtGroup> base_list_groups = new ArrayList<AtGroup>();
-	// private List<AtGroup> bus_list_groups = new ArrayList<AtGroup>();
 	private List<DataBaseBean> beans = new ArrayList<DataBaseBean>();
 
 	private MapLayersManager() {
@@ -39,8 +38,13 @@ public class MapLayersManager {
 	}
 
 	// 根据moduleitem 初始化MapLayerManager
-	public void initData() {
-		initAllLayer();
+	public int initData() {
+		try {
+			initAllLayer();
+			return SUCCESS;
+		} catch (Exception e) {
+			return FAILED;
+		}
 
 	}
 

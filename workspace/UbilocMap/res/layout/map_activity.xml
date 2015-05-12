@@ -3,7 +3,24 @@
     xmlns:arc="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/my_info_background"
     android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/my_info_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_background_gray"
+            android:text="@string/map_tab"
+            android:textColor="@color/SlateGray"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -21,12 +38,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/user_img" />
+
         <com.capricorn.ArcMenu
             android:id="@+id/arc_menu"
-            android:paddingTop="0dp"
-            android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:paddingTop="0dp"
             arc:childSize="@dimen/menuChildSize"
             arc:fromDegrees="@dimen/menuFromDegrees"
             arc:toDegrees="@dimen/menuToDegrees" />

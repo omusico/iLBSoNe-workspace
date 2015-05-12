@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="textColorGreen">#008000</color>
+     <color name="textColorGreen">#008000</color>
     <color name="textColorBlack">#101010</color>
     <color name="textColorGray">#708090</color>
     <color name="textColorBlue">#4169E1</color>
@@ -19,6 +19,7 @@
     <color name="snow">#FFFAFA</color>
     <color name="SlateGray">#708090</color>
     <color name="LimeGreen">#32CD32</color>
+    <color name="DarkGray">#A9A9A9</color>
 	<color name="normal_background_white">#eeeeee</color>
 	<color name="normal_background_gray1">#dddddd</color>
 	<color name="normal_background_gray2">#cccccc</color>

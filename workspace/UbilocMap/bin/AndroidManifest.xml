@@ -37,6 +37,8 @@
         </activity>
         <activity android:name="com.ubiloc.ubilocmap.UbilocMeActivity" >
         </activity>
+           <activity android:name="com.ubiloc.me.MePreferenceActivity" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

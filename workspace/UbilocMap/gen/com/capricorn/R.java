@@ -28,7 +28,7 @@ public final class R {
 	}
 	public static final class layout {
 		public static final int arc_menu = 0x7f03001a;
-		public static final int ray_menu = 0x7f03003e;
+		public static final int ray_menu = 0x7f030042;
 	}
 	public static final class styleable {
 		public static final int[] ArcLayout = { 0x7f010072, 0x7f010073, 0x7f010074 };

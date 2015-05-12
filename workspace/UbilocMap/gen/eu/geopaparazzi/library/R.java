@@ -75,21 +75,21 @@ public final class R {
 		public static final int goto_position = 0x7f02006d;
 		public static final int ic_launcher_bluegps = 0x7f020070;
 		public static final int ic_stat_notify = 0x7f020074;
-		public static final int package_download = 0x7f020082;
+		public static final int package_download = 0x7f02008b;
 	}
 	public static final class id {
 		public static final int aboutview = 0x7f0d0048;
 		public static final int anomalieToggleButton = 0x7f0d00ac;
 		public static final int anomalieToggleLayout = 0x7f0d00ab;
 		public static final int askcoordlabel = 0x7f0d0098;
-		public static final int authortext = 0x7f0d00d4;
+		public static final int authortext = 0x7f0d00e3;
 		public static final int bluetoothActiveLabel = 0x7f0d004d;
 		public static final int browsebuttonslayout = 0x7f0d0058;
 		public static final int browselist_text = 0x7f0d005a;
 		public static final int browsermainlayout = 0x7f0d0057;
 		public static final int buttonsLayout = 0x7f0d006a;
-		public static final int buttons_layout = 0x7f0d00d6;
-		public static final int cancel = 0x7f0d00b9;
+		public static final int buttons_layout = 0x7f0d00e5;
+		public static final int cancel = 0x7f0d00c8;
 		public static final int cancelButton = 0x7f0d008f;
 		public static final int cancelbutton = 0x7f0d0053;
 		public static final int checkToggleButton = 0x7f0d00aa;
@@ -97,15 +97,15 @@ public final class R {
 		public static final int colorspinner = 0x7f0d0088;
 		public static final int commandsBar = 0x7f0d0087;
 		public static final int coordOkButton = 0x7f0d009d;
-		public static final int datetext = 0x7f0d00d5;
-		public static final int descriptiontext = 0x7f0d00d3;
+		public static final int datetext = 0x7f0d00e4;
+		public static final int descriptiontext = 0x7f0d00e2;
 		public static final int detailFragment = 0x7f0d0085;
 		public static final int dialogButtonCancel = 0x7f0d0096;
 		public static final int dialogButtonOK = 0x7f0d0097;
 		public static final int dialogEdittext = 0x7f0d0095;
 		public static final int dialogtext = 0x7f0d0094;
-		public static final int dialogtext_scroll = 0x7f0d00ba;
-		public static final int downloadproject_image = 0x7f0d00d2;
+		public static final int dialogtext_scroll = 0x7f0d00c9;
+		public static final int downloadproject_image = 0x7f0d00e1;
 		public static final int drawingSurface = 0x7f0d0086;
 		public static final int enterLocationValue = 0x7f0d0092;
 		public static final int errorToggleButton = 0x7f0d00a4;
@@ -118,7 +118,7 @@ public final class R {
 		public static final int infoToggleLayout = 0x7f0d00a7;
 		public static final int latitudelabel = 0x7f0d009b;
 		public static final int latitudetext = 0x7f0d009c;
-		public static final int linearLayout1 = 0x7f0d00b7;
+		public static final int linearLayout1 = 0x7f0d00c6;
 		public static final int listFragment = 0x7f0d008d;
 		public static final int logRowText = 0x7f0d00b0;
 		public static final int longitudelabel = 0x7f0d009a;
@@ -128,8 +128,8 @@ public final class R {
 		public static final int memoryToggleLayout = 0x7f0d00ad;
 		public static final int navButton = 0x7f0d006c;
 		public static final int nfcActiveLabel = 0x7f0d004f;
-		public static final int noteentry = 0x7f0d00b6;
-		public static final int ok = 0x7f0d00b8;
+		public static final int noteentry = 0x7f0d00c5;
+		public static final int ok = 0x7f0d00c7;
 		public static final int okButton = 0x7f0d006b;
 		public static final int okbutton = 0x7f0d0052;
 		public static final int read_id_edittext = 0x7f0d0051;
@@ -144,10 +144,10 @@ public final class R {
 		public static final int tableLayout1 = 0x7f0d004b;
 		public static final int tableRow1 = 0x7f0d004c;
 		public static final int tableRow2 = 0x7f0d004e;
-		public static final int titletext = 0x7f0d00d1;
+		public static final int titletext = 0x7f0d00e0;
 		public static final int undoButton = 0x7f0d008b;
 		public static final int upbutton = 0x7f0d0059;
-		public static final int webprojectlayout = 0x7f0d00d0;
+		public static final int webprojectlayout = 0x7f0d00df;
 		public static final int widthspinner = 0x7f0d0089;
 	}
 	public static final class layout {
@@ -171,11 +171,11 @@ public final class R {
 		public static final int insertcoord = 0x7f030033;
 		public static final int log_list = 0x7f030035;
 		public static final int log_row = 0x7f030036;
-		public static final int note = 0x7f03003d;
-		public static final int simpledialog = 0x7f03003f;
-		public static final int webprojectlist = 0x7f030049;
-		public static final int webprojectsrow = 0x7f03004a;
-		public static final int yesnodialog = 0x7f03004b;
+		public static final int note = 0x7f030041;
+		public static final int simpledialog = 0x7f030043;
+		public static final int webprojectlist = 0x7f03004d;
+		public static final int webprojectsrow = 0x7f03004e;
+		public static final int yesnodialog = 0x7f03004f;
 	}
 	public static final class plurals {
 		public static final int connection_problem_notification = 0x7f0a0000;

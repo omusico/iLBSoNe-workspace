@@ -24,4 +24,11 @@
     <item name="android:layout_marginBottom">@dimen/my_info_vertical_margin</item>
     <item name="android:padding">@dimen/my_info_padding</item>
 </style>
+
+<style name="my_info_title_style">
+    <item name="android:background">@drawable/item_background_gray</item>
+    <item name="android:layout_marginBottom">@dimen/my_info_vertical_margin</item>
+    <item name="android:padding">@dimen/my_info_padding</item>
+</style>
+
 </resources>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/my_info_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/my_info_title_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/item_background_black"
+        >
+      <ImageView
+          android:id="@+id/leftarrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/left_arrow_white" />
+      <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_background_black"
+            android:layout_toRightOf="@id/leftarrow_img" 
+            android:layout_marginLeft="5dp"
+            android:text="@string/me_tab"
+            android:textColor="@color/snow"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_background_black"
+           android:layout_marginLeft="100dp"
+            android:text="@string/me_information"
+            android:textColor="@color/snow"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        style="@style/my_info_item_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        
+        <TextView
+            android:id="@+id/user_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp" 
+            android:text="@string/user_img"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/my_info_img"
+            android:layout_width="@dimen/my_info_img_width"
+            android:layout_height="@dimen/my_info_img_height"
+            android:layout_toLeftOf="@+id/right_arrow"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/user_img" />
+
+
+        <ImageView
+            android:id="@+id/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/right_arrow" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/my_info_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" 
+       >
+
+  
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+			
+            android:background="@drawable/item_background_gray"
+            android:text="@string/username"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+        
+            <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/item_background_gray"
+        android:text="@string/Ubiloc"
+        android:textColor="@color/DarkGray"
+        android:textSize="18sp" />
+
+        <ImageView
+            android:id="@id/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/right_arrow" />
+    </RelativeLayout>
+<RelativeLayout
+        style="@style/my_info_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+      
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+         
+            
+            android:background="@drawable/item_background_gray"
+            android:text="@string/user_sex"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+       <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/item_background_gray"
+        android:text="@string/female"
+        android:textColor="@color/DarkGray"
+        android:textSize="18sp" />
+        <ImageView
+            android:id="@id/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/right_arrow" />
+    </RelativeLayout>
+
+<RelativeLayout
+    android:id="@+id/current_location"
+    style="@style/my_info_item_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/item_background_gray"
+        android:text="@string/user_currentLocation"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/right_arrow"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/item_background_gray"
+        android:text="@string/currentLocation"
+        android:textColor="@color/DarkGray"
+        android:textSize="18sp" />
+     <ImageView
+            android:id="@id/right_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/right_arrow" />
+</RelativeLayout>
+
+</LinearLayout>

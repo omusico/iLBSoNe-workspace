@@ -37,7 +37,8 @@
             android:id="@+id/test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/user_img" />
+            android:background="@drawable/user_img"
+            android:visibility="gone" />
 
         <com.capricorn.ArcMenu
             android:id="@+id/arc_menu"
@@ -47,7 +48,8 @@
             android:paddingTop="0dp"
             arc:childSize="@dimen/menuChildSize"
             arc:fromDegrees="@dimen/menuFromDegrees"
-            arc:toDegrees="@dimen/menuToDegrees" />
+            arc:toDegrees="@dimen/menuToDegrees"
+            android:visibility="gone" />
     </FrameLayout>
 
 </LinearLayout>

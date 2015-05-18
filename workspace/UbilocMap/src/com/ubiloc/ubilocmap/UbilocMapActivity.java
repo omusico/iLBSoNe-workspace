@@ -118,7 +118,7 @@ public class UbilocMapActivity extends MapActivity {
 		mMapView.getMapZoomControls().setShowMapZoomControls(true);
 		if (isMapDataAvailable) {
 			SpatialRasterTable rasterTable = null;
-			String tableName = "dianzi";
+			String tableName = "SplitLineAtPoint";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
 						.getRasterTableByName(tableName);

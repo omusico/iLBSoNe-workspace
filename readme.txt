@@ -10,4 +10,8 @@ UbilocMap需要依赖程序geopaparazzilibrary、geopaparazzimapsforge、geopaparazzispa
 %===========================================================
 王锐将地图与社交功能进行整合，安卓程序为wechat
 路径 iLBSoNe workspace\workspace\UbiLoc Project
+<<<<<<< HEAD
 %===========================================================
+=======
+%===========================================================
+>>>>>>> 4fc7eb9a0b529027e24b5a73ef89a7c5a895d21c

@@ -35,7 +35,7 @@ import tools.Logger;
  *
  */
 public class AppActivity extends BaseActivity implements AppActivitySupport{
-	protected WCApplication appContext;
+	protected static WCApplication appContext;
 	protected Context context = null;
 	protected SharedPreferences preferences;
 	protected ProgressDialog pg = null;

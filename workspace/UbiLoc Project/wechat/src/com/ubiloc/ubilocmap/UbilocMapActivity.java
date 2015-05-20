@@ -1,8 +1,5 @@
 package com.ubiloc.ubilocmap;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.mapgenerator.MapGenerator;
@@ -47,28 +44,29 @@ public class UbilocMapActivity extends MapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_activity);
-		int result = MapLayersManager.getInstance().initData();
-		handleResult(result);
+		// int result = MapLayersManager.getInstance().initData();
+		// handleResult(result);
 
 		mMapView = (MapView) findViewById(R.id.mapView);
-		initMapComponent();
+		UbilocMap.init(mMapView, this);
+		// initMapComponent();
 
-		mArcMenu = (ArcMenu) findViewById(R.id.arc_menu);
-		initArcMenu(mArcMenu, ITEM_DRAWABLES);
-		View test = findViewById(R.id.test);
-		test.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				double lon = 116.429838;
-				double lat = 40.14607;
-				GeoPoint temp = new GeoPoint(lat, lon);
-				coords.add(temp);
-				overlays.setCoords(coords);
-				overlays.requestRedraw();
-			}
-		});
+		// mArcMenu = (ArcMenu) findViewById(R.id.arc_menu);
+		// initArcMenu(mArcMenu, ITEM_DRAWABLES);
+		// View test = findViewById(R.id.test);
+		// test.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// List<GeoPoint> coords = new ArrayList<GeoPoint>();
+		// double lon = 116.429838;
+		// double lat = 40.14607;
+		// GeoPoint temp = new GeoPoint(lat, lon);
+		// coords.add(temp);
+		// overlays.setCoords(coords);
+		// overlays.requestRedraw();
+		// }
+		// });
 
 	}
 

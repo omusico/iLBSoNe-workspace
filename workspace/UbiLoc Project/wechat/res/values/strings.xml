@@ -248,5 +248,10 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <!--========================================================================================================== -->
+    <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
+    <string name="map_level_beyond_constraints">超出可显示的级别</string>
+    <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
+    <!-- ========================================================================================================= -->
 
 </resources>

@@ -17,8 +17,10 @@ package com.ubiloc.overlays;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.Projection;
@@ -136,6 +138,10 @@ public abstract class BaseOverlay extends Overlay {
 	public static final float LARGE_SEZE = 15;
 	private static final String TAG = "BaseOverlay";
 
+	/**
+	 * 存储图层
+	 */
+	private LinkedHashMap<String, BaseOverlayItem> mOverlayItems = new LinkedHashMap<String, BaseOverlayItem>();
 	// =========================================================
 	// ���Ƶ���������Ҫ��������Ϣ
 	// private String coords =
@@ -276,15 +282,28 @@ public abstract class BaseOverlay extends Overlay {
 			Projection projection, byte drawZoomLevel) {
 		int canvasHeight = canvas.getHeight();
 		int canvasWidth = canvas.getWidth();
-		/*
-		 * �������Ƶ�����
-		 */
-		drawPolygon(canvas, projection, polygonPaint);
 
+		drawPolygon(canvas, projection, polygonPaint);
+		drawOverlayItems(canvas, projection, polygonPaint);
 	}
 
 	/**
-	 * ���Ƶ�����
+	 * 绘制图层信息
+	 * 
+	 * @param canvas
+	 * @param projection
+	 * @param polygonPaint
+	 */
+	private void drawOverlayItems(Canvas canvas, Projection projection,
+			Paint paint) {
+		Set<String> keys = mOverlayItems.keySet();
+		for (String key : keys) {
+			BaseOverlayItem item = mOverlayItems.get(key);
+			item.draw(canvas, projection, paint);
+		}
+	}
+
+	/**
 	 * 
 	 * @param canvas
 	 * @param projection
@@ -830,5 +849,36 @@ public abstract class BaseOverlay extends Overlay {
 		// ========================================================
 		// ������γ��
 		GpsPosition = null;
+	}
+
+	public HashMap<String, BaseOverlayItem> getmOverlayItems() {
+		return mOverlayItems;
+	}
+
+	/**
+	 * 添加一个图层信息
+	 * 
+	 * @param overlayItem
+	 */
+	public void addOverlayItem(BaseOverlayItem overlayItem) {
+		mOverlayItems.put(overlayItem.getKey(), overlayItem);
+	}
+
+	/**
+	 * 移除一个图层信息
+	 * 
+	 * @param overLayItemKey
+	 */
+	public void removeOverlayItem(BaseOverlayItem overlayItem) {
+		mOverlayItems.remove(overlayItem.getKey());
+	}
+
+	/**
+	 * 移除一个图层信息
+	 * 
+	 * @param overLayItemKey
+	 */
+	public void removeAllOverlayItems() {
+		mOverlayItems.clear();
 	}
 }

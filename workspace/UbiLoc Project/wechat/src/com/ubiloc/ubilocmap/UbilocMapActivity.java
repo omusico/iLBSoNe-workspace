@@ -5,6 +5,7 @@ import im.WeChat;
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 
+import tools.SysApplication;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,44 +27,17 @@ public class UbilocMapActivity extends MapActivity {
 	private MapView mMapView;
 	protected WCApplication appContext;
 	private ListView xlistView;
-	private Thread myThread;
-	final private Handler handler=new Handler(){
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case 1:
-				UbilocMap.init(mMapView, UbilocMapActivity.this);
-				break;
 
-			default:
-				break;
-			}
-		}
-	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		appContext=WeChat.returnAppContex();
 		setContentView(R.layout.map_activity);
+		SysApplication.getInstance().addActivity(this);
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		//防止图像不显示
-		
-		myThread=new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				//UbilocMap.init(mMapView, UbilocMapActivity.this);
-				try {
-					Thread.sleep(2000);
-					handler.sendEmptyMessage(1);
-				} catch (InterruptedException e) {
-					
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		myThread.start();
+		UbilocMap.init(mMapView, UbilocMapActivity.this);
 		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this, appContext);
 			}
 
@@ -77,13 +51,13 @@ public class UbilocMapActivity extends MapActivity {
 		super.onResume();
 	}
 	
-	/*@Override
+	@Override
 	public void onBackPressed() {
 		new AlertDialog.Builder(UbilocMapActivity.this).setTitle("确定退出吗?")
 				.setNeutralButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						myThread.stop();
+						SysApplication.getInstance().exit();//必须的一步，用于关闭UbiLocMapActivity
 						appContext.exit();
 					}
 				})
@@ -93,7 +67,7 @@ public class UbilocMapActivity extends MapActivity {
 						dialog.cancel();
 					}
 				}).show();
-	}*/
+	}
 	
 	
 }

@@ -27,6 +27,7 @@ import tools.AppContext;
 import tools.AppManager;
 import tools.BaseActivity;
 import tools.Logger;
+import tools.SysApplication;
 
 /**
  * wechat
@@ -135,6 +136,7 @@ public class AppActivity extends BaseActivity implements AppActivitySupport{
 		.setNeutralButton("确定", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				SysApplication.getInstance().exit();
 				appContext.exit();
 			}
 		})

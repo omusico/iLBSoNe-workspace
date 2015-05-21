@@ -27,7 +27,19 @@ public class UbilocMapActivity extends MapActivity {
 	private MapView mMapView;
 	protected WCApplication appContext;
 	private ListView xlistView;
+	private Thread myThread;
+	final private Handler handler=new Handler(){
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				UbilocMap.init(mMapView, UbilocMapActivity.this);
+				break;
 
+			default:
+				break;
+			}
+		}
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,7 +49,25 @@ public class UbilocMapActivity extends MapActivity {
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		//防止图像不显示
-		UbilocMap.init(mMapView, UbilocMapActivity.this);
+		
+		//延迟显示地图线程
+		myThread=new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				//UbilocMap.init(mMapView, UbilocMapActivity.this);
+				try {
+					Thread.sleep(2000);
+					handler.sendEmptyMessage(1);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		myThread.start();
+		//UbilocMap.init(mMapView, UbilocMapActivity.this);
 		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this, appContext);
 			}
 
@@ -57,7 +87,7 @@ public class UbilocMapActivity extends MapActivity {
 				.setNeutralButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						SysApplication.getInstance().exit();//必须的一步，用于关闭UbiLocMapActivity
+						SysApplication.getInstance().exit();
 						appContext.exit();
 					}
 				})

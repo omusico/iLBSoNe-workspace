@@ -16,4 +16,5 @@ UbilocMap需要依赖程序geopaparazzilibrary、geopaparazzimapsforge、geopaparazzispa
 %===========================================================
 >>>>>>> 4fc7eb9a0b529027e24b5a73ef89a7c5a895d21c
 %===========================================================
-cheng wen 测试...
+cheng wen 测试....00
+最后一次用命令行测试

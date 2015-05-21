@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 import config.CommonValue;
 import config.MessageManager;
+import config.WCApplication;
 import config.XmppConnectionManager;
 
 /**
@@ -118,7 +119,9 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 		noticeAdapter.setOnClickListener(contacterOnClickJ);
 		noticeAdapter.setOnLongClickListener(contacterOnLongClickJ);
 	}
-	
+	public static WCApplication returnAppContex(){
+		return appContext;
+	}
 	private void getHistoryChat() {
 		final Handler handler = new Handler() {
 			@Override

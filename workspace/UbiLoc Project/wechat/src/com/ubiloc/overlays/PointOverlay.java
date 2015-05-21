@@ -27,6 +27,7 @@ public class PointOverlay implements BaseOverlayItem {
 	private String mkey;
 
 	public PointOverlay() {
+		mkey = "";
 	}
 
 	@Override

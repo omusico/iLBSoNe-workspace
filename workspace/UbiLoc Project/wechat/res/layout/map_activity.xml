@@ -76,12 +76,20 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/draw_surface"
+                android:id="@+id/draw_polygon"
                 style="@style/draw_item" >
 
                 <ImageView
                     style="@style/draw_img"
                     android:background="@drawable/draw_surface" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/draw_clear"
+                style="@style/draw_item" >
+
+                <ImageView
+                    style="@style/draw_img"
+                    android:background="@drawable/draw_clear" />
             </RelativeLayout>
         </LinearLayout>
     </FrameLayout>

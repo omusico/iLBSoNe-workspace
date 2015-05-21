@@ -4,6 +4,7 @@
 package ui;
 
 import im.Chating;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.Button;
 import android.widget.ListView;
 import bean.StrangerEntity;
 import bean.UserInfo;
@@ -43,6 +47,7 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 	private int currentPage;
 	
 	private ListView xlistView;
+	private Button addFriendBtn;
 	private List<UserInfo> datas;
 	private FriendCardAdapter mAdapter;
 	private SwipeRefreshLayout swipeLayout;
@@ -69,9 +74,24 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 		initUI();
 		init();
 		getFriendCardFromCache();
+		addfriend();
 		
 	}
 	
+	private void addfriend() {
+		addFriendBtn=(Button) findViewById(R.id.addFriendBtn);
+		addFriendBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent=new Intent(Friend.this,FindFriend.class);
+				startActivity(intent);
+				
+			}
+		});
+		
+	}
+
 	private void initUI() {
 		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.xrefresh);
 		swipeLayout.setOnRefreshListener(this);

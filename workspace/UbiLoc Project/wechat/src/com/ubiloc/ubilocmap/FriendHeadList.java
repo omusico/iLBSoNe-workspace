@@ -56,8 +56,8 @@ public class FriendHeadList {
 	private void findFriend(int page, String nickName, final int action) {
 		String apiKey = appContext.getLoginApiKey();
 
-		ApiClent.findFriend(appContext, apiKey, page + "",
-				UIHelper.LISTVIEW_COUNT + "", nickName, new ClientCallback() {
+		ApiClent.getMyFriend(appContext, apiKey, page + "",
+				UIHelper.LISTVIEW_COUNT + "", new ClientCallback() {
 					@Override
 					public void onSuccess(Object data) {
 						StrangerEntity entity = (StrangerEntity) data;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <style name="TranslucentTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowIsTranslucent">false</item>
@@ -182,5 +182,22 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
     </style>
+    
+  
     <!--     listview twitter like end-->
+    
+    <!--     map draw item style begin -->
+      <style name="draw_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name= "android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+      <style name="draw_img">
+        <item name="android:layout_width">wrap_content</item>
+        <item name= "android:layout_height">wrap_content</item>
+    </style>
+      
+    <!--     map draw item style end -->
 </resources>

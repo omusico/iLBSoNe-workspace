@@ -33,7 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
-         <ImageView
+        <ImageView
             android:id="@+id/test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,10 +46,44 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:paddingTop="0dp"
+            android:visibility="gone"
             arc:childSize="@dimen/menuChildSize"
             arc:fromDegrees="@dimen/menuFromDegrees"
-            arc:toDegrees="@dimen/menuToDegrees"
-            android:visibility="gone" />
+            arc:toDegrees="@dimen/menuToDegrees" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/draw_point"
+                style="@style/draw_item" >
+
+                <ImageView
+                    style="@style/draw_img"
+                    android:background="@drawable/draw_point" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/draw_line"
+                style="@style/draw_item" >
+
+                <ImageView
+                    style="@style/draw_img"
+                    android:background="@drawable/draw_line" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/draw_surface"
+                style="@style/draw_item" >
+
+                <ImageView
+                    style="@style/draw_img"
+                    android:background="@drawable/draw_surface" />
+            </RelativeLayout>
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>

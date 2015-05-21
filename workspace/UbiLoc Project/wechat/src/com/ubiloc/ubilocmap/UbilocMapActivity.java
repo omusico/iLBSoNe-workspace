@@ -13,7 +13,7 @@ import com.donal.wechat.R;
 import com.ubiloc.overlays.PointOverlay;
 
 /**
- * ��ͼģ��
+ * 地图模块
  * 
  * @author crazy
  * @Date 2015-5-8

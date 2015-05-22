@@ -84,6 +84,14 @@
                     android:background="@drawable/draw_surface" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/draw_bitmap"
+                style="@style/draw_item" >
+
+                <ImageView
+                    style="@style/draw_img"
+                    android:background="@drawable/draw_bitmap" />
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/draw_clear"
                 style="@style/draw_item" >
 

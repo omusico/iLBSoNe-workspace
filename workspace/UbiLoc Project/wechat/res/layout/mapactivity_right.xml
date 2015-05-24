@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/draw_point"
+        style="@style/draw_item" >
+
+        <ImageView
+            style="@style/draw_img"
+            android:background="@drawable/draw_point" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/draw_line"
+        style="@style/draw_item" >
+
+        <ImageView
+            style="@style/draw_img"
+            android:background="@drawable/draw_line" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/draw_polygon"
+        style="@style/draw_item" >
+
+        <ImageView
+            style="@style/draw_img"
+            android:background="@drawable/draw_surface" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/draw_bitmap"
+        style="@style/draw_item" >
+
+        <ImageView
+            style="@style/draw_img"
+            android:background="@drawable/draw_bitmap" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/draw_clear"
+        style="@style/draw_item" >
+
+        <ImageView
+            style="@style/draw_img"
+            android:background="@drawable/draw_clear" />
+    </RelativeLayout>
+
+</LinearLayout>

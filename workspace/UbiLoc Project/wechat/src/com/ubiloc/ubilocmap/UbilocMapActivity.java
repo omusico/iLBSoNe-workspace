@@ -26,6 +26,7 @@ import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.overlays.LineOverlay;
 import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.overlays.PolygonOverlay;
+import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
 
@@ -46,6 +47,7 @@ public class UbilocMapActivity extends MapActivity implements OnClickListener {
 	protected WCApplication appContext;
 	private ListView xlistView;
 	private Thread myThread;
+	private VerticalMenu verticalMenu;
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -102,6 +104,10 @@ public class UbilocMapActivity extends MapActivity implements OnClickListener {
 		draw_polygon.setOnClickListener(this);
 		draw_bitmap.setOnClickListener(this);
 		draw_clear.setOnClickListener(this);
+
+		verticalMenu = (VerticalMenu) findViewById(R.id.vertical_menu);
+		verticalMenu.setControlBackground(R.drawable.menu_control);
+
 	}
 
 	@Override

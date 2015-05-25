@@ -1,5 +1,8 @@
 package com.verticalmenu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -27,6 +30,8 @@ public class VerticalMenu extends LinearLayout {
 	 * 关闭动画
 	 */
 	private Animation shrinkingAnimation;
+	private List<View> items;
+	private OnVerticalMenuItemClickListener onItemClicklistener;
 
 	public VerticalMenu(Context context) {
 		super(context);
@@ -51,16 +56,30 @@ public class VerticalMenu extends LinearLayout {
 
 		expandingAnimation = getExpandingAnimation();
 		shrinkingAnimation = getShrinkingAnimation();
-		// addView();
+		items = new ArrayList<View>();
 	}
 
+	/**
+	 * 设置menu 控制的背景
+	 * 
+	 * @param rid
+	 * @return
+	 */
 	public VerticalMenu setControlBackground(int rid) {
 		vertical_menu_control_img.setBackgroundResource(rid);
 		return this;
 	}
 
+	/**
+	 * 增加一个子项
+	 * 
+	 * @param item
+	 * @return
+	 */
 	public VerticalMenu addMenuItem(View item) {
 		vertical_menu_items_container.addView(item);
+		items.add(item);
+		refreshItemCLickListener();
 		return this;
 	}
 
@@ -70,7 +89,7 @@ public class VerticalMenu extends LinearLayout {
 	private Animation getExpandingAnimation() {
 		Animation expandingAnimation = new ScaleAnimation(1, 1, 0, 1.1f, 0.5f,
 				0.5f);
-		expandingAnimation.setDuration(400);
+		expandingAnimation.setDuration(300);
 		return expandingAnimation;
 	}
 
@@ -80,8 +99,48 @@ public class VerticalMenu extends LinearLayout {
 	private Animation getShrinkingAnimation() {
 		Animation shrinkingAnimation = new ScaleAnimation(1, 1, 1.1f, 0, 0.5f,
 				0.5f);
-		shrinkingAnimation.setDuration(400);
+		shrinkingAnimation.setDuration(300);
 		return shrinkingAnimation;
+	}
+
+	/**
+	 * 为menu子项添加点击事件
+	 * 
+	 * @param listener
+	 */
+	public void setOnItemClickListener(
+			final OnVerticalMenuItemClickListener listener) {
+		this.onItemClicklistener = listener;
+		if (listener != null) {
+			for (int i = 0; i < items.size(); i++) {
+				final int j = i;
+				items.get(i).setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						listener.OnItemClick(view, j);
+					}
+				});
+			}
+		}
+	}
+
+	/**
+	 * 当增加子项或移除子项时需要刷新
+	 */
+	private void refreshItemCLickListener() {
+		if (onItemClicklistener != null) {
+			for (int i = 0; i < items.size(); i++) {
+				final int j = i;
+				items.get(i).setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						onItemClicklistener.OnItemClick(view, j);
+					}
+				});
+			}
+		}
 	}
 
 	/**

@@ -50,17 +50,19 @@
             arc:childSize="@dimen/menuChildSize"
             arc:fromDegrees="@dimen/menuFromDegrees"
             arc:toDegrees="@dimen/menuToDegrees" />
-        
-        <ListView 
+
+        <ListView
             android:id="@+id/xmaplist"
-            android:layout_height="wrap_content"
             android:layout_width="40dp"
-            />
-        <include layout="@layout/mapactivity_right"/>
-        <com.verticalmenu.VerticalMenu 
+            android:layout_height="wrap_content" />
+
+<!--         <include layout="@layout/mapactivity_right" /> -->
+
+        <com.verticalmenu.VerticalMenu
             android:id="@+id/vertical_menu"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_gravity="right" />
     </FrameLayout>
+
 </LinearLayout>

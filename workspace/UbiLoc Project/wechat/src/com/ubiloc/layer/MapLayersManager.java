@@ -11,7 +11,7 @@ import eu.geopaparazzi.spatialite.database.spatial.DataBaseBean;
 import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
 
 /**
- * @author wuyf �����������ͼ��� ��ӡ��Ƴ�����ա�����
+ * @author wuyf
  */
 public class MapLayersManager {
 	public static final int SUCCESS = 1;
@@ -23,7 +23,6 @@ public class MapLayersManager {
 	}
 
 	/*
-	 * ��������
 	 */
 	public static MapLayersManager getInstance() {
 		if (nowLayers == null) {
@@ -37,7 +36,6 @@ public class MapLayersManager {
 		SpatialDatabasesManager.reset();
 	}
 
-	// ����moduleitem ��ʼ��MapLayerManager
 	public int initData() {
 		try {
 			initAllLayer();
@@ -50,7 +48,9 @@ public class MapLayersManager {
 
 	private void initAllLayer() {
 		// AtLayer base_layer = base_layers.get(j);
-		 String centerxy = "116.429838,40.14607";
+		String centerxy = "116.429838,40.14607";
+		// String centerxy = "0.0003447222,0.000308888";
+		// String centerxy = "0.000308888,0.0003447222";
 		// String minScale = base_layer.getMinScale();
 		// String maxScale = base_layer.getMaxScale();
 		// if (centerxy != null && !centerxy.equals("") && minScale != null
@@ -58,15 +58,11 @@ public class MapLayersManager {
 		// && !maxScale.equals("")) {
 		// List<AtData> base_datas = base_layer.getDatas();
 		// AtData base_data = base_datas.get(n);
-		// �ļ�·��
 
 		// String centerxy = "65373.997681,33871.17749";
-//		String centerxy = "33871.17749,65373.997681";
+		// String centerxy = "33871.17749,65373.997681";
 		String path = Environment.getExternalStorageDirectory()
-				.getAbsolutePath()
-				+ ComponentUtil.MAP_PATH
-				+ "dianzi.sqlitedb";
-		// ����
+				.getAbsolutePath() + ComponentUtil.MAP_PATH + "dianzi.sqlitedb";
 		String id = "dianzi";
 
 		DataBaseBean mbtest1 = new DataBaseBean();
@@ -75,7 +71,7 @@ public class MapLayersManager {
 		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
 		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
 		mbtest1.setMaxScale(20);
-		mbtest1.setMinScale(10);
+		mbtest1.setMinScale(1);
 		mbtest1.setTableName(id);
 		beans.add(mbtest1);
 		// }

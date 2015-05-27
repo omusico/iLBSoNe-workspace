@@ -28,6 +28,17 @@ public class MapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		final RelativeLayout rl = new RelativeLayout(this);
 
+		// 开启定位服务 注意：在AndroidManifest.xml里面注册
+		// 参考代码如下：
+		// <service
+		// android:enabled="true"
+		// android:name=".PDR.PDRService"
+		// android:exported="true" >
+		// <intent-filter >
+		// <action android:name="com.ubirtls.PDR.pDRService" />
+		// <category android:name="android.intent.category.DEFAULT" />
+		// </intent-filter>
+		// </service>
 		try {
 			IntentFilter filter;
 			filter = new IntentFilter(PDRService.HIPPO_SERVICE_IDENTIFIER);
@@ -41,7 +52,7 @@ public class MapActivity extends Activity {
 	}
 
 	/**
-	 * PDR服务广播接收者，接收航位推算结果
+	 * PDR服务广播接收者，接收航位推算结果 获得PDR、粒子滤波计算结果坐标（positionX，positionY）。
 	 * 
 	 * @author 胡旭科
 	 * 
@@ -81,7 +92,7 @@ public class MapActivity extends Activity {
 		super.onResume();
 	}
 
-	// 在Activity 销毁时调用 进行一些程序关闭的处理 包括关闭 spotter 连接以及清除一些缓存数据
+	// 在Activity 销毁时调用 进行一些程序关闭服务
 	protected void onDestroy() {
 		super.onDestroy();
 		/** 解除向系统注册的Receiver */

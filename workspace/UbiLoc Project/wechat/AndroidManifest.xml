@@ -162,6 +162,15 @@
             </intent-filter>
         </service>
 
+        <service 
+            android:name="com.ubirtls.PDR.PDRService"
+            android:exported="false">
+            <intent-filter >
+                <action android:name="com.ubirtls.PDR.pDRService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+        
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ac73e16cec12cdc2f220e54fcd8ce104" />

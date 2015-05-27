@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/p-rtls/!svn/ver/2527/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR
+END
+CornerDetector.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/CornerDetector.java
+END
+StepDetectResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/p-rtls/!svn/ver/2529/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/StepDetectResult.java
+END
+StepDetector.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/StepDetector.java
+END
+PDRService.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/PDRService.java
+END
+Corner.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/p-rtls/!svn/ver/2545/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/Corner.java
+END
+HeadingKalmanFilter.java
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/svn/p-rtls/!svn/ver/2541/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/HeadingKalmanFilter.java
+END
+SensorsSave.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/p-rtls/!svn/ver/2537/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/PDR/SensorsSave.java
+END

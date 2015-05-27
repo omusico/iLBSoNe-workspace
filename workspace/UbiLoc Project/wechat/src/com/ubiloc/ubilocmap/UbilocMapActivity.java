@@ -1,5 +1,7 @@
 package com.ubiloc.ubilocmap;
 
+import java.io.IOException;
+
 import im.WeChat;
 
 import org.mapsforge.android.maps.MapActivity;
@@ -7,13 +9,21 @@ import org.mapsforge.android.maps.MapView;
 
 import tools.SysApplication;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubirtls.PDR.PDRService;
 
 import config.WCApplication;
 
@@ -39,7 +49,9 @@ public class UbilocMapActivity extends MapActivity {
 		//防止图像不显示
 		UbilocMap.init(mMapView, UbilocMapActivity.this);
 		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this, appContext);
-			}
+	}
+
+
 
 	@Override
 	protected void onDestroy() {

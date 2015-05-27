@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/vertical_menu_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/vertical_menu_item_img"
+        android:layout_width="@dimen/vertical_menu_item_size"
+        android:layout_height="@dimen/vertical_menu_item_size" />
+
+</RelativeLayout>

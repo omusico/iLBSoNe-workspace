@@ -6,6 +6,7 @@ package ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import tools.SysApplication;
 import tools.UIHelper;
 import ui.adapter.StrangerAdapter;
 import android.app.AlertDialog;
@@ -47,6 +48,7 @@ public class FindFriend extends AppActivity implements OnScrollListener, OnRefre
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//SysApplication.getInstance().addActivity(this);
 		setContentView(R.layout.findfriend);
 		initUI();
 		getFriendCardFromCache();
@@ -127,7 +129,7 @@ public class FindFriend extends AppActivity implements OnScrollListener, OnRefre
 
 	@Override
 	public void onBackPressed() {
-		isExit();
+		finish();
 	}
 	
 	public void show2OptionsDialog(final String[] arg ,final UserInfo model){
@@ -150,6 +152,7 @@ public class FindFriend extends AppActivity implements OnScrollListener, OnRefre
 			public void onSuccess(Object data) {
 				showToast((String)data);
 				addFriendBroadcast(user);
+				
 			}
 			
 			@Override

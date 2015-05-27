@@ -33,7 +33,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
-         <ImageView
+        <ImageView
             android:id="@+id/test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,16 +46,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:paddingTop="0dp"
+            android:visibility="gone"
             arc:childSize="@dimen/menuChildSize"
             arc:fromDegrees="@dimen/menuFromDegrees"
-            arc:toDegrees="@dimen/menuToDegrees"
-            android:visibility="gone" />
-        
-        <ListView 
+            arc:toDegrees="@dimen/menuToDegrees" />
+
+        <ListView
             android:id="@+id/xmaplist"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+
+<!--         <include layout="@layout/mapactivity_right" /> -->
+
+        <com.verticalmenu.VerticalMenu
+            android:id="@+id/vertical_menu"
             android:layout_width="wrap_content"
-            />
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
     </FrameLayout>
 
 </LinearLayout>

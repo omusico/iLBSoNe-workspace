@@ -128,7 +128,7 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(minLevel);
+					mMapView.getController().setZoom(maxLevel);
 					mMapView.getController().setCenter(mapCenter);
 
 				} else {

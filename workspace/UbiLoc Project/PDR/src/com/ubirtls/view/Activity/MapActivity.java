@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.ubirtls.PDR.PDRService;
 
 /**
- * 开启定位服务，返回定位坐标，关闭服务
+ * 地图显示界面，也是主界面，在此界面上可以实现人员位置 的实时显示，导航路径的显示以及其他地图的操作，包括放大，缩小，移动等。
  * 
  * @author 胡旭科
  * @version 1.0
@@ -26,11 +26,19 @@ public class MapActivity extends Activity {
 	// 在Activity首次创建时调用
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map_activity);
+		final RelativeLayout rl = new RelativeLayout(this);
 
-		Intent intent = new Intent(MapActivity.this, PDRService.class);
-		startService(intent);
-
+		// 开启定位服务 注意：在AndroidManifest.xml里面注册
+		// 参考代码如下：
+		// <service
+		// android:enabled="true"
+		// android:name=".PDR.PDRService"
+		// android:exported="true" >
+		// <intent-filter >
+		// <action android:name="com.ubirtls.PDR.pDRService" />
+		// <category android:name="android.intent.category.DEFAULT" />
+		// </intent-filter>
+		// </service>
 		try {
 			IntentFilter filter;
 			filter = new IntentFilter(PDRService.HIPPO_SERVICE_IDENTIFIER);
@@ -40,6 +48,7 @@ public class MapActivity extends Activity {
 			e.getStackTrace();
 		}
 
+		this.setContentView(rl);
 	}
 
 	/**
@@ -58,9 +67,9 @@ public class MapActivity extends Activity {
 			double positionY = bundle.getDouble("positionY");
 			Log.i("xxxx", String.valueOf(positionX));
 			Log.i("yyyy", String.valueOf(positionY));
-			Toast toast = Toast.makeText(getApplicationContext(), "("
-					+ positionX + "," + positionY + ")", Toast.LENGTH_SHORT);
-			toast.show();
+			// Controller.getInstance().notifyLocation(positionX, positionY);
+			// Controller.getInstance().sentPDRPosition(positionX, positionY);
+
 		}
 
 	}
@@ -93,4 +102,10 @@ public class MapActivity extends Activity {
 		stopService(intent);
 		Log.i("服务关闭", "MapActivity");
 	}
+
+	// @Override
+	// public boolean onTrackballEvent(final MotionEvent event) {
+	// // return this.mapView.onTrackballEvent(event);
+	// }
+
 }

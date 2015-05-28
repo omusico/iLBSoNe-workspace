@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.ubirtls.PDR.PDRService;
 
@@ -21,24 +21,24 @@ public class MapActivity extends Activity {
 
 	/** 广播接收者，接收PDR服务返回的航位推算结果 */
 	private PdrServiceReceiver pdrReceiver;
-	boolean started = false;
 
 	// 在Activity首次创建时调用
 	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		final RelativeLayout rl = new RelativeLayout(this);
 
-		// 开启定位服务 注意：在AndroidManifest.xml里面注册
-		// 参考代码如下：
-		// <service
-		// android:enabled="true"
-		// android:name=".PDR.PDRService"
-		// android:exported="true" >
-		// <intent-filter >
-		// <action android:name="com.ubirtls.PDR.pDRService" />
-		// <category android:name="android.intent.category.DEFAULT" />
-		// </intent-filter>
-		// </service>
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_main);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			Log.e("ERROR", "ERROR IN CODE: " + e.toString());
+			e.printStackTrace();
+
+		}
+
+		Intent intent = new Intent(MapActivity.this, PDRService.class);
+		startService(intent);
+
 		try {
 			IntentFilter filter;
 			filter = new IntentFilter(PDRService.HIPPO_SERVICE_IDENTIFIER);
@@ -47,8 +47,6 @@ public class MapActivity extends Activity {
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-
-		this.setContentView(rl);
 	}
 
 	/**
@@ -69,7 +67,9 @@ public class MapActivity extends Activity {
 			Log.i("yyyy", String.valueOf(positionY));
 			// Controller.getInstance().notifyLocation(positionX, positionY);
 			// Controller.getInstance().sentPDRPosition(positionX, positionY);
-
+			Toast toast = Toast.makeText(getApplicationContext(), "("
+					+ positionX + "," + positionY + ")", Toast.LENGTH_SHORT);
+			toast.show();
 		}
 
 	}

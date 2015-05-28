@@ -59,8 +59,7 @@ public class PDRService extends Service {
 	private int gyroIndex = 0;
 	private int totalStep = 0;
 	private int accSaveSize = 200;
-	/** 粒子滤波 初始坐标 */
-	ParticleFilter particleFilter = new ParticleFilter(78, 4);
+
 	/** 转角捕获相关参数 */
 	private int gyroInit = 0;
 	private double curX = 0;
@@ -68,10 +67,13 @@ public class PDRService extends Service {
 	private double extraGyroChange = 0;
 
 	@Override
-	public IBinder onBind(Intent arg0) {
+	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/** 粒子滤波 初始坐标 */
+	ParticleFilter particleFilter = new ParticleFilter(75, 4);
 
 	@Override
 	public void onCreate() {

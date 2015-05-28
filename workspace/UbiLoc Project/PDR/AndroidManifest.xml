@@ -1,17 +1,46 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ubirtls.PDR"
+    package="com.ubirtls.view.Activity"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="23" />
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="PDR"
         android:theme="@style/AppTheme" >
+        
+         <activity
+            android:name=".MapActivity"
+            android:label="PDR" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <service
+            android:enabled="true"
+            android:name="com.ubirtls.PDR.PDRService"
+            android:exported="true" >
+            <intent-filter >
+                <action android:name="com.ubirtls.PDR.PDRService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+        
+        
     </application>
 
 </manifest>

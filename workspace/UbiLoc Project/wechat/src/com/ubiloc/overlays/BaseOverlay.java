@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.mapsforge.android.maps.MapView;
@@ -50,12 +49,17 @@ import com.donal.wechat.R;
 import com.ubiloc.map.maputils.BoundingBoxE6;
 import com.ubiloc.map.maputils.MapUtil;
 import com.ubiloc.map.maputils.MyMath;
+import com.vividsolutions.jts.android.PointTransformation;
+import com.vividsolutions.jts.android.ShapeWriter;
+import com.vividsolutions.jts.android.geom.DrawableShape;
+import com.vividsolutions.jts.geom.Geometry;
 
 import eu.geopaparazzi.library.database.GPLog;
 import eu.geopaparazzi.library.gps.GpsManager;
 import eu.geopaparazzi.library.util.Utilities;
 import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
 import eu.geopaparazzi.spatialite.database.spatial.core.databasehandlers.AbstractSpatialDatabaseHandler;
+import eu.geopaparazzi.spatialite.database.spatial.core.databasehandlers.SpatialiteDatabaseHandler;
 import eu.geopaparazzi.spatialite.database.spatial.core.geometry.GeometryIterator;
 import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialRasterTable;
 import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialVectorTable;
@@ -75,10 +79,12 @@ import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialVectorTabl
  */
 public abstract class BaseOverlay extends Overlay {
 
-	List<String> dbABSPaths = null;
-	HashMap<String, List<SpatialVectorTable>> my_spatialTables = null;
+	List<String> dbABSPaths = new ArrayList<String>();
 
-	private Map<String, GeometryIterator> mCurrentGeometryIteratorMap;
+	/**
+	 * key : db's abs path,value: a list of VectorTable
+	 */
+	HashMap<String, List<SpatialVectorTable>> my_spatialTables = new HashMap<String, List<SpatialVectorTable>>();
 
 	private MapView mapView;
 	// ����ʮ�ּ�
@@ -88,14 +94,8 @@ public abstract class BaseOverlay extends Overlay {
 	private List<Integer> visibleItems;
 	private List<Integer> visibleItemsRedraw;
 	private Point itemPosition;
-	private Drawable itemMarker;
 	private Drawable itemDefaultMarker;
-	private int itemBottom;
-	private int left;
-	private int right;
-	private int top;
 	private Context context;
-	private int crossSize = 10;
 	SpatialDatabasesManager sdManager;
 	private GpsData overlayGps;
 	private OverlayWay gpslogOverlay;
@@ -125,10 +125,6 @@ public abstract class BaseOverlay extends Overlay {
 	private Paint gpsGreenFill;
 	private Paint gpsBlueFill;
 	private List<GeoPoint> currentGpsLog = new ArrayList<GeoPoint>();
-	private int inset = 5;
-	private boolean isNotesTextVisible;
-	private boolean doNotesTextHalo;
-
 	// ========================================================
 	// ������γ��
 	private GeoPoint GpsPosition;
@@ -143,10 +139,7 @@ public abstract class BaseOverlay extends Overlay {
 	 */
 	private LinkedHashMap<String, BaseOverlayItem> mOverlayItems = new LinkedHashMap<String, BaseOverlayItem>();
 	// =========================================================
-	// ���Ƶ���������Ҫ��������Ϣ
-	// private String coords =
-	// "116.75557503421 40.3066720566464,116.755324502335 40.3064612343892,116.755325830472 40.3060931467768,116.755676581329 40.3057927231198,116.756092650115 40.3055593616439,116.756595110572 40.305610614,116.75702955199 40.3063477080872,116.757394978513 40.3064965190393,116.758162496233 40.3064324812688,116.759255624579 40.3062873247287,116.757846381791 40.3023081166316,116.758325379711 40.3021026307501,116.757250337449 40.2991423999448,116.756241954774 40.2962823687995,116.756158885499 40.2960726495417,116.756093698275 40.2959190209083,116.755843035208 40.2954176013723,116.756323998624 40.294806283054,116.756662711861 40.2944303183849,116.757039660308 40.293945649209,116.757192835345 40.2937647208832,116.757328881938 40.2934601697938,116.757048232272 40.2928722637623,116.757104733808 40.2922843385,116.75705291089 40.292183520484,116.756987408007 40.2920528158659,116.756958772536 40.2919353731549,116.738917499695 40.2911998770214,116.739955934318 40.2925167386487,116.742326430357 40.2955225883324,116.744827297697 40.2987116679938,116.747475924899 40.3020390409592,116.749242150637 40.3042576702702,116.752408138663 40.3030734016426,116.753622286797 40.3046150230091,116.754875447623 40.3062252533426,116.755243448949 40.3066980939514,116.755266823411 40.3066962584891,116.75557503421 40.3066720566464";
-
+	// private
 	private List<GeoPoint> coords = new ArrayList<GeoPoint>();
 	private Paint polygonPaint;
 
@@ -267,7 +260,6 @@ public abstract class BaseOverlay extends Overlay {
 	 */
 	@Override
 	public boolean onTap(GeoPoint geoPoint, MapView mapView) {
-		// �����͵��ʱ�г�ͻ������ʱ���ж�
 		return false;
 	}
 
@@ -280,11 +272,12 @@ public abstract class BaseOverlay extends Overlay {
 	@Override
 	protected void drawOverlayBitmap(Canvas canvas, Point drawPosition,
 			Projection projection, byte drawZoomLevel) {
-		int canvasHeight = canvas.getHeight();
-		int canvasWidth = canvas.getWidth();
+		canvas.getHeight();
+		canvas.getWidth();
 
 		drawPolygon(canvas, projection, polygonPaint);
 		drawOverlayItems(canvas, projection, polygonPaint);
+		drawFromSpatialite(canvas, drawPosition, projection, drawZoomLevel);
 	}
 
 	/**
@@ -373,6 +366,140 @@ public abstract class BaseOverlay extends Overlay {
 		w = zeroPoint.getLongitude();
 		s = whPoint.getLatitude();
 		e = whPoint.getLongitude();
+		// 路径为key的数据库中的矢量表（可能有多个）
+		for (String key : dbABSPaths) {
+			List<SpatialVectorTable> tempVectorTables = my_spatialTables
+					.get(key);
+			if (tempVectorTables != null && tempVectorTables.size() > 0) {
+				for (SpatialVectorTable spatialTable : tempVectorTables) {
+					handleDrawFromSpatialite(canvas, drawPosition, projection,
+							drawZoomLevel, spatialTable, n, w, s, e);
+				}
+			}
+
+			tempVectorTables = null;
+		}
+
+	}
+
+	private void handleDrawFromSpatialite(Canvas canvas, Point drawPosition,
+			Projection projection, byte drawZoomLevel,
+			SpatialVectorTable spatialTable, double n, double w, double s,
+			double e) {
+		String tableName = spatialTable.getTableName();
+		// 开始画矢量
+		if (spatialTable != null) {
+			SpatialiteDatabaseHandler spatialDatabaseHandler = null;
+			try {
+				Log.i(TAG, spatialTable.getTableName() + "");
+				spatialDatabaseHandler = sdManager
+						.getVectorHandler(spatialTable);
+				if (spatialDatabaseHandler == null)
+					spatialDatabaseHandler = sdManager
+							.getVectorHandler(spatialTable);
+			} catch (jsqlite.Exception e2) {
+				e2.printStackTrace();
+			}
+			GeometryIterator currentGeometryIterator = null;
+			try {
+				currentGeometryIterator = spatialDatabaseHandler
+						.getGeometryIteratorInBoundsAndWhereWithTableName(
+								"4326", spatialTable, tableName, n, s, e, w, "");
+				Paint fill = new Paint();
+				Paint stroke = new Paint();
+				fill.setColor(Color.BLACK);
+				stroke.setColor(Color.BLUE);
+				if (spatialTable.isPolygon()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						if (geom != null) {
+							DrawableShape shape = wr.toShape(geom);
+							if (fill != null)
+								shape.fill(canvas, fill);
+							if (stroke != null)
+								shape.draw(canvas, stroke);
+							shape = null;
+						}
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+					}
+					wr = null;
+				} else if (spatialTable.isLine()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						DrawableShape shape = wr.toShape(geom);
+						if (fill != null)
+							shape.fill(canvas, fill);
+						if (stroke != null)
+							shape.draw(canvas, stroke);
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+						shape = null;
+					}
+					pointTransformer = null;
+					wr = null;
+				} else if (spatialTable.isPoint()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer, "POP",
+							SMALL_SEZE);
+					// float size = 14;
+					// if (drawZoomLevel > 0)
+					// size = SMALL_SEZE;
+					// if (drawZoomLevel > 6)
+					// size = NORMAL_SEZE;
+					// if (drawZoomLevel > 12)
+					// size = LARGE_SEZE;
+					// ShapeWriter wr = new
+					// ShapeWriter(pointTransformer,
+					// "POP", size);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						DrawableShape shape = wr.toShape(geom);
+						if (fill != null)
+							shape.fill(canvas, fill);
+						if (stroke != null)
+							shape.draw(canvas, stroke);
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+						shape = null;
+					}
+					pointTransformer = null;
+					wr = null;
+				}
+			} finally {
+				spatialTable = null;
+				spatialDatabaseHandler = null;
+				if (currentGeometryIterator != null) {
+					try {
+						currentGeometryIterator.close();
+					} catch (jsqlite.Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
 
 	}
 
@@ -455,25 +582,13 @@ public abstract class BaseOverlay extends Overlay {
 					tmpTilePart = tmpTilePart.replaceFirst(
 							"YYY", String.valueOf(tileBounds[3])); //$NON-NLS-1$
 
-					/**
-					 * ����Ǳ���TMSɢƬ�����N xyz����
-					 */
-					int[] tmsTiles = Utilities.googleTile2TmsTile(tile_x,
-							tile_y, zoomLevel);
-					int tms_tile_x = tmsTiles[0];
-					int tms_tile_y = tmsTiles[1];
-					int tms_tile_z = zoomLevel;
+					Utilities.googleTile2TmsTile(tile_x, tile_y, zoomLevel);
 
 					/**
 					 * �����mbtiles�⣬��ôxyz����
 					 */
 
-					int[] mbTiles = Utilities.googleTile2TmsTile(tile_x,
-							tile_y, zoomLevel);
-					int mb_tile_x = tmsTiles[0];
-					int mb_tile_y = tmsTiles[1];
-					int mb_tile_z = zoomLevel;
-
+					Utilities.googleTile2TmsTile(tile_x, tile_y, zoomLevel);
 					String query = tile_z + "," + tile_x + "," + tile_y;
 					byte[] b = spatialDatabaseHandler.getRasterTile(query);
 
@@ -675,10 +790,8 @@ public abstract class BaseOverlay extends Overlay {
 
 	private Paint getPolygonStrokePaint(UbilocSymbol symbol) {
 		Paint stroke = new Paint();
-		// ��ȡ�߿�
-		float width = 5;
 		try {
-			width = Float.parseFloat(symbol.getOutLineWidth());
+			Float.parseFloat(symbol.getOutLineWidth());
 		} catch (Exception e) {
 
 		}
@@ -814,7 +927,6 @@ public abstract class BaseOverlay extends Overlay {
 		visibleItems = null;
 		visibleItemsRedraw = null;
 		itemPosition = null;
-		itemMarker = null;
 		itemDefaultMarker = null;
 		context = null;
 		sdManager = null;
@@ -880,5 +992,22 @@ public abstract class BaseOverlay extends Overlay {
 	 */
 	public void removeAllOverlayItems() {
 		mOverlayItems.clear();
+	}
+
+	/**
+	 * 添加底图数据
+	 * 
+	 * @param absPath
+	 *            底图的绝对路径
+	 */
+	public void addBaseOverlay(String absPath) {
+		dbABSPaths.add(absPath);
+		try {
+			my_spatialTables = sdManager.getSpatialVectorTableMaps(context,
+					dbABSPaths);
+		} catch (jsqlite.Exception e3) {
+			e3.printStackTrace();
+		}
+
 	}
 }

@@ -47,6 +47,7 @@ import org.mapsforge.core.Tile;
 import org.mapsforge.map.reader.MapDatabase;
 import org.mapsforge.map.reader.header.FileOpenResult;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -57,20 +58,26 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 
 /**
- * A MapView shows a map on the display of the device. It handles all user input and touch gestures to move and zoom the
- * map. This MapView also includes a scale bar and zoom controls. The {@link #getController()} method returns a
- * {@link MapController} to programmatically modify the position and zoom level of the map.
+ * A MapView shows a map on the display of the device. It handles all user input
+ * and touch gestures to move and zoom the map. This MapView also includes a
+ * scale bar and zoom controls. The {@link #getController()} method returns a
+ * {@link MapController} to programmatically modify the position and zoom level
+ * of the map.
  * <p>
- * This implementation supports offline map rendering as well as downloading map images (tiles) over an Internet
- * connection. The operation mode of a MapView can be set in the constructor and changed at runtime with the
- * {@link #setMapGeneratorInternal(MapGenerator)} method. Some MapView parameters depend on the selected operation mode.
+ * This implementation supports offline map rendering as well as downloading map
+ * images (tiles) over an Internet connection. The operation mode of a MapView
+ * can be set in the constructor and changed at runtime with the
+ * {@link #setMapGeneratorInternal(MapGenerator)} method. Some MapView
+ * parameters depend on the selected operation mode.
  * <p>
- * In offline rendering mode a special database file is required which contains the map data. Map files can be stored in
- * any folder. The current map file is set by calling {@link #setMapFile(File)}. To retrieve the current
+ * In offline rendering mode a special database file is required which contains
+ * the map data. Map files can be stored in any folder. The current map file is
+ * set by calling {@link #setMapFile(File)}. To retrieve the current
  * {@link MapDatabase}, use the {@link #getMapDatabase()} method.
  * <p>
- * {@link Overlay Overlays} can be used to display geographical data such as points and ways. To draw an overlay on top
- * of the map, add it to the list returned by {@link #getOverlays()}.
+ * {@link Overlay Overlays} can be used to display geographical data such as
+ * points and ways. To draw an overlay on top of the map, add it to the list
+ * returned by {@link #getOverlays()}.
  */
 public class MapView extends ViewGroup {
 	/**
@@ -107,7 +114,8 @@ public class MapView extends ViewGroup {
 	 * @param context
 	 *            the enclosing MapActivity instance.
 	 * @throws IllegalArgumentException
-	 *             if the context object is not an instance of {@link MapActivity}.
+	 *             if the context object is not an instance of
+	 *             {@link MapActivity}.
 	 */
 	public MapView(Context context) {
 		this(context, null, new DatabaseRenderer());
@@ -119,10 +127,12 @@ public class MapView extends ViewGroup {
 	 * @param attributeSet
 	 *            a set of attributes.
 	 * @throws IllegalArgumentException
-	 *             if the context object is not an instance of {@link MapActivity}.
+	 *             if the context object is not an instance of
+	 *             {@link MapActivity}.
 	 */
 	public MapView(Context context, AttributeSet attributeSet) {
-		this(context, attributeSet, MapGeneratorFactory.createMapGenerator(attributeSet));
+		this(context, attributeSet, MapGeneratorFactory
+				.createMapGenerator(attributeSet));
 	}
 
 	/**
@@ -131,17 +141,20 @@ public class MapView extends ViewGroup {
 	 * @param mapGenerator
 	 *            the MapGenerator for this MapView.
 	 * @throws IllegalArgumentException
-	 *             if the context object is not an instance of {@link MapActivity}.
+	 *             if the context object is not an instance of
+	 *             {@link MapActivity}.
 	 */
 	public MapView(Context context, MapGenerator mapGenerator) {
 		this(context, null, mapGenerator);
 	}
 
-	private MapView(Context context, AttributeSet attributeSet, MapGenerator mapGenerator) {
+	private MapView(Context context, AttributeSet attributeSet,
+			MapGenerator mapGenerator) {
 		super(context, attributeSet);
 
 		if (!(context instanceof MapActivity)) {
-			throw new IllegalArgumentException("context is not an instance of MapActivity");
+			throw new IllegalArgumentException(
+					"context is not an instance of MapActivity");
 		}
 		MapActivity mapActivity = (MapActivity) context;
 
@@ -150,12 +163,14 @@ public class MapView extends ViewGroup {
 		setWillNotDraw(false);
 
 		this.debugSettings = new DebugSettings(false, false, false);
-		this.fileSystemTileCache = new FileSystemTileCache(DEFAULT_TILE_CACHE_SIZE_FILE_SYSTEM,
-				mapActivity.getMapViewId());
+		this.fileSystemTileCache = new FileSystemTileCache(
+				DEFAULT_TILE_CACHE_SIZE_FILE_SYSTEM, mapActivity.getMapViewId());
 		this.fpsCounter = new FpsCounter();
 		this.frameBuffer = new FrameBuffer(this);
-		this.inMemoryTileCache = new InMemoryTileCache(DEFAULT_TILE_CACHE_SIZE_IN_MEMORY);
-		this.jobParameters = new JobParameters(DEFAULT_RENDER_THEME, DEFAULT_TEXT_SCALE);
+		this.inMemoryTileCache = new InMemoryTileCache(
+				DEFAULT_TILE_CACHE_SIZE_IN_MEMORY);
+		this.jobParameters = new JobParameters(DEFAULT_RENDER_THEME,
+				DEFAULT_TEXT_SCALE);
 		this.jobQueue = new JobQueue(this);
 		this.mapController = new MapController(this);
 		this.mapDatabase = new MapDatabase();
@@ -164,7 +179,8 @@ public class MapView extends ViewGroup {
 		this.mapZoomControls = new MapZoomControls(mapActivity, this);
 		this.overlays = new OverlayList(this);
 		this.projection = new MapViewProjection(this);
-		this.touchEventHandler = TouchEventHandler.getInstance(mapActivity, this);
+		this.touchEventHandler = TouchEventHandler.getInstance(mapActivity,
+				this);
 
 		this.mapWorker = new MapWorker(this);
 		this.mapWorker.start();
@@ -241,7 +257,8 @@ public class MapView extends ViewGroup {
 	/**
 	 * @return the map database which is used for reading map files.
 	 * @throws UnsupportedOperationException
-	 *             if the current MapGenerator works with an Internet connection.
+	 *             if the current MapGenerator works with an Internet
+	 *             connection.
 	 */
 	public MapDatabase getMapDatabase() {
 		if (this.mapGenerator.requiresInternetConnection()) {
@@ -253,7 +270,8 @@ public class MapView extends ViewGroup {
 	/**
 	 * @return the currently used map file.
 	 * @throws UnsupportedOperationException
-	 *             if the current MapGenerator mode works with an Internet connection.
+	 *             if the current MapGenerator mode works with an Internet
+	 *             connection.
 	 */
 	public File getMapFile() {
 		if (this.mapGenerator.requiresInternetConnection()) {
@@ -298,8 +316,8 @@ public class MapView extends ViewGroup {
 	}
 
 	/**
-	 * Returns a thread-safe list of overlays for this MapView. It is necessary to manually synchronize on this list
-	 * when iterating over it.
+	 * Returns a thread-safe list of overlays for this MapView. It is necessary
+	 * to manually synchronize on this list when iterating over it.
 	 * 
 	 * @return the overlay list.
 	 */
@@ -308,14 +326,16 @@ public class MapView extends ViewGroup {
 	}
 
 	/**
-	 * @return the currently used projection of the map. Do not keep this object for a longer time.
+	 * @return the currently used projection of the map. Do not keep this object
+	 *         for a longer time.
 	 */
 	public Projection getProjection() {
 		return this.projection;
 	}
 
 	/**
-	 * Calls either {@link #invalidate()} or {@link #postInvalidate()}, depending on the current thread.
+	 * Calls either {@link #invalidate()} or {@link #postInvalidate()},
+	 * depending on the current thread.
 	 */
 	public void invalidateOnUiThread() {
 		if (AndroidUtils.currentThreadIsUiThread()) {
@@ -374,15 +394,21 @@ public class MapView extends ViewGroup {
 		}
 
 		GeoPoint geoPoint = mapPosition.geoPoint;
-		double pixelLeft = MercatorProjection.longitudeToPixelX(geoPoint.getLongitude(), mapPosition.zoomLevel);
-		double pixelTop = MercatorProjection.latitudeToPixelY(geoPoint.getLatitude(), mapPosition.zoomLevel);
+		double pixelLeft = MercatorProjection.longitudeToPixelX(
+				geoPoint.getLongitude(), mapPosition.zoomLevel);
+		double pixelTop = MercatorProjection.latitudeToPixelY(
+				geoPoint.getLatitude(), mapPosition.zoomLevel);
 		pixelLeft -= getWidth() >> 1;
 		pixelTop -= getHeight() >> 1;
 
-		long tileLeft = MercatorProjection.pixelXToTileX(pixelLeft, mapPosition.zoomLevel);
-		long tileTop = MercatorProjection.pixelYToTileY(pixelTop, mapPosition.zoomLevel);
-		long tileRight = MercatorProjection.pixelXToTileX(pixelLeft + getWidth(), mapPosition.zoomLevel);
-		long tileBottom = MercatorProjection.pixelYToTileY(pixelTop + getHeight(), mapPosition.zoomLevel);
+		long tileLeft = MercatorProjection.pixelXToTileX(pixelLeft,
+				mapPosition.zoomLevel);
+		long tileTop = MercatorProjection.pixelYToTileY(pixelTop,
+				mapPosition.zoomLevel);
+		long tileRight = MercatorProjection.pixelXToTileX(pixelLeft
+				+ getWidth(), mapPosition.zoomLevel);
+		long tileBottom = MercatorProjection.pixelYToTileY(pixelTop
+				+ getHeight(), mapPosition.zoomLevel);
 
 		Object cacheId;
 		if (this.mapGenerator.requiresInternetConnection()) {
@@ -394,17 +420,21 @@ public class MapView extends ViewGroup {
 		for (long tileY = tileTop; tileY <= tileBottom; ++tileY) {
 			for (long tileX = tileLeft; tileX <= tileRight; ++tileX) {
 				Tile tile = new Tile(tileX, tileY, mapPosition.zoomLevel);
-				MapGeneratorJob mapGeneratorJob = new MapGeneratorJob(tile, cacheId, this.jobParameters,
-						this.debugSettings);
+				MapGeneratorJob mapGeneratorJob = new MapGeneratorJob(tile,
+						cacheId, this.jobParameters, this.debugSettings);
 
 				if (this.inMemoryTileCache.containsKey(mapGeneratorJob)) {
 					Bitmap bitmap = this.inMemoryTileCache.get(mapGeneratorJob);
-					this.frameBuffer.drawBitmap(mapGeneratorJob.tile, bitmap);
-				} else if (this.fileSystemTileCache.containsKey(mapGeneratorJob)) {
-					Bitmap bitmap = this.fileSystemTileCache.get(mapGeneratorJob);
+					this.frameBuffer.drawBitmap(mapGeneratorJob.tile,
+							bitmap);
+				} else if (this.fileSystemTileCache
+						.containsKey(mapGeneratorJob)) {
+					Bitmap bitmap = this.fileSystemTileCache
+							.get(mapGeneratorJob);
 
 					if (bitmap != null) {
-						this.frameBuffer.drawBitmap(mapGeneratorJob.tile, bitmap);
+						this.frameBuffer.drawBitmap(mapGeneratorJob.tile,
+								bitmap);
 						this.inMemoryTileCache.put(mapGeneratorJob, bitmap);
 					} else {
 						// the image data could not be read from the cache
@@ -447,7 +477,8 @@ public class MapView extends ViewGroup {
 	 *            the new center point of the map.
 	 */
 	public void setCenter(GeoPoint geoPoint) {
-		MapPosition mapPosition = new MapPosition(geoPoint, this.mapViewPosition.getZoomLevel());
+		MapPosition mapPosition = new MapPosition(geoPoint,
+				this.mapViewPosition.getZoomLevel());
 		setCenterAndZoom(mapPosition);
 	}
 
@@ -465,9 +496,11 @@ public class MapView extends ViewGroup {
 	 * 
 	 * @param mapFile
 	 *            the map file.
-	 * @return a FileOpenResult to describe whether the operation returned successfully.
+	 * @return a FileOpenResult to describe whether the operation returned
+	 *         successfully.
 	 * @throws UnsupportedOperationException
-	 *             if the current MapGenerator mode works with an Internet connection.
+	 *             if the current MapGenerator mode works with an Internet
+	 *             connection.
 	 * @throws IllegalArgumentException
 	 *             if the supplied mapFile is null.
 	 */
@@ -543,17 +576,21 @@ public class MapView extends ViewGroup {
 	 * @throws UnsupportedOperationException
 	 *             if the current MapGenerator does not support render themes.
 	 * @throws FileNotFoundException
-	 *             if the supplied file does not exist, is a directory or cannot be read.
+	 *             if the supplied file does not exist, is a directory or cannot
+	 *             be read.
 	 */
-	public void setRenderTheme(File renderThemeFile) throws FileNotFoundException {
+	public void setRenderTheme(File renderThemeFile)
+			throws FileNotFoundException {
 		if (renderThemeFile == null) {
-			throw new IllegalArgumentException("render theme file must not be null");
+			throw new IllegalArgumentException(
+					"render theme file must not be null");
 		} else if (this.mapGenerator.requiresInternetConnection()) {
 			throw new UnsupportedOperationException();
 		}
 
 		JobTheme jobTheme = new ExternalRenderTheme(renderThemeFile);
-		this.jobParameters = new JobParameters(jobTheme, this.jobParameters.textScale);
+		this.jobParameters = new JobParameters(jobTheme,
+				this.jobParameters.textScale);
 		clearAndRedrawMapView();
 	}
 
@@ -574,38 +611,46 @@ public class MapView extends ViewGroup {
 			throw new UnsupportedOperationException();
 		}
 
-		this.jobParameters = new JobParameters(internalRenderTheme, this.jobParameters.textScale);
+		this.jobParameters = new JobParameters(internalRenderTheme,
+				this.jobParameters.textScale);
 		clearAndRedrawMapView();
 	}
 
 	/**
-	 * Sets the text scale for the map rendering. Has no effect in downloading mode.
+	 * Sets the text scale for the map rendering. Has no effect in downloading
+	 * mode.
 	 * 
 	 * @param textScale
 	 *            the new text scale for the map rendering.
 	 */
 	public void setTextScale(float textScale) {
-		this.jobParameters = new JobParameters(this.jobParameters.jobTheme, textScale);
+		this.jobParameters = new JobParameters(this.jobParameters.jobTheme,
+				textScale);
 		clearAndRedrawMapView();
 	}
 
 	/**
-	 * Takes a screenshot of the currently visible map and saves it as a compressed image. Zoom buttons, scale bar, FPS
-	 * counter, overlays, menus and the title bar are not included in the screenshot.
+	 * Takes a screenshot of the currently visible map and saves it as a
+	 * compressed image. Zoom buttons, scale bar, FPS counter, overlays, menus
+	 * and the title bar are not included in the screenshot.
 	 * 
 	 * @param outputFile
-	 *            the image file. If the file already exists, it will be overwritten.
+	 *            the image file. If the file already exists, it will be
+	 *            overwritten.
 	 * @param compressFormat
 	 *            the file format of the compressed image.
 	 * @param quality
-	 *            value from 0 (low) to 100 (high). Has no effect on some formats like PNG.
+	 *            value from 0 (low) to 100 (high). Has no effect on some
+	 *            formats like PNG.
 	 * @return true if the image was saved successfully, false otherwise.
 	 * @throws IOException
 	 *             if an error occurs while writing the image file.
 	 */
-	public boolean takeScreenshot(CompressFormat compressFormat, int quality, File outputFile) throws IOException {
+	public boolean takeScreenshot(CompressFormat compressFormat, int quality,
+			File outputFile) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(outputFile);
-		boolean success = this.frameBuffer.compress(compressFormat, quality, outputStream);
+		boolean success = this.frameBuffer.compress(compressFormat, quality,
+				outputStream);
 		outputStream.close();
 		return success;
 	}
@@ -629,7 +674,8 @@ public class MapView extends ViewGroup {
 			matrixScaleFactor = 1 << zoomLevelDiff;
 		} else if (zoomLevelDiff < 0) {
 			// check if zoom out is possible
-			if (this.mapViewPosition.getZoomLevel() + zoomLevelDiff < this.mapZoomControls.getZoomLevelMin()) {
+			if (this.mapViewPosition.getZoomLevel() + zoomLevelDiff < this.mapZoomControls
+					.getZoomLevelMin()) {
 				return false;
 			}
 			matrixScaleFactor = 1.0f / (1 << -zoomLevelDiff);
@@ -638,10 +684,13 @@ public class MapView extends ViewGroup {
 			matrixScaleFactor = 1;
 		}
 
-		this.mapViewPosition.setZoomLevel((byte) (this.mapViewPosition.getZoomLevel() + zoomLevelDiff));
-		this.mapZoomControls.onZoomLevelChange(this.mapViewPosition.getZoomLevel());
+		this.mapViewPosition.setZoomLevel((byte) (this.mapViewPosition
+				.getZoomLevel() + zoomLevelDiff));
+		this.mapZoomControls.onZoomLevelChange(this.mapViewPosition
+				.getZoomLevel());
 
-		this.zoomAnimator.setParameters(zoomStart, matrixScaleFactor, getWidth() >> 1, getHeight() >> 1);
+		this.zoomAnimator.setParameters(zoomStart, matrixScaleFactor,
+				getWidth() >> 1, getHeight() >> 1);
 		this.zoomAnimator.startAnimation();
 		return true;
 	}
@@ -676,25 +725,32 @@ public class MapView extends ViewGroup {
 		}
 	}
 
+	@SuppressLint("WrongCall")
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
 		this.mapZoomControls.onLayout(changed, left, top, right, bottom);
 	}
 
 	@Override
 	protected final void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// find out how big the zoom controls should be
-		this.mapZoomControls.measure(
-				MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST),
-				MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.AT_MOST));
+		this.mapZoomControls.measure(MeasureSpec.makeMeasureSpec(
+				MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST),
+				MeasureSpec.makeMeasureSpec(
+						MeasureSpec.getSize(heightMeasureSpec),
+						MeasureSpec.AT_MOST));
 
 		// make sure that MapView is big enough to display the zoom controls
-		setMeasuredDimension(Math.max(MeasureSpec.getSize(widthMeasureSpec), this.mapZoomControls.getMeasuredWidth()),
-				Math.max(MeasureSpec.getSize(heightMeasureSpec), this.mapZoomControls.getMeasuredHeight()));
+		setMeasuredDimension(Math.max(MeasureSpec.getSize(widthMeasureSpec),
+				this.mapZoomControls.getMeasuredWidth()), Math.max(
+				MeasureSpec.getSize(heightMeasureSpec),
+				this.mapZoomControls.getMeasuredHeight()));
 	}
 
 	@Override
-	protected synchronized void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+	protected synchronized void onSizeChanged(int width, int height,
+			int oldWidth, int oldHeight) {
 		this.frameBuffer.destroy();
 
 		if (width > 0 && height > 0) {
@@ -742,18 +798,21 @@ public class MapView extends ViewGroup {
 	 * @return the maximum possible zoom level.
 	 */
 	byte getMaximumPossibleZoomLevel() {
-		return (byte) Math.min(this.mapZoomControls.getZoomLevelMax(), this.mapGenerator.getZoomLevelMax());
+		return (byte) Math.min(this.mapZoomControls.getZoomLevelMax(),
+				this.mapGenerator.getZoomLevelMax());
 	}
 
 	/**
-	 * @return true if the current center position of this MapView is valid, false otherwise.
+	 * @return true if the current center position of this MapView is valid,
+	 *         false otherwise.
 	 */
 	boolean hasValidCenter() {
 		if (!this.mapViewPosition.isValid()) {
 			return false;
 		} else if (!this.mapGenerator.requiresInternetConnection()
-				&& (!this.mapDatabase.hasOpenFile() || !this.mapDatabase.getMapFileInfo().boundingBox
-						.contains(getMapPosition().getMapCenter()))) {
+				&& (!this.mapDatabase.hasOpenFile() || !this.mapDatabase
+						.getMapFileInfo().boundingBox.contains(getMapPosition()
+						.getMapCenter()))) {
 			return false;
 		}
 
@@ -761,7 +820,8 @@ public class MapView extends ViewGroup {
 	}
 
 	byte limitZoomLevel(byte zoom) {
-		return (byte) Math.max(Math.min(zoom, getMaximumPossibleZoomLevel()), this.mapZoomControls.getZoomLevelMin());
+		return (byte) Math.max(Math.min(zoom, getMaximumPossibleZoomLevel()),
+				this.mapZoomControls.getZoomLevelMin());
 	}
 
 	void onPause() {
@@ -790,20 +850,25 @@ public class MapView extends ViewGroup {
 
 			GeoPoint geoPointOld = mapPositionOld.geoPoint;
 			GeoPoint geoPointNew = mapPosition.geoPoint;
-			double oldPixelX = MercatorProjection.longitudeToPixelX(geoPointOld.getLongitude(),
-					mapPositionOld.zoomLevel);
-			double newPixelX = MercatorProjection.longitudeToPixelX(geoPointNew.getLongitude(), mapPosition.zoomLevel);
+			double oldPixelX = MercatorProjection.longitudeToPixelX(
+					geoPointOld.getLongitude(), mapPositionOld.zoomLevel);
+			double newPixelX = MercatorProjection.longitudeToPixelX(
+					geoPointNew.getLongitude(), mapPosition.zoomLevel);
 
-			double oldPixelY = MercatorProjection.latitudeToPixelY(geoPointOld.getLatitude(), mapPositionOld.zoomLevel);
-			double newPixelY = MercatorProjection.latitudeToPixelY(geoPointNew.getLatitude(), mapPosition.zoomLevel);
+			double oldPixelY = MercatorProjection.latitudeToPixelY(
+					geoPointOld.getLatitude(), mapPositionOld.zoomLevel);
+			double newPixelY = MercatorProjection.latitudeToPixelY(
+					geoPointNew.getLatitude(), mapPosition.zoomLevel);
 
 			float matrixTranslateX = (float) (oldPixelX - newPixelX);
 			float matrixTranslateY = (float) (oldPixelY - newPixelY);
-			this.frameBuffer.matrixPostTranslate(matrixTranslateX, matrixTranslateY);
+			this.frameBuffer.matrixPostTranslate(matrixTranslateX,
+					matrixTranslateY);
 		}
 
 		this.mapViewPosition.setMapCenterAndZoomLevel(mapPosition);
-		this.mapZoomControls.onZoomLevelChange(this.mapViewPosition.getZoomLevel());
+		this.mapZoomControls.onZoomLevelChange(this.mapViewPosition
+				.getZoomLevel());
 		redrawTiles();
 	}
 }

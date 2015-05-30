@@ -47,24 +47,86 @@ public class MapLayersManager {
 	}
 
 	private void initAllLayer() {
-		// AtLayer base_layer = base_layers.get(j);
-		String centerxy = "116.429838,40.14607";
-		// String centerxy = "0.0003447222,0.000308888";
-		// String centerxy = "0.000308888,0.0003447222";
-		// String minScale = base_layer.getMinScale();
-		// String maxScale = base_layer.getMaxScale();
-		// if (centerxy != null && !centerxy.equals("") && minScale != null
-		// && !minScale.equals("") && maxScale != null
-		// && !maxScale.equals("")) {
-		// List<AtData> base_datas = base_layer.getDatas();
-		// AtData base_data = base_datas.get(n);
 
-		// String centerxy = "65373.997681,33871.17749";
-		// String centerxy = "33871.17749,65373.997681";
+		// DataBaseBean mbtest1 = getDataBaseBean1();
+		// beans.add(mbtest1);
+		// DataBaseBean mbtest2 = getDataBaseBean2();
+		// beans.add(mbtest2);
+		// DataBaseBean mbtest3 = getDataBaseBean3();
+		// beans.add(mbtest3);
+		// 地图4测试半成功
+		DataBaseBean mbtest4 = getDataBaseBean4();
+		beans.add(mbtest4);
+
+		// 地图5使用真实的室内地图测试
+		DataBaseBean mbtest5 = getDataBaseBean5();
+		beans.add(mbtest5);
+		// 地图6使用真实的室内地图测试
+		DataBaseBean mbtest6 = getDataBaseBean6();
+		beans.add(mbtest6);
+
+		SpatialDatabasesManager.getInstance().initData(null, beans);
+	}
+
+	private DataBaseBean getDataBaseBean6() {
+		String centerxy = "0.39280000000002246,0.2403";
 		String path = Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + ComponentUtil.MAP_PATH + "dianzi.sqlitedb";
-		String id = "dianzi";
+				.getAbsolutePath()
+				+ ComponentUtil.MAP_PATH
+				+ "MyPro_950cf1.mbtiles";
+		String id = "MyPro_950cf1";
+		DataBaseBean mbtest1 = new DataBaseBean();
+		mbtest1.setFileAbsolutePath(path);
+		mbtest1.setDataType(ComponentUtil.DATATYPE_MBTILES);
+		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
+		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
+		mbtest1.setMaxScale(17);
+		mbtest1.setMinScale(0);
+		mbtest1.setTableName(id);
+		return mbtest1;
+	}
 
+	private DataBaseBean getDataBaseBean5() {
+		String centerxy = "0.44769999999999754,0.2417";
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + ComponentUtil.MAP_PATH + "MyPro.mbtiles";
+		String id = "MyPro";
+		DataBaseBean mbtest1 = new DataBaseBean();
+		mbtest1.setFileAbsolutePath(path);
+		mbtest1.setDataType(ComponentUtil.DATATYPE_MBTILES);
+		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
+		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
+		mbtest1.setMaxScale(17);
+		mbtest1.setMinScale(0);
+		mbtest1.setTableName(id);
+		return mbtest1;
+	}
+
+	private DataBaseBean getDataBaseBean4() {
+		String centerxy = "1.40625,25.1652";
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath()
+				+ ComponentUtil.MAP_PATH
+				+ "test_road.mbtiles";
+		String id = "test_road";
+		DataBaseBean mbtest1 = new DataBaseBean();
+		mbtest1.setFileAbsolutePath(path);
+		mbtest1.setDataType(ComponentUtil.DATATYPE_MBTILES);
+		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
+		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
+		mbtest1.setMaxScale(3);
+		mbtest1.setMinScale(0);
+		mbtest1.setTableName(id);
+		return mbtest1;
+	}
+
+	private DataBaseBean getDataBaseBean3() {
+		String centerxy = "16.158142,50.8631775";
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath()
+				+ ComponentUtil.MAP_PATH
+				+ "testSqlite.sqlitedb";
+		String id = "testSqlite";
 		DataBaseBean mbtest1 = new DataBaseBean();
 		mbtest1.setFileAbsolutePath(path);
 		mbtest1.setDataType(ComponentUtil.DATATYPE_SQLITEDB);
@@ -73,10 +135,41 @@ public class MapLayersManager {
 		mbtest1.setMaxScale(20);
 		mbtest1.setMinScale(1);
 		mbtest1.setTableName(id);
-		beans.add(mbtest1);
-		// }
+		return mbtest1;
+	}
 
-		SpatialDatabasesManager.getInstance().initData(null, beans);
+	private DataBaseBean getDataBaseBean2() {
+
+		String centerxy = "116.429838,40.14607";
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + ComponentUtil.MAP_PATH + "dianzi.sqlitedb";
+		String id = "dianzi";
+		DataBaseBean mbtest1 = new DataBaseBean();
+		mbtest1.setFileAbsolutePath(path);
+		mbtest1.setDataType(ComponentUtil.DATATYPE_SQLITEDB);
+		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
+		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
+		mbtest1.setMaxScale(20);
+		mbtest1.setMinScale(1);
+		mbtest1.setTableName(id);
+		return mbtest1;
+	}
+
+	private DataBaseBean getDataBaseBean1() {
+
+		String centerxy = "0.0003447222,0.000308888";
+		String path = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + ComponentUtil.MAP_PATH + "gujia.sqlite";
+		String id = "gujia";
+		DataBaseBean mbtest1 = new DataBaseBean();
+		mbtest1.setFileAbsolutePath(path);
+		mbtest1.setDataType(ComponentUtil.DATATYPE_SQLITE);
+		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
+		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
+		mbtest1.setMaxScale(20);
+		mbtest1.setMinScale(1);
+		mbtest1.setTableName(id);
+		return mbtest1;
 	}
 
 	public List<DataBaseBean> getBeans() {

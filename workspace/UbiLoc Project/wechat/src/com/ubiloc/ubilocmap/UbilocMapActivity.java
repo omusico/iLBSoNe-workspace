@@ -68,23 +68,26 @@ public class UbilocMapActivity extends MapActivity {
 		SysApplication.getInstance().addActivity(this);
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
-		myThread = new Thread(new Runnable() {
+		// myThread = new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// try {
+		// Thread.sleep(2000);
+		// handler.sendEmptyMessage(1);
+		// } catch (InterruptedException e) {
+		//
+		// e.printStackTrace();
+		// }
+		//
+		// }
+		// });
+		// myThread.start();
+		// FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
+		// appContext);
 
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(2000);
-					handler.sendEmptyMessage(1);
-				} catch (InterruptedException e) {
-
-					e.printStackTrace();
-				}
-
-			}
-		});
-		myThread.start();
-		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
-				appContext);
+		UbilocMap.init(mMapView, UbilocMapActivity.this);
+		initView();
 	}
 
 	/**
@@ -209,6 +212,22 @@ public class UbilocMapActivity extends MapActivity {
 			}
 		});
 		verticalMenu.addMenuItem(item5);
+
+		View item6 = inflater.inflate(R.layout.menu_item, null);
+		ImageView item_img6 = (ImageView) item5
+				.findViewById(R.id.menu_item_img);
+		item_img6.setBackgroundResource(R.drawable.draw_test);
+		item6.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
+				GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
+				// 设置地图中心点
+				UbilocMap.getInstance().setMapCenter(center);
+			}
+		});
+		verticalMenu.addMenuItem(item6);
 	}
 
 	@Override

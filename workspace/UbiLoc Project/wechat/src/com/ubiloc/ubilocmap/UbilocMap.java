@@ -36,8 +36,8 @@ public class UbilocMap {
 	private ArrayOverlay overlays;
 	private boolean isMapDataAvailable = false;
 	private int maxLevel = 20;
-	private int minLevel = 10;
-	private int defaultLevel = 10;
+	private int minLevel = 20;
+	private int defaultLevel = 20;
 
 	private UbilocMap(MapView mapView, Context context) {
 		this.mMapView = mapView;
@@ -119,7 +119,7 @@ public class UbilocMap {
 		mMapView.getMapZoomControls().setShowMapZoomControls(true);
 		if (isMapDataAvailable) {
 			SpatialRasterTable rasterTable = null;
-			String tableName = "dianzi";
+			String tableName = "MyPro_950cf1";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
 						.getRasterTableByName(tableName);
@@ -128,7 +128,7 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(maxLevel);
+					mMapView.getController().setZoom(9);
 					mMapView.getController().setCenter(mapCenter);
 
 				} else {
@@ -137,6 +137,13 @@ public class UbilocMap {
 				e.printStackTrace();
 			}
 		}
+
+		// 没有办法，只能先使用业务图层当做底图使用了，测试版：
+		// =========================================================================================
+		// String absPath = "/ubiloc/map/gujia.sqlite";
+		// overlays.addBaseOverlay(absPath);
+		// overlays.requestRedraw();
+		// =========================================================================================
 	}
 
 	/**

@@ -22,10 +22,12 @@ import org.mapsforge.android.maps.DebugSettings;
 import org.mapsforge.core.Tile;
 
 /**
- * A MapGeneratorJob holds all immutable rendering parameters for a single map image together with a mutable priority
- * field, which indicates the importance of this job.
+ * A MapGeneratorJob holds all immutable rendering parameters for a single map
+ * image together with a mutable priority field, which indicates the importance
+ * of this job.
  */
-public class MapGeneratorJob implements Comparable<MapGeneratorJob>, Serializable {
+public class MapGeneratorJob implements Comparable<MapGeneratorJob>,
+		Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -59,7 +61,8 @@ public class MapGeneratorJob implements Comparable<MapGeneratorJob>, Serializabl
 	 * @param debugSettings
 	 *            the debug settings for this job.
 	 */
-	public MapGeneratorJob(Tile tile, Object mapGeneratorId, JobParameters jobParameters, DebugSettings debugSettings) {
+	public MapGeneratorJob(Tile tile, Object mapGeneratorId,
+			JobParameters jobParameters, DebugSettings debugSettings) {
 		this.tile = tile;
 		this.mapGeneratorId = mapGeneratorId;
 		this.jobParameters = jobParameters;
@@ -127,10 +130,20 @@ public class MapGeneratorJob implements Comparable<MapGeneratorJob>, Serializabl
 	 */
 	private int calculateHashCode() {
 		int result = 1;
-		result = 31 * result + ((this.debugSettings == null) ? 0 : this.debugSettings.hashCode());
-		result = 31 * result + ((this.jobParameters == null) ? 0 : this.jobParameters.hashCode());
-		result = 31 * result + ((this.mapGeneratorId == null) ? 0 : this.mapGeneratorId.hashCode());
-		result = 31 * result + ((this.tile == null) ? 0 : this.tile.hashCode());
+		result = 31
+				* result
+				+ ((this.debugSettings == null) ? 0 : this.debugSettings
+						.hashCode());
+		result = 31
+				* result
+				+ ((this.jobParameters == null) ? 0 : this.jobParameters
+						.hashCode());
+		result = 31
+				* result
+				+ ((this.mapGeneratorId == null) ? 0 : this.mapGeneratorId
+						.hashCode());
+		result = 31 * result
+				+ ((this.tile == null) ? 0 : this.tile.hashCode());
 		return result;
 	}
 
@@ -141,7 +154,8 @@ public class MapGeneratorJob implements Comparable<MapGeneratorJob>, Serializabl
 		this.hashCodeValue = calculateHashCode();
 	}
 
-	private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+	private void readObject(ObjectInputStream objectInputStream)
+			throws IOException, ClassNotFoundException {
 		objectInputStream.defaultReadObject();
 		calculateTransientValues();
 	}

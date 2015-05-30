@@ -224,20 +224,33 @@ public class MBTilesDroidSpitter {
         try {
             s_x = Integer.toString(i_x);
             s_y = Integer.toString(i_y);
-            s_z = Integer.toString(17 - i_z);
+            s_z = Integer.toString(i_z);
         } catch (NumberFormatException e) {
             return null;
         }
         // db_lock.readLock().lock();
         byte[] blob_data = null;
         try {
-            /*final Cursor c = db_mbtiles.rawQuery(
+            // ======================================================================================
+            // 这段代码是由wuyf增加的，原因是切片的row编码方式与现有的绘制地图的编码方式顺序相反
+            String sqlRowMax = "select max(tile_row) as row_max from tiles where zoom_level=?";
+            Cursor temp = db_mbtiles.rawQuery(sqlRowMax, new String[]{s_z});
+            if (!temp.moveToFirst()) {
+                temp.close();
+                return null;
+            }
+            int rowMax = temp.getInt(temp.getColumnIndex("row_max"));
+            s_y = Integer.toString(rowMax - i_y);
+            // ======================================================================================
+            final Cursor c = db_mbtiles.rawQuery(
                     "select tile_data from tiles where tile_column=? and tile_row=? and zoom_level=?",
-                    new String[]{s_x, s_y, s_z});*/
-
-            final Cursor c = db_mbtiles.rawQuery("select  image as tile_data from tiles where x=? and y=? and z=?", new String[]{
-                    s_x, s_y, s_z});
-
+                    new String[]{s_x, s_y, s_z});
+            // final Cursor c = db_mbtiles.rawQuery(
+            // "select tile_data from tiles where tile_column=300032 and tile_row=647466 and zoom_level=20",
+            // null);
+            // final Cursor c =
+            // db_mbtiles.rawQuery("select  tile_data as tile_data from tiles where x=? and y=? and z=?",
+            // new String[]{s_x, s_y, s_z});
             if (!c.moveToFirst()) {
                 c.close();
                 // db_lock.readLock().unlock();

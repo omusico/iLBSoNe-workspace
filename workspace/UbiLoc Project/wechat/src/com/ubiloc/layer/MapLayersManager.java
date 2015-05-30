@@ -69,19 +69,19 @@ public class MapLayersManager {
 	}
 
 	private DataBaseBean getDataBaseBean6() {
-		String centerxy = "0.39280000000002246,0.2403";
+		String centerxy = "109.888,0.2650";
 		String path = Environment.getExternalStorageDirectory()
 				.getAbsolutePath()
 				+ ComponentUtil.MAP_PATH
-				+ "MyPro_950cf1.mbtiles";
-		String id = "MyPro_950cf1";
+				+ "testmap2.mbtiles";
+		String id = "testmap2";
 		DataBaseBean mbtest1 = new DataBaseBean();
 		mbtest1.setFileAbsolutePath(path);
 		mbtest1.setDataType(ComponentUtil.DATATYPE_MBTILES);
 		mbtest1.setCenterLat(Double.parseDouble(centerxy.split(",")[1]));
 		mbtest1.setCenterLng(Double.parseDouble(centerxy.split(",")[0]));
-		mbtest1.setMaxScale(17);
-		mbtest1.setMinScale(0);
+		mbtest1.setMaxScale(16);
+		mbtest1.setMinScale(10);
 		mbtest1.setTableName(id);
 		return mbtest1;
 	}

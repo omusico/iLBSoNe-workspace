@@ -119,7 +119,7 @@ public class UbilocMap {
 		mMapView.getMapZoomControls().setShowMapZoomControls(true);
 		if (isMapDataAvailable) {
 			SpatialRasterTable rasterTable = null;
-			String tableName = "MyPro_950cf1";
+			String tableName = "testmap2";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
 						.getRasterTableByName(tableName);
@@ -128,7 +128,7 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(9);
+					mMapView.getController().setZoom(minLevel);
 					mMapView.getController().setCenter(mapCenter);
 
 				} else {

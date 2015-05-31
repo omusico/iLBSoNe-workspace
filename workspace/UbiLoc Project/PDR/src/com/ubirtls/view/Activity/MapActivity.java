@@ -124,13 +124,19 @@ public class MapActivity extends Activity {
 	}
 
 	/**
-	 * 将地图XY坐标转换成地图像素坐标
+	 * 经纬度
 	 * 
-	 * @param coordinate
-	 *            地图XY坐标
-	 * @param level
-	 *            地图当前的缩放级
-	 * @return 地图像素坐标
+	 * @param pre_B
+	 *            初始经度
+	 * @param pre_L
+	 *            初始纬度
+	 * @param positionx
+	 *            相对于X坐标
+	 * @param positiony
+	 *            相对于Y坐标
+	 * @param a
+	 *            相对于正北方的偏角
+	 * @return
 	 */
 	public static Point MapXYToWGS84(double pre_B, double pre_L,
 			double positionx, double positiony, double a) {

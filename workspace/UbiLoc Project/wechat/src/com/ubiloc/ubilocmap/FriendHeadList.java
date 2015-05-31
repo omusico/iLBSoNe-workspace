@@ -10,41 +10,42 @@ import android.widget.ListView;
 import android.widget.Toast;
 import bean.StrangerEntity;
 import bean.UserInfo;
-
-import com.donal.wechat.R;
-
 import config.ApiClent;
-import config.WCApplication;
 import config.ApiClent.ClientCallback;
+import config.WCApplication;
 
 public class FriendHeadList {
-	
+
 	private static FriendHeadList friendheadlist;
 	private ListView xlistView;
 	private List<UserInfo> datas;
 	private FriendMapCardAdaper mAdapter;
 	protected WCApplication appContext;
 	private Context context;
-	
+
 	private int currentPage;
 	private int lvDataState;
-	
-	public static void initHeadList(ListView xlistView,Context context,WCApplication appContext){
-		friendheadlist=new FriendHeadList(xlistView, context, appContext);
+
+	public static void initHeadList(ListView xlistView, Context context,
+			WCApplication appContext) {
+		friendheadlist = new FriendHeadList(xlistView, context, appContext);
 	}
-	public FriendHeadList(ListView xlistView, Context context,WCApplication appContext) {
+
+	public FriendHeadList(ListView xlistView, Context context,
+			WCApplication appContext) {
 		super();
 		this.xlistView = xlistView;
 		this.appContext = appContext;
-		this.context=context;
+		this.context = context;
 		initUI();
 		getFriendCardFromCache();
 	}
+
 	private void initUI() {
 		// xlistView.setOnScrollListener((OnScrollListener) this);滚动listview
 		xlistView.setDividerHeight(0);
 		datas = new ArrayList<UserInfo>();
-		mAdapter =new FriendMapCardAdaper(context, datas);
+		mAdapter = new FriendMapCardAdaper(context, datas);
 		xlistView.setAdapter(mAdapter);
 	}
 
@@ -63,9 +64,9 @@ public class FriendHeadList {
 						StrangerEntity entity = (StrangerEntity) data;
 						switch (entity.status) {
 						case 1:
-							
+
 							handleFriends(entity, action);
-							
+
 							break;
 						default:
 							Toast.makeText(context, entity.msg,
@@ -76,8 +77,8 @@ public class FriendHeadList {
 
 					@Override
 					public void onFailure(String message) {
-						Toast.makeText(context, message,
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(context, message, Toast.LENGTH_LONG)
+								.show();
 					}
 
 					@Override
@@ -85,7 +86,7 @@ public class FriendHeadList {
 					}
 				});
 	}
-	
+
 	private void handleFriends(StrangerEntity entity, int action) {
 		switch (action) {
 		case UIHelper.LISTVIEW_ACTION_INIT:
@@ -109,7 +110,7 @@ public class FriendHeadList {
 		if (datas.isEmpty()) {
 			lvDataState = UIHelper.LISTVIEW_DATA_EMPTY;
 		}
-		
+
 		// swipeLayout.setRefreshing(false);
 	}
 }

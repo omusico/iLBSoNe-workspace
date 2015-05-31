@@ -233,17 +233,14 @@ public class MBTilesDroidSpitter {
         try {
             // ======================================================================================
             // 这段代码是由wuyf增加的，原因是切片的row编码方式与现有的绘制地图的编码方式顺序相反
-
-            String sql = "select min(tile_row) as row_min,max(tile_row) as row_max from tiles where zoom_level=?";
-            Cursor temp1 = db_mbtiles.rawQuery(sql, new String[]{s_z});
-            if (!temp1.moveToFirst()) {
-                temp1.close();
+            String sqlRowMax = "select max(tile_row) as row_max from tiles where zoom_level=?";
+            Cursor temp = db_mbtiles.rawQuery(sqlRowMax, new String[]{s_z});
+            if (!temp.moveToFirst()) {
+                temp.close();
                 return null;
             }
-
-            int rowMax = temp1.getInt(temp1.getColumnIndex("row_max"));
-            int rowMin = temp1.getInt(temp1.getColumnIndex("row_min"));
-            s_y = Integer.toString(rowMax + rowMin - i_y);
+            int rowMax = temp.getInt(temp.getColumnIndex("row_max"));
+            s_y = Integer.toString(rowMax - i_y);
             // ======================================================================================
             final Cursor c = db_mbtiles.rawQuery(
                     "select tile_data from tiles where tile_column=? and tile_row=? and zoom_level=?",

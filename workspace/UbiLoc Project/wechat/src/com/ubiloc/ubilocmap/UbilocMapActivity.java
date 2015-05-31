@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.donal.wechat.R;
 import com.ubiloc.overlays.BitmapOverlay;
@@ -210,36 +209,25 @@ public class UbilocMapActivity extends MapActivity {
 			public void onClick(View arg0) {
 				// 清除所有图层
 				UbilocMap.getInstance().removeAllOverlays();
-
-				// 画点,使用测试数据
-				PointOverlay overlay = new PointOverlay();
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(0.2650, 109.905));
-				overlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(overlay);
-				UbilocMap.getInstance().setMapCenter(
-						new GeoPoint(0.2650, 109.905));
-				Toast.makeText(UbilocMapActivity.this, "测试", Toast.LENGTH_LONG)
-						.show();
 			}
 		});
 		verticalMenu.addMenuItem(item5);
 
-		// View item6 = inflater.inflate(R.layout.menu_item, null);
-		// ImageView item_img6 = (ImageView) item5
-		// .findViewById(R.id.menu_item_img);
-		// item_img6.setBackgroundResource(R.drawable.draw_test);
-		// item6.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
-		// GeoPoint center = new GeoPoint(0.2429, 109.905);
-		// // 设置地图中心点
-		// UbilocMap.getInstance().setMapCenter(center);
-		// }
-		// });
-		// verticalMenu.addMenuItem(item6);
+		View item6 = inflater.inflate(R.layout.menu_item, null);
+		ImageView item_img6 = (ImageView) item5
+				.findViewById(R.id.menu_item_img);
+		item_img6.setBackgroundResource(R.drawable.draw_test);
+		item6.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
+				GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
+				// 设置地图中心点
+				UbilocMap.getInstance().setMapCenter(center);
+			}
+		});
+		verticalMenu.addMenuItem(item6);
 	}
 
 	@Override

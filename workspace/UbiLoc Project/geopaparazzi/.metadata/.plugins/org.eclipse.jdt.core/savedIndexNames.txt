@@ -1,0 +1,17 @@
+INDEX VERSION 1.126+D:\geopaparazzi\geopaparazzi\.metadata\.plugins\org.eclipse.jdt.core
+3400985835.index
+1029394091.index
+4216738990.index
+1337649897.index
+1237532364.index
+1114642089.index
+1097866601.index
+4046278424.index
+3545918008.index
+3925031306.index
+3085795792.index
+2903841305.index
+3771487089.index
+1928937254.index
+1219134853.index
+682210939.index

@@ -134,8 +134,9 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(minLevel);
-					mMapView.getController().setCenter(mapCenter);
+					mMapView.getController().setZoom(10);
+					mMapView.getController().setCenter(
+							new GeoPoint(0.2650, 109.905));
 
 				} else {
 				}

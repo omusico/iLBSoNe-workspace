@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="D:\path\JRE-path" version="1.7.0_15">
+<bootpath>
+<entry path="D:\path\JRE-path\lib\resources.jar"/>
+<entry path="D:\path\JRE-path\lib\rt.jar"/>
+<entry path="D:\path\JRE-path\lib\sunrsasign.jar"/>
+<entry path="D:\path\JRE-path\lib\jsse.jar"/>
+<entry path="D:\path\JRE-path\lib\jce.jar"/>
+<entry path="D:\path\JRE-path\lib\charsets.jar"/>
+<entry path="D:\path\JRE-path\lib\jfr.jar"/>
+<entry path="D:\path\JRE-path\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="D:\path\JRE-path\lib\ext"/>
+<entry path="C:\Windows\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="D:\path\JRE-path\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

@@ -1,6 +1,6 @@
 package com.ubiloc.overlays;
 
-import org.mapsforge.core.model.GeoPoint;
+import org.mapsforge.core.GeoPoint;
 
 import android.content.Context;
 import android.graphics.Bitmap;

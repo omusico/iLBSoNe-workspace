@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.mapgenerator.MapGenerator;
-import org.mapsforge.core.model.GeoPoint;
+import org.mapsforge.core.GeoPoint;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -122,7 +122,7 @@ public class UbilocMap {
 			String tableName = "testmap2";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
-						.getRasterTableByName(tableName, tableName);
+						.getRasterTableByName(tableName);
 				mapGenerator = new GeopackageTileDownloader(rasterTable);
 				if (mapGenerator != null) {
 					mMapView.setMapGenerator(mapGenerator);

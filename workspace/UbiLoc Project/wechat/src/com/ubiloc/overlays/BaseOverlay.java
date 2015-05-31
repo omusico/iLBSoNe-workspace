@@ -27,10 +27,13 @@ import org.mapsforge.android.maps.overlay.ItemizedOverlay;
 import org.mapsforge.android.maps.overlay.Overlay;
 import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.android.maps.overlay.OverlayWay;
-import org.mapsforge.core.model.GeoPoint;
+import org.mapsforge.core.GeoPoint;
+import org.mapsforge.core.Tile;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -45,8 +48,20 @@ import android.util.Log;
 import com.donal.wechat.R;
 import com.ubiloc.map.maputils.BoundingBoxE6;
 import com.ubiloc.map.maputils.MapUtil;
+import com.ubiloc.map.maputils.MyMath;
+import com.vividsolutions.jts.android.PointTransformation;
+import com.vividsolutions.jts.android.ShapeWriter;
+import com.vividsolutions.jts.android.geom.DrawableShape;
+import com.vividsolutions.jts.geom.Geometry;
 
+import eu.geopaparazzi.library.database.GPLog;
+import eu.geopaparazzi.library.gps.GpsManager;
+import eu.geopaparazzi.library.util.Utilities;
 import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
+import eu.geopaparazzi.spatialite.database.spatial.core.databasehandlers.AbstractSpatialDatabaseHandler;
+import eu.geopaparazzi.spatialite.database.spatial.core.databasehandlers.SpatialiteDatabaseHandler;
+import eu.geopaparazzi.spatialite.database.spatial.core.geometry.GeometryIterator;
+import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialRasterTable;
 import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialVectorTable;
 
 /**
@@ -371,10 +386,239 @@ public abstract class BaseOverlay extends Overlay {
 			Projection projection, byte drawZoomLevel,
 			SpatialVectorTable spatialTable, double n, double w, double s,
 			double e) {
+		String tableName = spatialTable.getTableName();
+		// 开始画矢量
+		if (spatialTable != null) {
+			SpatialiteDatabaseHandler spatialDatabaseHandler = null;
+			try {
+				Log.i(TAG, spatialTable.getTableName() + "");
+				spatialDatabaseHandler = sdManager
+						.getVectorHandler(spatialTable);
+				if (spatialDatabaseHandler == null)
+					spatialDatabaseHandler = sdManager
+							.getVectorHandler(spatialTable);
+			} catch (jsqlite.Exception e2) {
+				e2.printStackTrace();
+			}
+			GeometryIterator currentGeometryIterator = null;
+			try {
+				currentGeometryIterator = spatialDatabaseHandler
+						.getGeometryIteratorInBoundsAndWhereWithTableName(
+								"4326", spatialTable, tableName, n, s, e, w, "");
+				Paint fill = new Paint();
+				Paint stroke = new Paint();
+				fill.setColor(Color.BLACK);
+				stroke.setColor(Color.BLUE);
+				if (spatialTable.isPolygon()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						if (geom != null) {
+							DrawableShape shape = wr.toShape(geom);
+							if (fill != null)
+								shape.fill(canvas, fill);
+							if (stroke != null)
+								shape.draw(canvas, stroke);
+							shape = null;
+						}
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+					}
+					wr = null;
+				} else if (spatialTable.isLine()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						DrawableShape shape = wr.toShape(geom);
+						if (fill != null)
+							shape.fill(canvas, fill);
+						if (stroke != null)
+							shape.draw(canvas, stroke);
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+						shape = null;
+					}
+					pointTransformer = null;
+					wr = null;
+				} else if (spatialTable.isPoint()) {
+					PointTransformation pointTransformer = new MapsforgePointTransformation(
+							projection, drawPosition, drawZoomLevel);
+					ShapeWriter wr = new ShapeWriter(pointTransformer, "POP",
+							SMALL_SEZE);
+					// float size = 14;
+					// if (drawZoomLevel > 0)
+					// size = SMALL_SEZE;
+					// if (drawZoomLevel > 6)
+					// size = NORMAL_SEZE;
+					// if (drawZoomLevel > 12)
+					// size = LARGE_SEZE;
+					// ShapeWriter wr = new
+					// ShapeWriter(pointTransformer,
+					// "POP", size);
+					wr.setRemoveDuplicatePoints(true);
+					wr.setDecimation(spatialTable.getStyle().decimationFactor);
+					while (currentGeometryIterator.hasNext()) {
+						Geometry geom = currentGeometryIterator.next();
+						DrawableShape shape = wr.toShape(geom);
+						if (fill != null)
+							shape.fill(canvas, fill);
+						if (stroke != null)
+							shape.draw(canvas, stroke);
+						if (isInterrupted() || sizeHasChanged()) {
+							// stop working
+							return;
+						}
+						geom = null;
+						shape = null;
+					}
+					pointTransformer = null;
+					wr = null;
+				}
+			} finally {
+				spatialTable = null;
+				spatialDatabaseHandler = null;
+				if (currentGeometryIterator != null) {
+					try {
+						currentGeometryIterator.close();
+					} catch (jsqlite.Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 
 	private void drawFromImage(Canvas canvas, Point drawPosition,
 			Projection projection, byte drawZoomLevel) {
+		try {
+			SpatialRasterTable rasterTable = SpatialDatabasesManager
+					.getInstance().getRasterTableByName("beijingdianzi");
+			SpatialDatabasesManager sdManager = SpatialDatabasesManager
+					.getInstance();
+			AbstractSpatialDatabaseHandler spatialDatabaseHandler = sdManager
+					.getRasterHandler(rasterTable);
+			this.zoomLevel = drawZoomLevel;
+			final int viewWidth = mapView.getWidth();
+			final int viewHeight = mapView.getHeight();
+			// ��ȡ��Ļ����tile�� x y
+			final int[] centerMapTileCoords = MapUtil
+					.getMapTileFromCoordinates(mapView.getMapPosition()
+							.getMapCenter().latitudeE6, mapView
+							.getMapPosition().getMapCenter().longitudeE6,
+							zoomLevel, null);
+
+			final Point upperLeftCornerOfCenterMapTile = getUpperLeftCornerOfCenterMapTileInScreen(
+					centerMapTileCoords, tileSize, null);
+
+			final int centerMapTileScreenLeft = upperLeftCornerOfCenterMapTile.x;
+			final int centerMapTileScreenTop = upperLeftCornerOfCenterMapTile.y;
+
+			final int centerMapTileScreenRight = centerMapTileScreenLeft
+					+ tileSize;
+			final int centerMapTileScreenBottom = centerMapTileScreenTop
+					+ tileSize;
+
+			final int additionalTilesNeededToLeftOfCenter = (int) Math
+					.ceil((float) centerMapTileScreenLeft / tileSize); // i.e.
+
+			final int additionalTilesNeededToRightOfCenter = (int) Math
+					.ceil((float) (viewWidth - centerMapTileScreenRight)
+							/ tileSize);
+			final int additionalTilesNeededToTopOfCenter = (int) Math
+					.ceil((float) centerMapTileScreenTop / tileSize); // i.e.
+
+			final int additionalTilesNeededToBottomOfCenter = (int) Math
+					.ceil((float) (viewHeight - centerMapTileScreenBottom)
+							/ tileSize);
+
+			final int mapTileUpperBound = (int) Math.pow(2, zoomLevel);
+			final int[] mapTileCoords = new int[] { centerMapTileCoords[0],
+					centerMapTileCoords[1] };
+
+			for (int y = -additionalTilesNeededToTopOfCenter; y <= additionalTilesNeededToBottomOfCenter; y++) {
+				for (int x = -additionalTilesNeededToLeftOfCenter; x <= additionalTilesNeededToRightOfCenter; x++) {
+
+					mapTileCoords[0] = MyMath.mod(centerMapTileCoords[0] + y,
+							mapTileUpperBound);
+					mapTileCoords[1] = MyMath.mod(centerMapTileCoords[1] + x,
+							mapTileUpperBound);
+
+					// ��ȡx��y��z
+					/*
+					 * �������sqltedb ��ô���� xyz����
+					 */
+					int tile_x = mapTileCoords[1];
+					int tile_y = mapTileCoords[0];
+					int tile_z = 17 - zoomLevel;
+
+					/**
+					 * ���������WMS������ôxyz����
+					 */
+
+					double[] tileBounds = Utilities.tileLatLonBounds(tile_x,
+							tile_y, zoomLevel, Tile.TILE_SIZE);
+					String tilePart = "http:xxxx/BBOX=XXX,YYY,XXX,YYY";
+					String tmpTilePart = tilePart.replaceFirst(
+							"XXX", String.valueOf(tileBounds[0])); //$NON-NLS-1$
+					tmpTilePart = tmpTilePart.replaceFirst(
+							"YYY", String.valueOf(tileBounds[1])); //$NON-NLS-1$
+					tmpTilePart = tmpTilePart.replaceFirst(
+							"XXX", String.valueOf(tileBounds[2])); //$NON-NLS-1$
+					tmpTilePart = tmpTilePart.replaceFirst(
+							"YYY", String.valueOf(tileBounds[3])); //$NON-NLS-1$
+
+					Utilities.googleTile2TmsTile(tile_x, tile_y, zoomLevel);
+
+					/**
+					 * �����mbtiles�⣬��ôxyz����
+					 */
+
+					Utilities.googleTile2TmsTile(tile_x, tile_y, zoomLevel);
+					String query = tile_z + "," + tile_x + "," + tile_y;
+					byte[] b = spatialDatabaseHandler.getRasterTile(query);
+
+					Bitmap currentMapTile = null;
+					try {
+						if (b != null)
+							currentMapTile = BitmapFactory.decodeByteArray(b,
+									0, b.length);
+					} catch (Exception e) {
+
+					} finally {
+						b = null;
+					}
+
+					if (currentMapTile != null) {
+						final int tileLeft = 0 + centerMapTileScreenLeft
+								+ (x * tileSize);
+						final int tileTop = 0 + centerMapTileScreenTop
+								+ (y * tileSize);
+						final Rect r = new Rect(tileLeft, tileTop, tileLeft
+								+ tileSize, tileTop + tileSize);
+						canvas.drawBitmap(currentMapTile, null, r,
+								this.imagePaint);
+						currentMapTile.recycle();
+					}
+				}
+			}
+		} catch (Exception e) {
+
+		}
 	}
 
 	private void drawWayPathOnCanvas(Canvas canvas, OverlayWay overlayWay) {
@@ -649,6 +893,18 @@ public abstract class BaseOverlay extends Overlay {
 
 	@SuppressWarnings("nls")
 	public void setGpsPosition(GeoPoint position, float accuracy) {
+		this.setGpsPosition(position);
+		this.setGpsAccuracy(accuracy);
+		GpsManager gpsManager = GpsManager.getInstance(context);
+		if (gpsManager.isDatabaseLogging()) {
+			currentGpsLog.add(position);
+		} else {
+			currentGpsLog.clear();
+		}
+		if (GPLog.LOG_ABSURD)
+			GPLog.addLogEntry(this, "Set gps data: " + position.getLongitude()
+					+ "/" + position.getLatitude() + "/" + accuracy);
+		overlayGps.setCircleData(position, accuracy);
 	}
 
 	public BaseOverlay setCoords(List<GeoPoint> coords) {
@@ -745,5 +1001,13 @@ public abstract class BaseOverlay extends Overlay {
 	 *            底图的绝对路径
 	 */
 	public void addBaseOverlay(String absPath) {
+		dbABSPaths.add(absPath);
+		try {
+			my_spatialTables = sdManager.getSpatialVectorTableMaps(context,
+					dbABSPaths);
+		} catch (jsqlite.Exception e3) {
+			e3.printStackTrace();
+		}
+
 	}
 }

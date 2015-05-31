@@ -4,16 +4,18 @@ import java.util.List;
 
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.mapgenerator.MapGenerator;
-import org.mapsforge.core.GeoPoint;
+import org.mapsforge.core.model.GeoPoint;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubiloc.component.ComponentUtil;
 import com.ubiloc.layer.MapLayersManager;
 import com.ubiloc.overlays.BaseOverlayItem;
 
@@ -118,11 +120,15 @@ public class UbilocMap {
 		mMapView.setClickable(true);
 		mMapView.getMapZoomControls().setShowMapZoomControls(true);
 		if (isMapDataAvailable) {
+			String path = Environment.getExternalStorageDirectory()
+					.getAbsolutePath()
+					+ ComponentUtil.MAP_PATH
+					+ "testmap2.mbtiles";
 			SpatialRasterTable rasterTable = null;
-			String tableName = "testmap2";
+			String tableName = "abc";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
-						.getRasterTableByName(tableName);
+						.getRasterTableByName(path, tableName);
 				mapGenerator = new GeopackageTileDownloader(rasterTable);
 				if (mapGenerator != null) {
 					mMapView.setMapGenerator(mapGenerator);

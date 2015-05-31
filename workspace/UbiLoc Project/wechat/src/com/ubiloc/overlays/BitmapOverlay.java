@@ -3,7 +3,7 @@ package com.ubiloc.overlays;
 import java.util.List;
 
 import org.mapsforge.android.maps.Projection;
-import org.mapsforge.core.GeoPoint;
+import org.mapsforge.core.model.GeoPoint;
 
 import android.content.Context;
 import android.graphics.Bitmap;

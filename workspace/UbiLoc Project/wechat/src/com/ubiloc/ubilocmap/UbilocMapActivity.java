@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
-import org.mapsforge.core.GeoPoint;
+import org.mapsforge.core.model.GeoPoint;
 
 import tools.SysApplication;
 import android.annotation.SuppressLint;

@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity
+END
+HistoricRecordActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/HistoricRecordActivity.java
+END
+DatabaseConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/DatabaseConstants.java
+END
+RegisterActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/RegisterActivity.java
+END
+CommSettingActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/CommSettingActivity.java
+END
+RouteManagerActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/RouteManagerActivity.java
+END
+KeywordsSearchActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/KeywordsSearchActivity.java
+END
+setting.txt
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/setting.txt
+END
+CollectContentsActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/CollectContentsActivity.java
+END
+SearchResultActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/SearchResultActivity.java
+END
+SearchActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/SearchActivity.java
+END
+LoginActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/LoginActivity.java
+END
+MapActivityConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/MapActivityConstants.java
+END
+MapActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/p-rtls/!svn/ver/2547/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/MapActivity.java
+END
+SettingActivity.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/SettingActivity.java
+END
+SplashScreen.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/p-rtls/!svn/ver/2526/01-%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E5%8C%BA/huxk/client-PDR/src/com/ubirtls/view/Activity/SplashScreen.java
+END

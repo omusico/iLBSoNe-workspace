@@ -1,0 +1,317 @@
+package com.ubirtls.view.Activity;
+
+import java.io.IOException;
+
+import ubimessage.MessageITException;
+
+import com.ubirtls.Controller;
+import com.ubirtls.PDR.PDRService;
+import com.ubirtls.PDR.SensorsSave;
+import com.ubirtls.config.Setting;
+import com.ubirtls.view.map.ItemOverlay;
+import com.ubirtls.view.map.MapView;
+import com.ubirtls.view.map.MyLocationOverlay;
+import com.ubirtls.view.map.PathOverlay;
+import com.ubirtls.view.map.ScaleBarOverlay;
+import com.ubirtls.R;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+
+/**
+ * 地图显示界面，也是主界面，在此界面上可以实现人员位置 的实时显示，导航路径的显示以及其他地图的操作，包括放大，缩小，移动等。
+ * 
+ * @author 胡旭科
+ * @version 1.0
+ */
+public class MapActivity extends Activity implements MapActivityConstants{
+	/** 用于地图显示 */
+	private MapView mapView;
+
+	/** 位置覆盖层 用于显示用户的位置 */
+	private MyLocationOverlay locationOverlay = null;
+
+	/** 路径层 用于显示用户的轨迹 */
+	private PathOverlay trackOverlay = null;
+
+	/**比例尺*/
+	private ScaleBarOverlay scaleBar = null;
+
+	/**item标示*/
+	private ItemOverlay itemOverlay = null;
+	int length = 0;
+
+	/**preference 保存数据*/
+	private SharedPreferences prefs;
+	/**广播接收者，接收PDR服务返回的航位推算结果*/
+    private PdrServiceReceiver pdrReceiver;
+    boolean started = false;
+	// 在Activity首次创建时调用
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		final RelativeLayout rl = new RelativeLayout(this);
+		/* mapview和 locationOverlay以及pathOverlay初始化 */
+		mapView = new MapView(this, null, null);
+		prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+		/*用户行走轨迹的跟踪*/
+		{
+			trackOverlay = new PathOverlay(this);
+			trackOverlay.addPoint(0.8, 8.8);
+			/*对坐标变化进行监听,当有新的位置结果返回时，trackOverlay（轨迹）添加新的轨迹点*/
+			Controller.getInstance().addLocationChangeListerner(trackOverlay);
+			/*对轨迹变化进行监听，如收到清除轨迹所有数据请求时，则清除轨迹信息*/
+			Controller.getInstance().setTrackListener(trackOverlay);
+		}
+		itemOverlay = new ItemOverlay(this, null);
+
+		/*用户位置图层*/
+		{
+			locationOverlay = new MyLocationOverlay(this);
+			/*设置MapView的locationOverlay的观察者,当有新的位置产生时，通知mapView进行位置的重绘*/
+			locationOverlay.setObserver(mapView);
+			locationOverlay.setMyLocation(0.8, 8.8);
+			Controller.getInstance().addLocationChangeListerner(locationOverlay);
+
+		}
+		/*比例尺图层*/
+		scaleBar = new ScaleBarOverlay(this);
+		/*mapview*/
+		{
+			mapView.getOverlayManager().add(locationOverlay);
+			mapView.getOverlayManager().add(itemOverlay);
+			mapView.getOverlayManager().add(trackOverlay);
+			mapView.getOverlayManager().add(scaleBar);
+			/*使用内部自带的缩放控件*/		
+			mapView.setBuiltInZoomControls(true);
+			/* 获取mapview上次地图的显示位置以及缩放级别 */
+			String region = prefs.getString(this.getResources().getString(R.string.setting_change_map_key), null);
+			Controller.getInstance().changeMap(region);
+			mapView.getController().setZoom(prefs.getInt(PREFS_ZOOM_LEVEL, 0));
+			mapView.scrollTo(prefs.getInt(PREFS_SCROLL_X, 0), prefs.getInt(PREFS_SCROLL_Y, 0));
+		}
+
+		/* 添加mapView视图 */
+		rl.addView(mapView, new RelativeLayout.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+
+		/*团队logo*/
+		final ImageView ivLogo = new ImageView(this);
+		ivLogo.setImageResource(R.drawable.logo100);
+		ivLogo.setId(6);
+		/* 布局在parent的右上角 */
+		final RelativeLayout.LayoutParams logoParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		logoParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		logoParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rl.addView(ivLogo, logoParams);
+
+
+		/* 回车位控件，跟踪用户的位置 */
+		{
+			final ImageView locationImg = new ImageView(this);
+			locationImg.setImageResource(R.drawable.previous);
+			/* 布局在parent的右侧中心 */
+			final RelativeLayout.LayoutParams LocationParams = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LocationParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			LocationParams.addRule(RelativeLayout.CENTER_VERTICAL);
+			/* 按钮监听 */
+			locationImg.setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View arg0, MotionEvent arg1) {
+					// TODO Auto-generated method stub
+					locationOverlay.enableFollow();
+					return true;
+				}
+			});
+
+			rl.addView(locationImg, LocationParams);
+		}
+
+		try{
+			IntentFilter filter;
+			filter = new IntentFilter(PDRService.HIPPO_SERVICE_IDENTIFIER);
+			this.pdrReceiver = new PdrServiceReceiver();
+			registerReceiver(pdrReceiver,filter);
+		}catch(Exception e){
+			e.getStackTrace();
+		}
+
+		this.setContentView(rl);
+	}
+/**
+ * PDR服务广播接收者，接收航位推算结果
+ * @author 胡旭科
+ *
+ */
+	public class PdrServiceReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			Bundle bundle = intent.getExtras();
+			double positionX = bundle.getDouble("positionX");
+			double positionY = bundle.getDouble("positionY");
+			Controller.getInstance().notifyLocation(positionX, positionY);
+/*			double stepLength = bundle.getDouble("stepLength");
+			double stepHeading = bundle.getDouble("stepHeading");
+			Controller.getInstance().notifyDisplacement(stepLength,stepHeading);
+*/
+		}
+		
+	}
+	// 在Activity创建后或重启后调用
+	public void onStart() {
+		super.onStart();
+
+		this.setTitle(R.string.map);
+	}
+
+	// 在Activity暂停时调用
+	protected void onPause() {
+		super.onPause();
+	}
+
+	// onStart后会调用
+	protected void onResume() {
+		//注册广播接收器
+		super.onResume();
+	}
+
+	// 在Activity 销毁时调用 进行一些程序关闭的处理 包括关闭 spotter 连接以及清除一些缓存数据
+	protected void onDestroy() {
+		super.onDestroy();		
+		/**解除向系统注册的Receiver*/
+		this.unregisterReceiver(pdrReceiver);
+		/**关闭PDR服务*/
+		Intent intent = new Intent(MapActivity.this, PDRService.class);
+		stopService(intent);
+		Log.i("服务关闭", "MapActivity");
+
+		Controller.getInstance().clearData();
+		try {
+			Controller.getInstance().logout(Setting.USERNAME);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessageITException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Controller.getInstance().closeCommunication();
+
+		/*保存地图的位置等信息*/
+		final SharedPreferences.Editor edit = prefs.edit();
+		edit.putInt(PREFS_SCROLL_X, mapView.getScrollX());
+		edit.putInt(PREFS_SCROLL_Y, mapView.getScrollY());
+		edit.putInt(PREFS_ZOOM_LEVEL, mapView.getZoomLevel());
+		edit.commit();
+
+		
+		/**记录用户的运动轨迹*/
+/*		SensorsSave.savePath(this.trackOverlay.getPath(),length, trackOverlay.getStepLength(),"path.txt");
+*/	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this).setTitle(
+				R.string.setting_delete_map_data_title).setMessage(
+						R.string.exit_message).setNegativeButton(R.string.cancel, null)
+						.setPositiveButton(R.string.OK,
+								new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								MapActivity.this.finish();
+							}
+						}).show();
+	}
+
+	// 重载函数，在点击menu按钮时调用，创建菜单
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		/*
+		 * MenuInflater inflater = getMenuInflater(); //
+		 * 设置menu界面为res/menu/menu.xml inflater.inflate(R.menu.map_menu, menu);
+		 */
+		menu.add(0, R.id.search, 0, R.string.search_main).setIcon(R.drawable.search_menu);
+		menu.add(0, R.id.setting, 1, R.string.setting).setIcon(R.drawable.setting_menu);
+		menu.add(0, R.id.routemanager, 2, R.string.route_manager).setIcon(R.drawable.menu_bus);
+
+		return true;
+	}
+
+
+	// 重载函数，响应菜单选中请求
+	public boolean onMenuItemSelected(final int featureId, final MenuItem item) {
+		// 得到当前选中的MenuItem的ID,
+		int item_id = item.getItemId();
+
+		switch (item_id) {
+		case R.id.search:
+			/*
+			 * 新建一个Intent对象 指定intent要启动的类 启动一个新的Activity
+			 */
+			Intent intentToSearch = new Intent();
+			intentToSearch.setClass(MapActivity.this, SearchActivity.class);
+			startActivity(intentToSearch);
+			break;
+		case R.id.setting:
+			/* 新建一个Intent对象 */
+			Intent intentToSetting = new Intent();
+			/* 指定intent要启动的类 */
+			intentToSetting.setClass(MapActivity.this, SettingActivity.class);
+			/* 启动一个新的Activity */
+			startActivity(intentToSetting);
+			break;
+		case R.id.routemanager:
+			/*			 新建一个Intent对象 
+			Intent intentToRoute = new Intent();
+			 指定intent要启动的类 
+			intentToRoute
+			.setClass(MapActivity.this, RouteManagerActivity.class);
+			 启动一个新的Activity 
+			startActivity(intentToRoute);
+			 */					
+			if(!started){
+				Intent intent = new Intent(MapActivity.this, PDRService.class);
+				startService(intent);  
+				
+				started = true;
+			}else{
+				/**关闭PDR服务*/
+				Intent intent = new Intent(MapActivity.this, PDRService.class);
+				stopService(intent);
+				Log.i("服务关闭", "MapActivity");
+				started = false;
+			}
+
+			 break;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onTrackballEvent(final MotionEvent event) {
+		return this.mapView.onTrackballEvent(event);
+	}
+
+}

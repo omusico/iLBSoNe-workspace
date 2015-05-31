@@ -1,0 +1,98 @@
+/**
+ * 
+ */
+package com.ubirtls.view.Activity;
+
+import com.ubirtls.R;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+/**
+ *关键字搜索界面，根据输入的关键字查询相应区域的地点
+ * 
+ * @author 胡旭科
+ * @version 1.0
+ */
+public class KeywordsSearchActivity extends Activity implements OnClickListener {
+
+	/** 关键字搜索界面，根据输入的关键字查询相应区域的地点 */
+	private Spinner areaSpinner;
+	/** 返回按钮，返回上一个界面 */
+	private Button backButton;
+	/** 编辑框，输入关键字进行搜索 */
+	private EditText searchEditText;
+	/** 点击开始进行搜索 */
+	private Button searchButton;
+
+	/* 在Activity首次创建时调用 */
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/* 自定义标题栏 */
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		this.setContentView(R.layout.zimusearch);
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+				R.layout.search_titlebar);
+		/* 初始化UI对象 */
+		areaSpinner = (Spinner) findViewById(R.id.search_zone_spinner);
+		searchEditText = (EditText) findViewById(R.id.search_edit);
+		backButton = (Button) findViewById(R.id.backbutton);
+		backButton.setOnClickListener(this);
+		searchButton = (Button) findViewById(R.id.search_button);
+		searchButton.setOnClickListener(this);
+	}
+
+	/* 在Activity创建后或重启后调用 */
+	public void onStart() {
+		super.onStart();
+	}
+
+	/* 在Activity暂停时调用 */
+	protected void onPause() {
+		super.onPause();
+	}
+
+	/* onStart后会调用 */
+	protected void onResume() {
+		super.onResume();
+	}
+
+	/* 在Activity 销毁时调用 */
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+    
+	/*在按返回键时调用*/
+	@Override
+	public void onBackPressed() {
+		/*重新创建搜索界面*/
+        Intent intent = new Intent(KeywordsSearchActivity.this, SearchActivity.class);
+        startActivity(intent);
+		super.onBackPressed();
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		// 点击查询按钮
+		if (v.getId() == searchButton.getId()) {
+			Intent intent = new Intent(KeywordsSearchActivity.this,
+					SearchResultActivity.class);
+			startActivity(intent);
+		}
+		// 标题栏上的返回按钮
+		else if (v.getId() == backButton.getId()) {
+	        Intent intent = new Intent(KeywordsSearchActivity.this, SearchActivity.class);
+	        startActivity(intent);
+			KeywordsSearchActivity.this.finish();
+		}
+	}
+}

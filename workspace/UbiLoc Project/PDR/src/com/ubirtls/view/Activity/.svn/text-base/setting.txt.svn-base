@@ -1,0 +1,82 @@
+/**
+ * 
+ */
+package com.ubirtls.view.Activity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.ubirtls.R;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+/**
+ * @author Administrator
+ * 
+ */
+public class SettingActivity extends Activity {
+	private int[] images;// 图标ID数组
+	private String[] titles;// 图标标题
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		this.setContentView(R.layout.setting_list);
+		titles = new String[] { (String) getText(R.string.setting_font),
+				(String) getText(R.string.setting_language),
+				(String) getText(R.string.setting_viewmode),
+				(String) getText(R.string.setting_showmode),
+				(String) getText(R.string.setting_speed),
+				(String) getText(R.string.setting_log),
+				(String) getText(R.string.setting_service),
+				(String) getText(R.string.setting_filter),
+				(String) getText(R.string.setting_location),
+				(String) getText(R.string.setting_about) };
+		images = new int[] { R.drawable.img1, R.drawable.img2, R.drawable.img3,
+				R.drawable.img4, R.drawable.img5, R.drawable.img6,
+				R.drawable.img1, R.drawable.img2, R.drawable.img1,
+				R.drawable.img2 };
+		ListView listView = (ListView) findViewById(R.id.setting_listview);
+		List<Map<String, Object>> contents = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < 10; i++) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("image", images[i]);
+			map.put("title", titles[i]);
+			contents.add(map);
+		}
+		SimpleAdapter adapter = new SimpleAdapter(this,
+				(List<Map<String, Object>>) contents, R.layout.listitem,
+				new String[] { "image", "title" }, new int[] {
+						R.id.setting_listitem_img, R.id.setting_listitem_text });
+		listView.setAdapter(adapter);
+	}
+
+	// 在Activity创建后或重启后调用
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	// 在Activity暂停时调用
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	// onStart后会调用
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	// 在Activity 销毁时调用
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+}

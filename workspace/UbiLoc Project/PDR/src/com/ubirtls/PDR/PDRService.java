@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -66,14 +67,43 @@ public class PDRService extends Service {
 	private double curY = 0;
 	private double extraGyroChange = 0;
 
+	// public double init_x = 0;
+	// public double init_y = 0;
+	public double cur_ori = 0;
+
+	/** 粒子滤波 初始坐标 */
+	ParticleFilter particleFilter = new ParticleFilter(0, 0);
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
+		Log.i("PDRService", "onBind");
 		return null;
 	}
 
-	/** 粒子滤波 初始坐标 */
-	ParticleFilter particleFilter = new ParticleFilter(75, 4);
+	@Override
+	public void onRebind(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onRebind(intent);
+		Log.i("PDRService", "onRebind");
+	}
+
+	@Override
+	public void onStart(Intent intent, int startId) {
+		// TODO Auto-generated method stub
+
+		Bundle data = intent.getExtras();
+		String temp1 = (String) data.get("Ori");
+		// String temp2 = (String) data.get("Y");
+		if (temp1 != null && !temp1.equals(""))
+			cur_ori = Double.parseDouble(temp1);
+		// if (temp2 != null && !temp2.equals(""))
+		// init_y = Double.parseDouble(temp2);
+		Log.i("Ori", cur_ori + "");
+		// Log.i("Y", init_y + "");
+		Log.i("PDRService", "服务启动");
+		super.onStart(intent, startId);
+	}
 
 	@Override
 	public void onCreate() {
@@ -84,7 +114,7 @@ public class PDRService extends Service {
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		mOrientation = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 		mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-		// 注册传感器监听
+		// // 注册传感器监听
 		mSensorManager.registerListener(mOnSensorEventListener, mAccelerometer,
 				SensorManager.SENSOR_DELAY_UI);
 		mSensorManager.registerListener(mOnSensorEventListener, mOrientation,
@@ -92,6 +122,7 @@ public class PDRService extends Service {
 		mSensorManager.registerListener(mOnSensorEventListener, mGyroscope,
 				SensorManager.SENSOR_DELAY_UI);
 		particleFilter.init();
+		Log.i("PDRService", "onCreate");
 	}
 
 	@Override
@@ -116,20 +147,9 @@ public class PDRService extends Service {
 		particleFilter = null;
 	}
 
-	@Override
-	public void onRebind(Intent intent) {
-		// TODO Auto-generated method stub
-		super.onRebind(intent);
-	}
-
-	@Override
-	public void onStart(Intent intent, int startId) {
-		// TODO Auto-generated method stub
-		super.onStart(intent, startId);
-		Log.i("服务启动", "PDRService");
-	}
-
 	private class OnSensorEventListener implements SensorEventListener {
+
+		private static final String TAG = "OnSensorEventListener";
 
 		@Override
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -139,7 +159,6 @@ public class PDRService extends Service {
 		@Override
 		public void onSensorChanged(SensorEvent event) {
 			// TODO Auto-generated method stub
-
 			// 加速度传感器事件
 			if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 				double[] accelerometerValues = new double[4];
@@ -204,11 +223,12 @@ public class PDRService extends Service {
 						extraGyroChange = 0;
 						gyroInit = gyroOneEnd + 1;
 						TwoDCoordinate corner = null;/*
-													 * CornerDetector.getInstance
+													 * CornerDetector.
+													 * getInstance
 													 * ().detectCorner
 													 * (gyroChange,
 													 * secondStepHeading, curX,
-													 * curY,PDRService.this);
+													 * curY,PDRService. this);
 													 * //匹配出转角后
 													 * ，将目标位置定位到该点，并重新初始粒子滤波
 													 * 
@@ -225,6 +245,7 @@ public class PDRService extends Service {
 							 * Log.i("gyroHZ", String.valueOf(gyroHZ));
 							 */double[] pre_ori = primitiveOrientationList
 									.get(oriOneStart);
+							pre_ori[0] = cur_ori;
 							headingFilter = new HeadingKalmanFilter(pre_ori[0]);
 						}
 

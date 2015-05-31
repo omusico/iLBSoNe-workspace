@@ -1,12 +1,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="定位坐标" />
-    
+        android:layout_centerHorizontal="true"
+        android:text="定位"
+        android:textSize="50sp"
+        android:textStyle="bold" 
+        />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="Start" />
+
+    <EditText
+        android:id="@+id/edit_tip1"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_above="@+id/btnStart"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="48dp"
+        android:ems="10"
+        android:hint="请输入您与正北方向的偏角~"
+        android:imeOptions="actionDone"
+        android:inputType="date"
+        android:numeric="decimal" >
+
+        <requestFocus />
+    </EditText>
+
 </RelativeLayout>

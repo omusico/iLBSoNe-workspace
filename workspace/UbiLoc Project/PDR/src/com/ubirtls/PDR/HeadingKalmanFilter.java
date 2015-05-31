@@ -20,7 +20,9 @@ public class HeadingKalmanFilter {
 	private double R = 9.0657;
 	private double pre_p = 0.7;
 	private double cur_p;
+
 	private double pre_ori = 90; // 初始朝向
+
 	private double cur_ori;
 	private double kg = 0;
 	/** 当前罗盘数据对应的陀螺仪数据起点与终点 */

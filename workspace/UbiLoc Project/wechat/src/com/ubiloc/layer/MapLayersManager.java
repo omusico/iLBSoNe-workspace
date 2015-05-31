@@ -50,6 +50,7 @@ public class MapLayersManager {
 				+ "testmap2.mbtiles";
 		File mapsDir = new File(path);
 		SpatialDatabasesManager.getInstance().init(null, mapsDir);
+
 	}
 
 	// private DataBaseBean getDataBaseBean6() {

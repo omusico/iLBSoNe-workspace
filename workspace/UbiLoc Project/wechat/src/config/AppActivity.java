@@ -1,9 +1,12 @@
 package config;
 
+import java.io.IOException;
+
 import bean.UserEntity;
 import bean.UserInfo;
 
 import com.donal.wechat.R;
+import com.ubiloc.asynctask.ReceiveGeoMsgTask;
 
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -137,6 +140,12 @@ public class AppActivity extends BaseActivity implements AppActivitySupport{
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				SysApplication.getInstance().exit();
+				try {
+					ReceiveGeoMsgTask.rcpt.disconnect();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				appContext.exit();
 			}
 		})

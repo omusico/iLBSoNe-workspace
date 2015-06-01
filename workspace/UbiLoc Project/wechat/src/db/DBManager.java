@@ -37,6 +37,11 @@ public class DBManager {
 		dBManager.databaseName = databaseName;
 		return dBManager;
 	}
+	
+	public static DBManager getInstance(String databaseName){
+		dBManager.databaseName=databaseName;
+		return dBManager;
+	}
 
 	/**
 	 * 关闭数据库 注意:当事务成功或者一次性操作完毕时候再关闭

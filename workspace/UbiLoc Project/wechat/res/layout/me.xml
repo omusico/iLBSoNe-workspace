@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:orientation="vertical" >
     <RelativeLayout 
-        android:layout_height="90dp"
+        android:layout_height="44dp"
         android:layout_width="match_parent"
         android:background="@color/white"
         >
@@ -45,30 +45,14 @@
             android:visibility="invisible"
             android:background="@drawable/round_1"/>
         
+       
         <View 
-            android:id="@+id/viewbar"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e4e4e4"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@+id/titleBarView"
-        />
-        <Button android:id="@+id/geomsgbtn"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/viewbar"
-            android:layout_marginTop="4dp"
-            android:text="服务消息"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            />
-        <!-- <View 
             android:id="@+id/viewbartwo"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e4e4e4"
         android:layout_alignParentBottom="true"
-        /> -->
+        />
     </RelativeLayout>
      <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/xrefresh"

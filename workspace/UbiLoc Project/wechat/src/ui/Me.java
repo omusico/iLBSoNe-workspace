@@ -78,7 +78,7 @@ public class Me extends AppActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.wechat);
+		setContentView(R.layout.me);
 		initUI();
 	}
 	

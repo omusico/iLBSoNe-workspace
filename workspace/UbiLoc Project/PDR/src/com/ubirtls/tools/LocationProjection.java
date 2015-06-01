@@ -8,7 +8,6 @@ public class LocationProjection {
 	private double a = 0;
 	private static double r = 0;
 	private static final double PI = 3.1415926;
-	public static final int b = 0;
 
 	private LocationProjection() {
 	}
@@ -17,9 +16,9 @@ public class LocationProjection {
 	 * 经纬度
 	 * 
 	 * @param pre_B
-	 *            初始经度
-	 * @param pre_L
 	 *            初始纬度
+	 * @param pre_L
+	 *            初始经度
 	 * @param positionx
 	 *            相对于X坐标
 	 * @param positiony

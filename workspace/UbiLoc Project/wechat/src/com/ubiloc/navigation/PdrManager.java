@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +41,11 @@ public class PdrManager {
 	 * 本地化部分数据
 	 */
 	private SharedPreferences mSharedPreferences;
+
+	/** pre_B初始纬度，pre_L初始经度，Angle与正北的偏角 */
+	double pre_B = 0;
+	double per_L = 0;
+	double Angle = 90;
 
 	private PdrManager() {
 		if (mContext != null) {
@@ -214,9 +220,17 @@ public class PdrManager {
 			Bundle bundle = intent.getExtras();
 			double positionX = bundle.getDouble("positionX");
 			double positionY = bundle.getDouble("positionY");
-			LocationProjection.Local2WGS84(0, 0, 0, 0, 0);
+			double[] temp = LocationProjection.Local2WGS84(pre_B, per_L,
+					positionX, positionY, Angle);
+
+			Log.i("相对于（0，0）的x坐标：", String.valueOf(positionX));
+			Log.i("相对于（0，0）的y坐标：", String.valueOf(positionY));
+
+			Log.i("现在的经度：", String.valueOf(temp[0]));
+			Log.i("现在的纬度：", String.valueOf(temp[1]));
+
 			if (mOnNavigationListener != null) {
-				mOnNavigationListener.OnPositionChanged(positionX, positionY);
+				mOnNavigationListener.OnPositionChanged(temp[0], temp[1]);
 			}
 		}
 	}

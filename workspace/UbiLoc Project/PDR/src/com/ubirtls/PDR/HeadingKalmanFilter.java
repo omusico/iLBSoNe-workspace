@@ -21,7 +21,7 @@ public class HeadingKalmanFilter {
 	private double pre_p = 0.7;
 	private double cur_p;
 
-	private double pre_ori = 90; // 初始朝向
+	private double pre_ori = 0; // 初始朝向
 
 	private double cur_ori;
 	private double kg = 0;

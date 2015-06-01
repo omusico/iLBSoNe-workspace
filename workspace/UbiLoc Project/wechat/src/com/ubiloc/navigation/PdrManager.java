@@ -108,7 +108,7 @@ public class PdrManager {
 									// 获取初始经度、纬度和正北偏角。
 									pre_B = lat;
 									per_L = lon;
-									// Angle = ori;
+									Angle = ori;
 
 									Intent intent = new Intent(mContext,
 											PDRService.class);

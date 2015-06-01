@@ -37,7 +37,7 @@ public class StepDetector {
 	private double cofThreshold = 0.7;
 	/***/
 	private boolean boolLastMatch = false;
-	private double K = 0.56; // 步长参数
+	private double K = 0.36; // 步长参数
 
 	/*
 	 * private double magnitudeAcc = 0;

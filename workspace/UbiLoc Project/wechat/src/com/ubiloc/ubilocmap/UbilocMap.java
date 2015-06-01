@@ -123,9 +123,9 @@ public class UbilocMap {
 			String path = Environment.getExternalStorageDirectory()
 					.getAbsolutePath()
 					+ ComponentUtil.MAP_PATH
-					+ "testmap2.mbtiles";
+					+ "floor_4_20150531.mbtiles";
 			SpatialRasterTable rasterTable = null;
-			String tableName = "abc";
+			String tableName = "iMB";
 			try {
 				rasterTable = SpatialDatabasesManager.getInstance()
 						.getRasterTableByName(path, tableName);
@@ -134,9 +134,9 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(10);
+					mMapView.getController().setZoom(19);
 					mMapView.getController().setCenter(
-							new GeoPoint(0.2650, 109.905));
+							new GeoPoint(-0.0005, 109.5138));
 
 				} else {
 				}

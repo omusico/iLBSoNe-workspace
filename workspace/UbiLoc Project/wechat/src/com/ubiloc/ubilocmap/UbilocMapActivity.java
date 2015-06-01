@@ -216,13 +216,11 @@ public class UbilocMapActivity extends MapActivity {
 				// 画点,使用测试数据
 				PointOverlay overlay = new PointOverlay();
 				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(0.2650, 109.905));
+				coords.add(new GeoPoint(-0.0005, 109.5138));
 				overlay.setCoords(coords);
 				UbilocMap.getInstance().addOverlay(overlay);
 				UbilocMap.getInstance().setMapCenter(
-						new GeoPoint(0.2650, 109.905));
-				Toast.makeText(UbilocMapActivity.this, "测试", Toast.LENGTH_LONG)
-						.show();
+						new GeoPoint(-0.0005, 109.5138));
 			}
 		});
 		verticalMenu.addMenuItem(item5);

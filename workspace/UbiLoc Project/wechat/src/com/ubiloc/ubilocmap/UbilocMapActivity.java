@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.donal.wechat.R;
 import com.ubiloc.navigation.OnNavigationListener;
@@ -225,6 +224,8 @@ public class UbilocMapActivity extends MapActivity {
 		});
 		verticalMenu.addMenuItem(item5);
 
+		final List<GeoPoint> coords = new ArrayList<GeoPoint>();
+
 		View item6 = inflater.inflate(R.layout.menu_item, null);
 		ImageView item_img6 = (ImageView) item6
 				.findViewById(R.id.menu_item_img);
@@ -240,9 +241,15 @@ public class UbilocMapActivity extends MapActivity {
 
 							@Override
 							public void OnPositionChanged(double lat, double lon) {
-								Toast.makeText(UbilocMapActivity.this,
-										lat + "---" + lon, Toast.LENGTH_SHORT)
-										.show();
+								coords.add(new GeoPoint(lat, lon));
+
+								// 清除所有图层
+								UbilocMap.getInstance().removeAllOverlays();
+								LineOverlay overlay = new LineOverlay();
+								overlay.setCoords(coords);
+								UbilocMap.getInstance().addOverlay(overlay);
+								UbilocMap.getInstance().setMapCenter(
+										new GeoPoint(lat, lon));
 							}
 						});
 				PdrManager.getInstance().startPDR();

@@ -136,7 +136,7 @@ public class UbilocMap {
 					int minLevel = mapGenerator.getStartZoomLevel();
 					mMapView.getController().setZoom(19);
 					mMapView.getController().setCenter(
-							new GeoPoint(-0.0005, 109.5138));
+							new GeoPoint(-0.000487, 109.513775));
 
 				} else {
 				}

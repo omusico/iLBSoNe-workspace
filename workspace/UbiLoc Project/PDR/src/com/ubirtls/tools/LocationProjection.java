@@ -7,7 +7,7 @@ public class LocationProjection {
 	private static double cur_L = 0;
 	private double a = 0;
 	private static double r = 0;
-	private static final double PI = 3.1415926;
+	private static final double PI = 3.14159265358979;
 
 	private LocationProjection() {
 	}
@@ -32,12 +32,16 @@ public class LocationProjection {
 
 		r = Math.pow((positionx * positionx + positiony * positiony), 2);
 
-		cur_L = per_L + (r * Math.sin(a * PI / 180))
-				/ (111000 * Math.cos(pre_B * PI / 180));
-		cur_B = pre_B + (r * Math.cos(a * PI / 180)) / 111000;
-		double[] temp = new double[2];
+		a = Math.atan(positionx / positiony);
+
+		cur_L = pre_L + (r * Math.sin(a))
+				/ ((PI * 12630824 * 1 / 360) * Math.cos(pre_B * PI / 180));
+		cur_B = pre_B + (r * Math.cos(a)) / (PI * 12630824 * 1 / 360);
+
+		double[] temp = new double[3];
 		temp[0] = cur_L;
 		temp[1] = cur_B;
+		temp[2] = a;
 		return temp;
 	}
 }

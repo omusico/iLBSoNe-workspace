@@ -45,7 +45,8 @@ public class PdrManager {
 	/** pre_B初始纬度，pre_L初始经度，Angle与正北的偏角 */
 	double pre_B = 0;
 	double per_L = 0;
-	double Angle = 90;
+	double Angle = 0;
+	double Angle_a = 0;
 
 	private PdrManager() {
 		if (mContext != null) {
@@ -104,10 +105,15 @@ public class PdrManager {
 									saveOriginalDataBySP(new double[] { lon,
 											lat, ori });
 
+									// 获取初始经度、纬度和正北偏角。
+									pre_B = lat;
+									per_L = lon;
+									// Angle = ori;
+
 									Intent intent = new Intent(mContext,
 											PDRService.class);
 									Bundle data = new Bundle();
-									data.putCharSequence("Ori", 90 + "");
+									data.putCharSequence("Ori", Angle + "");
 									// data.putCharSequence("Y", y + "");
 									intent.putExtras(data);
 									mContext.startService(intent);
@@ -221,13 +227,14 @@ public class PdrManager {
 			double positionX = bundle.getDouble("positionX");
 			double positionY = bundle.getDouble("positionY");
 			double[] temp = LocationProjection.Local2WGS84(pre_B, per_L,
-					positionX, positionY, Angle);
+					positionX, positionY, Angle_a);
 
 			Log.i("相对于（0，0）的x坐标：", String.valueOf(positionX));
 			Log.i("相对于（0，0）的y坐标：", String.valueOf(positionY));
 
 			Log.i("现在的经度：", String.valueOf(temp[0]));
 			Log.i("现在的纬度：", String.valueOf(temp[1]));
+			Log.i("正北偏角：", String.valueOf(temp[2]));
 
 			if (mOnNavigationListener != null) {
 				mOnNavigationListener.OnPositionChanged(temp[0], temp[1]);

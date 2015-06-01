@@ -1,11 +1,19 @@
 package com.ubiloc.navigation;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
+import com.donal.wechat.R;
 import com.ubirtls.PDR.PDRService;
 import com.ubirtls.tools.LocationProjection;
 
@@ -24,8 +32,20 @@ public class PdrManager {
 	private OnNavigationListener mOnNavigationListener;
 	/** 广播接收者，接收PDR服务返回的航位推算结果 */
 	private PdrServiceReceiver pdrReceiver;
+	public static final String SP_KEY = "shared_preference_key";
+	public static final String LON_KEY = "lon";
+	public static final String LAT_KEY = "lat";
+	public static final String ORI_KEY = "ori";
+	/**
+	 * 本地化部分数据
+	 */
+	private SharedPreferences mSharedPreferences;
 
 	private PdrManager() {
+		if (mContext != null) {
+			mSharedPreferences = mContext.getSharedPreferences(SP_KEY,
+					Activity.MODE_PRIVATE);
+		}
 	}
 
 	public static void init(Context context) {
@@ -43,20 +63,119 @@ public class PdrManager {
 	 */
 	public void startPDR() {
 		if (mContext != null) {
-			Intent intent = new Intent(mContext, PDRService.class);
-			Bundle data = new Bundle();
-			data.putCharSequence("Ori", 90 + "");
-			// data.putCharSequence("Y", y + "");
-			intent.putExtras(data);
-			mContext.startService(intent);
+			double[] originalData = getOriginalDataBySP();
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			builder.setTitle(R.string.input_pdr_origin_position);
+			LayoutInflater inlfater = LayoutInflater.from(mContext);
+			View dialog_content = inlfater.inflate(
+					R.layout.input_pdr_origin_data, null);
+			final EditText input_lon = (EditText) dialog_content
+					.findViewById(R.id.input_lon);
+			final EditText input_lat = (EditText) dialog_content
+					.findViewById(R.id.input_lat);
+			final EditText input_ori = (EditText) dialog_content
+					.findViewById(R.id.input_ori);
+
+			input_lon.setText(originalData[0] + "");
+			input_lat.setText(originalData[1] + "");
+			input_ori.setText(originalData[2] + "");
+			builder.setView(dialog_content);
+			builder.setPositiveButton(R.string.ok,
+					new AlertDialog.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							String str_lon = input_lon.getText().toString();
+							String str_lat = input_lat.getText().toString();
+							String str_ori = input_ori.getText().toString();
+							if (str_lon != null && !str_lon.equals("")
+									&& str_lat != null && !str_lat.equals("")
+									&& str_ori != null && !str_ori.equals("")) {
+								try {
+
+									double lon = Double.parseDouble(str_lon);
+									double lat = Double.parseDouble(str_lat);
+									double ori = Double.parseDouble(str_ori);
+									saveOriginalDataBySP(new double[] { lon,
+											lat, ori });
+
+									Intent intent = new Intent(mContext,
+											PDRService.class);
+									Bundle data = new Bundle();
+									data.putCharSequence("Ori", 90 + "");
+									// data.putCharSequence("Y", y + "");
+									intent.putExtras(data);
+									mContext.startService(intent);
+									try {
+										IntentFilter filter;
+										filter = new IntentFilter(
+												PDRService.HIPPO_SERVICE_IDENTIFIER);
+										pdrReceiver = new PdrServiceReceiver();
+										mContext.registerReceiver(pdrReceiver,
+												filter);
+									} catch (Exception e) {
+										e.getStackTrace();
+									}
+
+								} catch (Exception e) {
+
+								}
+							}
+							dialog.dismiss();
+						}
+
+					});
+
+			builder.setNegativeButton(R.string.cancle,
+					new AlertDialog.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int arg1) {
+							dialog.dismiss();
+						}
+
+					});
+
+			builder.create().show();
+
+		}
+	}
+
+	/**
+	 * 通过SharedPreferences获取上一次的lon.lat,ori
+	 * 
+	 * @return
+	 */
+	private double[] getOriginalDataBySP() {
+		double[] originalData = new double[3];
+		String str_lon = mSharedPreferences.getString(LON_KEY, "");
+		String str_lat = mSharedPreferences.getString(LAT_KEY, "");
+		String str_ori = mSharedPreferences.getString(ORI_KEY, "");
+		if (str_lon != null && !str_lon.equals("") && str_lat != null
+				&& !str_lat.equals("") && str_ori != null
+				&& !str_ori.equals("")) {
 			try {
-				IntentFilter filter;
-				filter = new IntentFilter(PDRService.HIPPO_SERVICE_IDENTIFIER);
-				this.pdrReceiver = new PdrServiceReceiver();
-				mContext.registerReceiver(pdrReceiver, filter);
+
+				originalData[0] = Double.parseDouble(str_lon);
+				originalData[1] = Double.parseDouble(str_lat);
+				originalData[2] = Double.parseDouble(str_ori);
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
+		}
+		return originalData;
+	}
+
+	/**
+	 * 通过SharedPreferences保存lon,lat,ori
+	 * 
+	 * @param originalData
+	 */
+	private void saveOriginalDataBySP(double[] originalData) {
+		if (mSharedPreferences != null) {
+			SharedPreferences.Editor editor = mSharedPreferences.edit();
+			editor.putString(LON_KEY, originalData[0] + "");
+			editor.putString(LAT_KEY, originalData[1] + "");
+			editor.putString(ORI_KEY, originalData[2] + "");
+			editor.commit();
 		}
 	}
 

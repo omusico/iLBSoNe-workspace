@@ -235,6 +235,7 @@ public class UbilocMapActivity extends MapActivity {
 
 			@Override
 			public void onClick(View view) {// 测试pdr方法
+
 				PdrManager.init(view.getContext());
 				PdrManager.getInstance().setOnNavigationListener(
 						new OnNavigationListener() {

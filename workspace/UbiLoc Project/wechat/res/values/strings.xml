@@ -251,6 +251,10 @@
     <!--========================================================================================================== -->
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
     <string name="map_level_beyond_constraints">超出可显示的级别</string>
+    <string name="input_pdr_origin_position">输入PDR方法的初始位置</string>
+    <string name="pdr_origin_lon">初始经度</string>
+    <string name="pdr_origin_lat">初始纬度</string>
+    <string name="pdr_origin_ori">初始朝向</string>
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
     <!-- ========================================================================================================= -->
 

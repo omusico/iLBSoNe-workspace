@@ -2,6 +2,9 @@ package com.ubiloc.ubilocmap;
 
 import im.WeChat;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -243,7 +247,6 @@ public class UbilocMapActivity extends MapActivity {
 							public void OnPositionChanged(double lat, double lon) {
 								try {
 									coords.add(new GeoPoint(lon, lat));
-
 									// 清除所有图层
 									UbilocMap.getInstance().removeAllOverlays();
 									LineOverlay overlay = new LineOverlay();
@@ -260,6 +263,34 @@ public class UbilocMapActivity extends MapActivity {
 			}
 		});
 		verticalMenu.addMenuItem(item6);
+
+		View item7 = inflater.inflate(R.layout.menu_item, null);
+		ImageView item_img7 = (ImageView) item7
+				.findViewById(R.id.menu_item_img);
+		item_img7.setBackgroundResource(R.drawable.draw_save);
+		item7.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				// 保存文件
+				String path = Environment.getExternalStorageDirectory()
+						.getAbsolutePath() + "/ubiloc/wgs84.txt";
+				File file = new File(path);
+				try {
+					BufferedWriter writer = new BufferedWriter(new FileWriter(
+							file));
+					for (GeoPoint coord : coords) {
+						writer.write(coord.getLongitude() + " "
+								+ coord.getLatitude() + "\n");
+					}
+					writer.close();
+
+				} catch (Exception e) {
+
+				}
+			}
+		});
+		verticalMenu.addMenuItem(item7);
 	}
 
 	@Override

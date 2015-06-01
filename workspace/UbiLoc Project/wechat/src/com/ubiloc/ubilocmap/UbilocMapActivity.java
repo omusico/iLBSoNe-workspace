@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubiloc.navigation.OnNavigationListener;
+import com.ubiloc.navigation.PdrManager;
 import com.ubiloc.overlays.BitmapOverlay;
 import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.overlays.LineOverlay;
@@ -225,26 +227,35 @@ public class UbilocMapActivity extends MapActivity {
 		});
 		verticalMenu.addMenuItem(item5);
 
-		// View item6 = inflater.inflate(R.layout.menu_item, null);
-		// ImageView item_img6 = (ImageView) item5
-		// .findViewById(R.id.menu_item_img);
-		// item_img6.setBackgroundResource(R.drawable.draw_test);
-		// item6.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // GeoPoint center = new GeoPoint(0.0003447222, 0.000308888);
-		// GeoPoint center = new GeoPoint(0.2429, 109.905);
-		// // 设置地图中心点
-		// UbilocMap.getInstance().setMapCenter(center);
-		// }
-		// });
-		// verticalMenu.addMenuItem(item6);
+		View item6 = inflater.inflate(R.layout.menu_item, null);
+		ImageView item_img6 = (ImageView) item6
+				.findViewById(R.id.menu_item_img);
+		item_img6.setBackgroundResource(R.drawable.draw_navigation);
+		item6.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {// 测试pdr方法
+				PdrManager.init(view.getContext());
+				PdrManager.getInstance().setOnNavigationListener(
+						new OnNavigationListener() {
+
+							@Override
+							public void OnPositionChanged(double lat, double lon) {
+								Toast.makeText(UbilocMapActivity.this,
+										lat + "---" + lon, Toast.LENGTH_SHORT)
+										.show();
+							}
+						});
+				PdrManager.getInstance().startPDR();
+			}
+		});
+		verticalMenu.addMenuItem(item6);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		PdrManager.getInstance().stopPDR();
 	}
 
 	@Override

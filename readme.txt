@@ -18,3 +18,7 @@ UbilocMap需要依赖程序geopaparazzilibrary、geopaparazzimapsforge、geopaparazzispa
 %===========================================================
 cheng wen 测试....00
 最后一次用命令行测试
+%===========================================================
+说明，所有的库程序均不可单独使用v4的包，否则会导致包重复，统一导入外部的包，包的存放路径为
+iLBSoNe workspace\workspace\UbiLoc Project\geopaparazzi\android-support-v4.jar
+不可将该v4的包放在libs路径下，谢谢合作！！！

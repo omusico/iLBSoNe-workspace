@@ -34,9 +34,12 @@ public class LocationProjection {
 
 		a = Math.atan(positionx / positiony);
 
-		cur_L = pre_L + (r * Math.sin(a))
-				/ ((PI * 12630824 * 1 / 360) * Math.cos(pre_B * PI / 180));
-		cur_B = pre_B + (r * Math.cos(a)) / (PI * 12630824 * 1 / 360);
+		// cur_L = pre_L + (r * Math.sin(a))
+		// / ((PI * 12630824 * 1 / 360) * Math.cos(pre_B * PI / 180));
+		// cur_B = pre_B + (r * Math.cos(a)) / (PI * 12630824 * 1 / 360);
+
+		cur_L = pre_L + (r * Math.sin(a)) * (0.000357 / 39.800);
+		cur_B = pre_B + (r * Math.cos(a)) * (0.000468 / 41.800);
 
 		double[] temp = new double[3];
 		temp[0] = cur_L;

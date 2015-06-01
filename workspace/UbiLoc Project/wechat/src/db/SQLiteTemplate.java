@@ -247,6 +247,7 @@ public class SQLiteTemplate {
 			String[] whereArgs) {
 		try {
 			dataBase = dBManager.openDatabase();
+			//添加if判断——wr
 			if(whereClause.contains("?"))
 				{
 				return dataBase.update(table, values, whereClause, whereArgs);

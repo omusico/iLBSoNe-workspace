@@ -45,8 +45,8 @@ import config.ApiClent.ClientCallback;
  */
 public class Login extends AppActivity{
 	
-	private ProgressDialog loadingPd;
-	private InputMethodManager imm;
+	private ProgressDialog loadingPd;//进度dialog
+	private InputMethodManager imm;//输入法管理器
 	private EditText accountET;
 	private EditText passwordET;
 	

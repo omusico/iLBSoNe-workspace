@@ -4,6 +4,7 @@ import im.model.HistoryChatBean;
 import im.model.IMMessage;
 import im.model.Notice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,14 +19,11 @@ import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smackx.OfflineMessageManager;
 
 import tools.Logger;
+import ubimessage.MessageITException;
+import ubimessage.client.MOMClient;
+import ui.GeoMsgListActivity;
 import ui.adapter.WeChatAdapter;
-import ui.view.SlideDrawerView;
-
-import com.donal.wechat.R;
-
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,10 +38,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.donal.wechat.R;
+import com.ubiloc.asynctask.ReceiveGeoMsgTask;
+import com.ubiloc.asynctask.SendCoordinateTask;
+
 import config.CommonValue;
 import config.MessageManager;
 import config.WCApplication;
@@ -55,7 +59,7 @@ import config.XmppConnectionManager;
  * @author donal
  *
  */
-public class WeChat extends AWechatActivity implements OnScrollListener, OnRefreshListener{
+public class WeChat extends AWechatActivity implements OnScrollListener, OnRefreshListener,OnClickListener{
 	
 	private int lvDataState;
 	private int currentPage;
@@ -65,6 +69,7 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 	private TextView titleBarView;
 	private ImageView indicatorImageView;
 	private Animation indicatorAnimation;
+	private Button geoMsgBtn;
 	
 	private List<HistoryChatBean> inviteNotices;
 	private WeChatAdapter noticeAdapter;
@@ -79,6 +84,11 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 		if (!connection.isConnected()) {
 			connect2xmpp();
 		}
+		
+		
+       //通过异步任务建立对消息中间件消息的监听
+		new ReceiveGeoMsgTask().execute();
+		
 	}
 	
 	@Override
@@ -108,7 +118,8 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 		        return (float)Math.floor(input*frameCount)/frameCount;
 		    }
 		});
-		
+		geoMsgBtn=(Button) findViewById(R.id.geomsgbtn);
+		geoMsgBtn.setOnClickListener(this);
 		xlistView = (ListView)findViewById(R.id.xlistview);
 		xlistView.setOnScrollListener(this);
         inviteNotices = new ArrayList<HistoryChatBean>();
@@ -395,6 +406,7 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 		});
 	}
 
+	
 	@Override
 	protected void msgSend(String to) {
 		sortChat(to);
@@ -419,5 +431,19 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.geomsgbtn:
+			Intent intent=new Intent(WeChat.this,GeoMsgListActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
 	}
 }

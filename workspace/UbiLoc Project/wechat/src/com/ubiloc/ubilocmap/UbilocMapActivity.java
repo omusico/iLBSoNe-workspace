@@ -241,15 +241,19 @@ public class UbilocMapActivity extends MapActivity {
 
 							@Override
 							public void OnPositionChanged(double lat, double lon) {
-								coords.add(new GeoPoint(lat, lon));
+								try {
+									coords.add(new GeoPoint(lon, lat));
 
-								// 清除所有图层
-								UbilocMap.getInstance().removeAllOverlays();
-								LineOverlay overlay = new LineOverlay();
-								overlay.setCoords(coords);
-								UbilocMap.getInstance().addOverlay(overlay);
-								UbilocMap.getInstance().setMapCenter(
-										new GeoPoint(lat, lon));
+									// 清除所有图层
+									UbilocMap.getInstance().removeAllOverlays();
+									LineOverlay overlay = new LineOverlay();
+									overlay.setCoords(coords);
+									UbilocMap.getInstance().addOverlay(overlay);
+									UbilocMap.getInstance().setMapCenter(
+											new GeoPoint(lon, lat));
+								} catch (Exception e) {
+
+								}
 							}
 						});
 				PdrManager.getInstance().startPDR();

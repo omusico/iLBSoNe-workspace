@@ -196,6 +196,9 @@ public class UbilocMap {
 	public UbilocMap removeAllOverlays() {
 		overlays.removeAllOverlayItems();
 		overlays.requestRedraw();
+		mMapView.getOverlays().clear();
+		overlays = new ArrayOverlay(context, mMapView);
+		mMapView.getOverlays().add(overlays);
 		return this;
 	}
 

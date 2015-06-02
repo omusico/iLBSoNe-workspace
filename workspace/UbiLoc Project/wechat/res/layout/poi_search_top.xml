@@ -58,8 +58,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/search_button_bg"
             android:padding="5dp"
-            android:textColor="#999999"
-            android:text="搜索" />
+            android:textColor="#ffffff"
+            android:singleLine="true"
+            android:text="@string/search" />
     </RelativeLayout>
 
 </LinearLayout>

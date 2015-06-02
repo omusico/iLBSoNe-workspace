@@ -19,12 +19,26 @@
 
             <TextView
                 android:id="@+id/poi_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="8"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="1.消防栓-1"
                 android:textColor="#333333"
                 android:textSize="17sp" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/draw_bitmap_fire_hydrant" />
+            </RelativeLayout>
         </LinearLayout>
 
         <ImageView
@@ -44,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="4楼"
                 android:textColor="#333333" />
 
@@ -51,10 +66,29 @@
                 android:id="@+id/poi_detial"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="6"
                 android:padding="5dp"
+                android:singleLine="true"
                 android:text="这就是一个消防栓罢了，不要那么认真"
                 android:textColor="#333333" />
+
+            <RelativeLayout
+                android:id="@+id/search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:padding="2dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location_button_bg"
+                    android:padding="2dp"
+                    android:singleLine="true"
+                    android:text="定位"
+                    android:textColor="#333333" />
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

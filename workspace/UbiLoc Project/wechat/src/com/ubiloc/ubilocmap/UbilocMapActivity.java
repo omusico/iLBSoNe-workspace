@@ -22,10 +22,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,6 +57,7 @@ public class UbilocMapActivity extends MapActivity {
 	private Thread myThread;
 	private VerticalMenu verticalMenu;
 	private EditText search_input;
+	private View result_to_list;
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -301,16 +300,27 @@ public class UbilocMapActivity extends MapActivity {
 		verticalMenu.addMenuItem(item7);
 
 		search_input = (EditText) findViewById(R.id.search_input);
-		search_input.setOnTouchListener(new OnTouchListener() {
+		// search_input.setOnTouchListener(new OnTouchListener() {
+		//
+		// @SuppressLint("ClickableViewAccessibility")
+		// @Override
+		// public boolean onTouch(View view, MotionEvent event) {
+		// if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		// Intent poi_intent = new Intent(view.getContext(),
+		// POISearchActivity.class);
+		// view.getContext().startActivity(poi_intent);
+		// }
+		// return false;
+		// }
+		// });
+		result_to_list = findViewById(R.id.result_to_list);
+		result_to_list.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onTouch(View view, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					Intent poi_intent = new Intent(view.getContext(),
-							POISearchActivity.class);
-					view.getContext().startActivity(poi_intent);
-				}
-				return false;
+			public void onClick(View view) {
+				Intent poi_intent = new Intent(view.getContext(),
+						POISearchActivity.class);
+				view.getContext().startActivity(poi_intent);
 			}
 		});
 	}

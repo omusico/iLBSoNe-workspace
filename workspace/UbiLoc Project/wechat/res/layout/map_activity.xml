@@ -6,21 +6,8 @@
     android:background="@drawable/my_info_background"
     android:orientation="vertical" >
 
-    <LinearLayout
-        style="@style/my_info_item_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/item_background_gray"
-            android:text="@string/main_map"
-            android:textColor="@color/SlateGray"
-            android:textSize="20sp" />
-    </LinearLayout>
+    <include layout="@layout/map_top" />
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -56,7 +43,7 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content" />
 
-<!--         <include layout="@layout/mapactivity_right" /> -->
+        <!-- <include layout="@layout/mapactivity_right" /> -->
 
         <com.verticalmenu.VerticalMenu
             android:id="@+id/vertical_menu"

@@ -20,7 +20,7 @@ public class BitmapTools {
 	public static Bitmap getBitmapById(Context context, int rId) {
 		InputStream is = context.getResources().openRawResource(rId);
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-		opts.inSampleSize = 2;
+		opts.inSampleSize = 1;
 		Bitmap bitmap = BitmapFactory.decodeStream(is, null, opts);
 		return bitmap;
 	}

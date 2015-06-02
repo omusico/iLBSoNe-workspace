@@ -128,4 +128,7 @@
     <color name="choose_eara_item_press_color">#f4f4f4</color>
     <color name="no_color">#00000000</color>
     <color name="DimGray">#696969</color>
+    <color name="DodgerBlue ">#551E90FF</color>
+    <color name="DarkTurquoise">#5500CED1</color>
+    
 </resources>

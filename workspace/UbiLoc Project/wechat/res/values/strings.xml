@@ -255,6 +255,9 @@
     <string name="pdr_origin_lon">初始经度</string>
     <string name="pdr_origin_lat">初始纬度</string>
     <string name="pdr_origin_ori">初始朝向</string>
+    <string name="hint_search_input">输入查询关键字</string>
+    <string name="list">列表</string>
+    <string name="map">地图</string>
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
     <!-- ========================================================================================================= -->
 

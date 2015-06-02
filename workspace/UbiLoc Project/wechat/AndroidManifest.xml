@@ -90,7 +90,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
         <activity
@@ -131,7 +131,7 @@
             android:name="com.ubiloc.ubilocmap.UbilocMapActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
-             <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -162,7 +162,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing" >
         </activity>
-
+        <activity
+            android:name="com.ubiloc.search.POISearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
         <!-- ???? -->
         <service android:name="service.IMChatService" >
         </service>
@@ -171,24 +175,22 @@
                 <action android:name="tools.NetworkState.Service" />
             </intent-filter>
         </service>
-
-        <service 
+        <service
             android:name="com.ubirtls.PDR.PDRService"
-            android:exported="false">
-            <intent-filter >
+            android:exported="false" >
+            <intent-filter>
                 <action android:name="com.ubirtls.PDR.pDRService" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-        
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ac73e16cec12cdc2f220e54fcd8ce104" />
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="d6f3179ac695a7efd4c28c329ce8a5c04f2e0bc7" />
-
-        
     </application>
 
 </manifest>

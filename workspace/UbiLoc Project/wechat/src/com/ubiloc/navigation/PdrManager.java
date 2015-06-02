@@ -37,6 +37,7 @@ public class PdrManager {
 	public static final String LON_KEY = "lon";
 	public static final String LAT_KEY = "lat";
 	public static final String ORI_KEY = "ori";
+	public static final String K_KEY = "K";
 	/**
 	 * 本地化部分数据
 	 */
@@ -47,6 +48,7 @@ public class PdrManager {
 	double per_L = 0;
 	double Angle = 0;
 	double Angle_a = 0;
+	double K_modle = 0;
 
 	private PdrManager() {
 		if (mContext != null) {
@@ -82,10 +84,13 @@ public class PdrManager {
 					.findViewById(R.id.input_lat);
 			final EditText input_ori = (EditText) dialog_content
 					.findViewById(R.id.input_ori);
+			final EditText input_K = (EditText) dialog_content
+					.findViewById(R.id.input_K);
 
 			input_lon.setText(originalData[0] + "");
 			input_lat.setText(originalData[1] + "");
 			input_ori.setText(originalData[2] + "");
+			input_K.setText(originalData[3] + "");
 			builder.setView(dialog_content);
 			builder.setPositiveButton(R.string.ok,
 					new AlertDialog.OnClickListener() {
@@ -94,6 +99,7 @@ public class PdrManager {
 							String str_lon = input_lon.getText().toString();
 							String str_lat = input_lat.getText().toString();
 							String str_ori = input_ori.getText().toString();
+							String str_K = input_K.getText().toString();
 							if (str_lon != null && !str_lon.equals("")
 									&& str_lat != null && !str_lat.equals("")
 									&& str_ori != null && !str_ori.equals("")) {
@@ -102,19 +108,22 @@ public class PdrManager {
 									double lon = Double.parseDouble(str_lon);
 									double lat = Double.parseDouble(str_lat);
 									double ori = Double.parseDouble(str_ori);
+									double K = Double.parseDouble(str_K);
+
 									saveOriginalDataBySP(new double[] { lon,
-											lat, ori });
+											lat, ori, K });
 
 									// 获取初始经度、纬度和正北偏角。
 									pre_B = lat;
 									per_L = lon;
 									Angle = ori;
+									K_modle = K;
 
 									Intent intent = new Intent(mContext,
 											PDRService.class);
 									Bundle data = new Bundle();
 									data.putCharSequence("Ori", Angle + "");
-									// data.putCharSequence("Y", y + "");
+									data.putCharSequence("K", K_modle + "");
 									intent.putExtras(data);
 									mContext.startService(intent);
 									try {
@@ -157,18 +166,20 @@ public class PdrManager {
 	 * @return
 	 */
 	private double[] getOriginalDataBySP() {
-		double[] originalData = new double[3];
+		double[] originalData = new double[4];
 		String str_lon = mSharedPreferences.getString(LON_KEY, "");
 		String str_lat = mSharedPreferences.getString(LAT_KEY, "");
 		String str_ori = mSharedPreferences.getString(ORI_KEY, "");
+		String str_K = mSharedPreferences.getString(K_KEY, "");
 		if (str_lon != null && !str_lon.equals("") && str_lat != null
 				&& !str_lat.equals("") && str_ori != null
-				&& !str_ori.equals("")) {
+				&& !str_ori.equals("") && str_K != null && !str_K.equals("")) {
 			try {
 
 				originalData[0] = Double.parseDouble(str_lon);
 				originalData[1] = Double.parseDouble(str_lat);
 				originalData[2] = Double.parseDouble(str_ori);
+				originalData[3] = Double.parseDouble(str_K);
 			} catch (Exception e) {
 				e.getStackTrace();
 			}
@@ -177,7 +188,7 @@ public class PdrManager {
 	}
 
 	/**
-	 * 通过SharedPreferences保存lon,lat,ori
+	 * 通过SharedPreferences保存lon,lat,ori,K
 	 * 
 	 * @param originalData
 	 */
@@ -187,6 +198,7 @@ public class PdrManager {
 			editor.putString(LON_KEY, originalData[0] + "");
 			editor.putString(LAT_KEY, originalData[1] + "");
 			editor.putString(ORI_KEY, originalData[2] + "");
+			editor.putString(K_KEY, originalData[3] + "");
 			editor.commit();
 		}
 	}

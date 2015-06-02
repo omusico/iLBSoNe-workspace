@@ -3,8 +3,8 @@ package com.ubirtls.tools;
 import android.util.Log;
 
 public class LocationProjection {
-	private static double pre_B = 0;
-	private static double per_L = 0;
+	// private static double pre_B = 0;
+	// private static double per_L = 0;
 	private static double cur_B = 0;
 	private static double cur_L = 0;
 	private double a = 0;

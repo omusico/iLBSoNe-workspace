@@ -37,7 +37,7 @@ public class StepDetector {
 	private double cofThreshold = 0.7;
 	/***/
 	private boolean boolLastMatch = false;
-	private double K = 0.36; // 步长参数
+	public double K = 0.45; // 步长参数
 
 	/*
 	 * private double magnitudeAcc = 0;
@@ -74,7 +74,7 @@ public class StepDetector {
 		return w;
 	}
 
-	public StepDetectResult detectStep(List<double[]> accS) {
+	public StepDetectResult detectStep(List<double[]> accS, double K) {
 		/* 计算总价速度值 */
 		List<Double> magnitudeOfAcceleration = getMagnitudeOfAcceleration(accS);
 		/* 高通滤波器处理 */
@@ -133,14 +133,14 @@ public class StepDetector {
 						.cloneSubList(localMeanAcceleration, stepOneStPoint,
 								stepOneEndPoint)), MyMath.min(MyMath
 						.cloneSubList(localMeanAcceleration, stepOneStPoint,
-								stepOneEndPoint)));
+								stepOneEndPoint)), K);
 
 				/* 计算第二步步长 */
 				double stepTwoLength = CalculateStrideLength(MyMath.max(MyMath
 						.cloneSubList(localMeanAcceleration, stepTwoStPoint,
 								stepTwoEndPoint)), MyMath.min(MyMath
 						.cloneSubList(localMeanAcceleration, stepTwoStPoint,
-								stepTwoEndPoint)));
+								stepTwoEndPoint)), K);
 				result = new StepDetectResult(true, stepOneLength,
 						stepTwoLength, deletedSampleCount);
 			} else if (boolLastMatch) {
@@ -154,14 +154,14 @@ public class StepDetector {
 						.cloneSubList(localMeanAcceleration, stepOneStPoint,
 								stepOneEndPoint)), MyMath.min(MyMath
 						.cloneSubList(localMeanAcceleration, stepOneStPoint,
-								stepOneEndPoint)));
+								stepOneEndPoint)), K);
 
 				/* 计算第二步步长 */
 				double stepTwoLength = CalculateStrideLength(MyMath.max(MyMath
 						.cloneSubList(localMeanAcceleration, stepTwoStPoint,
 								stepTwoEndPoint)), MyMath.min(MyMath
 						.cloneSubList(localMeanAcceleration, stepTwoStPoint,
-								stepTwoEndPoint)));
+								stepTwoEndPoint)), K);
 				result = new StepDetectResult(true, stepOneLength,
 						stepTwoLength, deletedSampleCount);
 			} else {
@@ -290,7 +290,7 @@ public class StepDetector {
 	 *            最下加速度值
 	 * @return
 	 */
-	public double CalculateStrideLength(double maxA, double minA) {
+	public double CalculateStrideLength(double maxA, double minA, double K) {
 		return K * Math.pow(maxA - minA, 0.25);
 	}
 

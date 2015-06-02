@@ -70,6 +70,7 @@ public class PDRService extends Service {
 	// public double init_x = 0;
 	// public double init_y = 0;
 	public double cur_ori = 0;
+	public double a = 0;
 
 	/** 粒子滤波 初始坐标 */
 	ParticleFilter particleFilter = new ParticleFilter(0, 0);
@@ -94,13 +95,13 @@ public class PDRService extends Service {
 
 		Bundle data = intent.getExtras();
 		String temp1 = (String) data.get("Ori");
-		// String temp2 = (String) data.get("Y");
+		String temp2 = (String) data.get("K");
 		if (temp1 != null && !temp1.equals(""))
 			cur_ori = Double.parseDouble(temp1);
-		// if (temp2 != null && !temp2.equals(""))
-		// init_y = Double.parseDouble(temp2);
+		if (temp2 != null && !temp2.equals(""))
+			a = Double.parseDouble(temp2);
 		Log.i("Ori", cur_ori + "");
-		// Log.i("Y", init_y + "");
+		Log.i("K", a + "");
 		Log.i("PDRService", "服务启动");
 		super.onStart(intent, startId);
 	}
@@ -181,7 +182,8 @@ public class PDRService extends Service {
 					int oriSize = primitiveOrientationList.size();
 					StepDetectResult result = stepDetector.detectStep(MyMath
 							.cloneSubList(primitiveAccelerometerList,
-									0 + accIndex, minAccNeeds - 1 + accIndex));
+									0 + accIndex, minAccNeeds - 1 + accIndex),
+							a);
 					Log.i("pdr", String.valueOf(result.isStep));
 
 					/** 获得两步中对应的方向数据索引 */
@@ -222,19 +224,15 @@ public class PDRService extends Service {
 								* 180 / Math.PI + extraGyroChange;
 						extraGyroChange = 0;
 						gyroInit = gyroOneEnd + 1;
-						TwoDCoordinate corner = null;/*
-													 * CornerDetector.
-													 * getInstance
-													 * ().detectCorner
-													 * (gyroChange,
-													 * secondStepHeading, curX,
-													 * curY,PDRService. this);
-													 * //匹配出转角后
-													 * ，将目标位置定位到该点，并重新初始粒子滤波
-													 * 
-													 * /**
-													 * 获得gyroHZ,初始化headingFilter
-													 */
+						// TwoDCoordinate corner = null;
+						TwoDCoordinate corner = CornerDetector.getInstance()
+								.detectCorner(gyroChange, secondStepHeading,
+										curX, curY, PDRService.this);
+						/*
+						 * /匹配出转角后 ，将目标位置定位到该点，并重新初始粒子滤波
+						 * 
+						 * /** 获得gyroHZ,初始化headingFilter
+						 */
 						if (headingFilter == null) {
 							/*
 							 * double[] datasLast =
@@ -310,11 +308,10 @@ public class PDRService extends Service {
 								/ Math.PI + extraGyroChange;
 						extraGyroChange = 0;
 						gyroInit = gyroTwoEnd + 1;
-						corner = null;/*
-									 * CornerDetector.getInstance().detectCorner
-									 * (gyroChange, firstStepHeading, curX,
-									 * curY,PDRService.this);
-									 */
+						// corner = null;
+						corner = CornerDetector.getInstance().detectCorner(
+								gyroChange, firstStepHeading, curX, curY,
+								PDRService.this);
 
 						secondStepHeading = headingFilter.getFilteredHeading(
 								oriX, gyroZ);

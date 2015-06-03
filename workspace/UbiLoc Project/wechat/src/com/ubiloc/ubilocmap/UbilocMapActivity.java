@@ -108,6 +108,7 @@ public class UbilocMapActivity extends MapActivity {
 	 */
 	private void initView() {
 
+		// =====================================================================
 		verticalMenu = (VerticalMenu) findViewById(R.id.vertical_menu);
 		verticalMenu.setControlBackground(R.drawable.menu_control);
 		LayoutInflater inflater = LayoutInflater.from(this);
@@ -298,21 +299,8 @@ public class UbilocMapActivity extends MapActivity {
 			}
 		});
 		verticalMenu.addMenuItem(item7);
-
+		// =====================================================================
 		search_input = (EditText) findViewById(R.id.search_input);
-		// search_input.setOnTouchListener(new OnTouchListener() {
-		//
-		// @SuppressLint("ClickableViewAccessibility")
-		// @Override
-		// public boolean onTouch(View view, MotionEvent event) {
-		// if (event.getAction() == MotionEvent.ACTION_DOWN) {
-		// Intent poi_intent = new Intent(view.getContext(),
-		// POISearchActivity.class);
-		// view.getContext().startActivity(poi_intent);
-		// }
-		// return false;
-		// }
-		// });
 		result_to_list = findViewById(R.id.result_to_list);
 		result_to_list.setOnClickListener(new OnClickListener() {
 

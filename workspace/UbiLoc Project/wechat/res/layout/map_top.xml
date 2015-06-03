@@ -5,46 +5,33 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal" >
-<LinearLayout
+
+    <LinearLayout
         android:id="@+id/result_to_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:gravity="center" >
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
 
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:background="@drawable/result_list_no_data" />
-        <TextView 
-            android:layout_height="wrap_content"
+
+        <TextView
             android:layout_width="wrap_content"
-            android:singleLine="true"
-            android:textSize="12sp"
-            android:layout_marginLeft="3dp"
-            android:textColor="#333333"
-            android:text="@string/list"/>
-    </LinearLayout>
-   
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" 
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-        <EditText
-            android:id="@+id/search_input"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/search_input_item"
-            android:hint="@string/hint_search_input"
-            android:padding="5dp" />
-    </RelativeLayout>
+            android:layout_marginLeft="3dp"
+            android:singleLine="true"
+            android:text="@string/list"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <include layout="@layout/search_input" />
 
     <RelativeLayout
         android:id="@+id/search"
@@ -58,10 +45,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/search_button_bg"
             android:padding="5dp"
-            android:textColor="#ffffff"
             android:singleLine="true"
-            android:text="@string/search" />
+            android:text="@string/search"
+            android:textColor="#ffffff" />
     </RelativeLayout>
-    
 
 </LinearLayout>

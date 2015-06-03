@@ -34,7 +34,7 @@
     <include layout="@layout/search_input" />
 
     <RelativeLayout
-        android:id="@+id/search"
+        android:id="@+id/map_poi_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

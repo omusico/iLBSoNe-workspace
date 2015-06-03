@@ -2,4 +2,5 @@
 <resources>
     <dimen name ="vertical_menu_control_size">35dp</dimen>
     <dimen name="vertical_menu_item_size">35dp</dimen>
+    <dimen name="vertical_menu_item_icon_size">14dp</dimen>
 </resources>

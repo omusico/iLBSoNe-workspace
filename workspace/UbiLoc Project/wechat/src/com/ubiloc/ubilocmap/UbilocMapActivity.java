@@ -299,6 +299,9 @@ public class UbilocMapActivity extends MapActivity {
 			}
 		});
 		verticalMenu.addMenuItem(item7);
+		View menu_item_navigation = inflater.inflate(
+				R.layout.menu_item_icon_text, null);
+		verticalMenu.addMenuItem(menu_item_navigation);
 		// =====================================================================
 		search_input = (EditText) findViewById(R.id.search_input);
 		result_to_list = findViewById(R.id.result_to_list);

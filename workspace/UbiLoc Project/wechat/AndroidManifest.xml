@@ -167,6 +167,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
+          <activity
+            android:name="com.ubiloc.search.NavigationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
         <!-- ???? -->
         <service android:name="service.IMChatService" >
         </service>

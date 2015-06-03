@@ -30,4 +30,5 @@
     <item name="menuToDegrees" format="float" type="dimen">180.0</item>
 
     <dimen name="menuChildSize">40dp</dimen>
+    <dimen name="navigation_mode_item_size">20dp</dimen>
 </resources>

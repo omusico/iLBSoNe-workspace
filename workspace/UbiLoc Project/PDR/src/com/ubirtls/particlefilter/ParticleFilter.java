@@ -14,7 +14,25 @@ import java.util.ArrayList;
 public class ParticleFilter {
 	/** 初始位置 */
 	private double initX;
+
+	public double getInitX() {
+		return initX;
+	}
+
+	public void setInitX(double initX) {
+		this.initX = initX;
+	}
+
 	private double initY;
+
+	public double getInitY() {
+		return initY;
+	}
+
+	public void setInitY(double initY) {
+		this.initY = initY;
+	}
+
 	/** 用于滤波的粒子样本个数 */
 	private int particleSize = 50;
 	/** 存放所有粒子 */

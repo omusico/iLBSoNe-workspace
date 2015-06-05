@@ -102,9 +102,8 @@ public class WallDetector {
 					.getEndX(), walls.get(i).getEndY());
 			if (isHitting)
 				break;
-			return isHitting;
 		}
-		return false;
+		return isHitting;
 	}
 
 	private double Multiply(double x1, double y1, double x2, double y2,

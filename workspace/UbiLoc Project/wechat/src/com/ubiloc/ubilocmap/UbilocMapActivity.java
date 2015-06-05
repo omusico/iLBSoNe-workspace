@@ -280,7 +280,7 @@ public class UbilocMapActivity extends MapActivity {
 											String.valueOf(lon),
 											String.valueOf(lat) };
 
-									MovingObj mObj = new MovingObj(0, "ww",
+									MovingObj mObj = new MovingObj("ww",
 											lon, lat);
 									mlist.add(mObj);
 

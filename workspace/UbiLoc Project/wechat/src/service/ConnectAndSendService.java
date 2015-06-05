@@ -86,6 +86,7 @@ public class ConnectAndSendService extends IntentService {
 				listObj=(List<MovingObj>)intent.getSerializableExtra("MovingObjMsg");
 				Log.v(TAG,listObj.toString());
 				String fiveObj=new Gson().toJson(listObj);
+				String mObj="1002"+"#"+fiveObj;
 				//下面一步出现问题
 				//JSONArray jArray=JSONArray.fromObject(listObj);
 				Log.v(TAG,fiveObj);
@@ -95,7 +96,7 @@ public class ConnectAndSendService extends IntentService {
 				//Log.v(TAG,"message");
 				try {
 					Log.v(TAG, "beforesend");
-					m.setContent(fiveObj);
+					m.setContent(mObj);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

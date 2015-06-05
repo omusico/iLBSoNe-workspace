@@ -5,6 +5,8 @@ import im.WeChat;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,10 @@ import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.core.model.GeoPoint;
 
+import service.ConnectAndSendService;
 import tools.SysApplication;
+import ubimessage.MessageITException;
+import ubimessage.client.MOMClient;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,6 +26,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +36,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubiloc.asynctask.ConnectMsgTask;
+import com.ubiloc.asynctask.JavaToJsonThread;
+import com.ubiloc.asynctask.SendMovingObjTask;
+import com.ubiloc.model.MovingObj;
 import com.ubiloc.navigation.OnNavigationListener;
 import com.ubiloc.navigation.PdrManager;
 import com.ubiloc.overlays.BitmapOverlay;
@@ -39,6 +49,7 @@ import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.overlays.PolygonOverlay;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
+import com.ubiloc.tools.ConstConfig;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -53,11 +64,20 @@ public class UbilocMapActivity extends MapActivity {
 	private MapView mMapView;
 
 	protected WCApplication appContext;
-	private ListView xlistView;
+	private static ListView xlistView;
 	private Thread myThread;
 	private VerticalMenu verticalMenu;
 	private EditText search_input;
 	private View result_to_list;
+	//private static Intent mintent;
+	
+//	private MOMClient sender;
+	private static List<MovingObj> mlist;
+//	private String userid;
+//	private int threadCount=0;
+//	private JavaToJsonThread jtojThread;
+	
+	//private static String userid;
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -81,6 +101,12 @@ public class UbilocMapActivity extends MapActivity {
 		SysApplication.getInstance().addActivity(this);
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
+		//mintent=new Intent(UbilocMapActivity.this,ConnectAndSendService.class);
+		
+		mlist=new ArrayList<MovingObj>();
+//		userid=WCApplication.getInstance().getLoginUid();
+//		jtojThread=new JavaToJsonThread();
+		
 		// myThread = new Thread(new Runnable() {
 		//
 		// @Override
@@ -248,12 +274,32 @@ public class UbilocMapActivity extends MapActivity {
 			public void onClick(View view) {// 测试pdr方法
 
 				PdrManager.init(view.getContext());
+				
+				//ConstConfig.sObjTask=new SendMovingObjTask();
+				//new ConnectMsgTask().execute();
 				PdrManager.getInstance().setOnNavigationListener(
 						new OnNavigationListener() {
 
 							@Override
 							public void OnPositionChanged(double lat, double lon) {
 								try {
+									String[] s=new String[]{String.valueOf(lon),String.valueOf(lat)};
+									
+									MovingObj mObj=new MovingObj(0, "ww", lon, lat);
+									mlist.add(mObj);
+									
+									if(mlist.size()>=5){
+										Intent mintent=new Intent(UbilocMapActivity.this,ConnectAndSendService.class);
+										Bundle bundle=new Bundle();
+										bundle.putSerializable("MovingObjMsg", (Serializable) mlist);
+										mintent.putExtras(bundle);
+										startService(mintent);
+										mlist.clear();
+										
+									}
+									//ConstConfig.sObjTask.execute(s);
+									//监听位置改变lon经度，lat纬度
+									//userid=WCApplication.getInstance().getLoginUid();
 									coords.add(new GeoPoint(lon, lat));
 									// 清除所有图层
 									UbilocMap.getInstance().removeAllOverlays();
@@ -263,13 +309,19 @@ public class UbilocMapActivity extends MapActivity {
 									UbilocMap.getInstance().setMapCenter(
 											new GeoPoint(lon, lat));
 								} catch (Exception e) {
-
+									Log.e("error_error", e.toString());
 								}
 							}
 						});
 				PdrManager.getInstance().startPDR();
 			}
 		});
+		/*try {
+			ConstConfig.sender.disconnect();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
 		verticalMenu.addMenuItem(item6);
 
 		View item7 = inflater.inflate(R.layout.menu_item, null);

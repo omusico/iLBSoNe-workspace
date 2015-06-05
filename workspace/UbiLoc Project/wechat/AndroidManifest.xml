@@ -184,7 +184,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
-
+	
+        <service android:name="service.ConnectAndSendService"
+            >
+            
+        </service>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="ac73e16cec12cdc2f220e54fcd8ce104" />

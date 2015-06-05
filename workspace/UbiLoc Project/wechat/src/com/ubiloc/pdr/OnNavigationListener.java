@@ -1,4 +1,4 @@
-package com.ubiloc.navigation;
+package com.ubiloc.pdr;
 
 /**
  * 定位监听事件

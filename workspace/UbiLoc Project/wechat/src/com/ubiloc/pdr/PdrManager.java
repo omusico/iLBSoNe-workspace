@@ -1,4 +1,4 @@
-package com.ubiloc.navigation;
+package com.ubiloc.pdr;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -33,13 +33,13 @@ import android.widget.ListView;
 
 import com.donal.wechat.R;
 import com.ubiloc.model.MovingObj;
-import com.ubiloc.navigation.OnNavigationListener;
-import com.ubiloc.navigation.PdrManager;
 import com.ubiloc.overlays.BitmapOverlay;
 import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.overlays.LineOverlay;
 import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.overlays.PolygonOverlay;
+import com.ubiloc.pdr.OnNavigationListener;
+import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.NavigationActivity;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;

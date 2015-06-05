@@ -11,7 +11,5 @@ public class ConstConfig {
 	
 	//public static SendMovingObjTask sObjTask;
 	
-	public synchronized static void javaTojson(){
-		
-	}
+	
 }

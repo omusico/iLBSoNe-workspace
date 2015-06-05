@@ -101,11 +101,11 @@ public class UbilocMapActivity extends MapActivity {
 		SysApplication.getInstance().addActivity(this);
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
-		//mintent=new Intent(UbilocMapActivity.this,ConnectAndSendService.class);
+		
 		
 		mlist=new ArrayList<MovingObj>();
 //		userid=WCApplication.getInstance().getLoginUid();
-//		jtojThread=new JavaToJsonThread();
+
 		
 		// myThread = new Thread(new Runnable() {
 		//
@@ -122,8 +122,8 @@ public class UbilocMapActivity extends MapActivity {
 		// }
 		// });
 		// myThread.start();
-		// FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
-		// appContext);
+		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
+		 appContext);
 
 		UbilocMap.init(mMapView, UbilocMapActivity.this);
 		initView();

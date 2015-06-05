@@ -10,6 +10,10 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/acra-4.5.0.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/Users/wangrui1/Documents/my_eclipse_workspace-20150517/iLBSoNe-workspace/workspace/UbiLoc Project/geopaparazzi/android-support-v4.jar"/>
+=======
+	<classpathentry kind="lib" path="E:/Users/Chengwen/github/workspace/iLBSoNe-workspace/workspace/UbiLoc Project/geopaparazzi/android-support-v4.jar"/>
+>>>>>>> origin/master
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

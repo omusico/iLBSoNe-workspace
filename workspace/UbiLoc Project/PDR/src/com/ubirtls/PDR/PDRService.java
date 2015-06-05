@@ -71,9 +71,11 @@ public class PDRService extends Service {
 	// public double init_y = 0;
 	public double cur_ori = 0;
 	public double a = 0;
+	public double cur_x;
+	public double cur_y;
 
 	/** 粒子滤波 初始坐标 */
-	ParticleFilter particleFilter = new ParticleFilter(0, 0);
+	ParticleFilter particleFilter = new ParticleFilter(cur_x, cur_y);
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -96,13 +98,24 @@ public class PDRService extends Service {
 		Bundle data = intent.getExtras();
 		String temp1 = (String) data.get("Ori");
 		String temp2 = (String) data.get("K");
+		String temp3 = (String) data.get("px");
+		String temp4 = (String) data.get("py");
 		if (temp1 != null && !temp1.equals(""))
 			cur_ori = Double.parseDouble(temp1);
 		if (temp2 != null && !temp2.equals(""))
 			a = Double.parseDouble(temp2);
+		if (temp3 != null && !temp3.equals("")) {
+			cur_x = Double.parseDouble(temp3);
+			particleFilter.setInitX(cur_x);
+		}
+		if (temp4 != null && !temp4.equals("")) {
+			cur_y = Double.parseDouble(temp4);
+			particleFilter.setInitY(cur_y);
+		}
 		Log.i("Ori", cur_ori + "");
 		Log.i("K", a + "");
 		Log.i("PDRService", "服务启动");
+		particleFilter.init();
 		super.onStart(intent, startId);
 	}
 
@@ -122,7 +135,6 @@ public class PDRService extends Service {
 				SensorManager.SENSOR_DELAY_UI);
 		mSensorManager.registerListener(mOnSensorEventListener, mGyroscope,
 				SensorManager.SENSOR_DELAY_UI);
-		particleFilter.init();
 		Log.i("PDRService", "onCreate");
 	}
 

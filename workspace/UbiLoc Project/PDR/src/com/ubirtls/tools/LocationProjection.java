@@ -31,17 +31,20 @@ public class LocationProjection {
 	 * @return
 	 */
 	public static double[] Local2WGS84(double pre_B, double pre_L,
-			double positionx, double positiony, double a) {
+			double positionx, double positiony, double per_x, double per_y,
+			double a) {
 
-		r = Math.pow((positionx * positionx + positiony * positiony), 0.5);
+		r = Math.pow(
+				((positionx - per_x) * (positionx - per_x) + (positiony - per_y)
+						* (positiony - per_y)), 0.5);
 
-		a = Math.atan(positionx / positiony);
+		a = Math.atan((positionx - per_x) / (positiony - per_y));
 
 		// cur_L = pre_L + (r * Math.sin(a))
 		// / ((PI * 12630824 * 1 / 360) * Math.cos(pre_B * PI / 180));
 		// cur_B = pre_B + (r * Math.cos(a)) / (PI * 12630824 * 1 / 360);
 
-		if (positiony >= 0) {
+		if ((positiony - per_y) >= 0) {
 
 			cur_L = pre_L + (r * Math.sin(a)) * (0.000357 / 39.800);
 			cur_B = pre_B + (r * Math.cos(a)) * (0.000468 / 41.800);

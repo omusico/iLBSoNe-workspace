@@ -1,5 +1,7 @@
 package com.ubiloc.search;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,19 +31,21 @@ public class POISearchActivity extends Activity {
 		});
 
 		search_input = (EditText) findViewById(R.id.search_input);
-		search = findViewById(R.id.search);
+		search = findViewById(R.id.list_poi_search);
 		search.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
-				String data = search_input.getText().toString();
-				POIDataManager.getInstance().setData(data);
+				List<PoiObject> poiObjects = POIDataManager.getInstance()
+						.getPoiByKeyword_alpha(
+								POIDataManager.POI_KEW_WORDS_FIRE_HYDRAN);
+				POIResultAdapter adapter = new POIResultAdapter(
+						POISearchActivity.this, poiObjects);
+				poi_search_result_list.setAdapter(adapter);
 			}
 		});
 
 		poi_search_result_list = (ListView) findViewById(R.id.poi_search_result_list);
-		POIResultAdapter adapter = new POIResultAdapter(this, null);
-		poi_search_result_list.setAdapter(adapter);
 
 	}
 

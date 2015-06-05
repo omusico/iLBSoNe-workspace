@@ -73,7 +73,7 @@
                 android:textColor="#333333" />
 
             <RelativeLayout
-                android:id="@+id/search"
+                android:id="@+id/locate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"

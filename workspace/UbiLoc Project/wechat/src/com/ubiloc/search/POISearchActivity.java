@@ -40,7 +40,7 @@ public class POISearchActivity extends Activity {
 		});
 
 		poi_search_result_list = (ListView) findViewById(R.id.poi_search_result_list);
-		POIResultAdapter adapter = new POIResultAdapter(this);
+		POIResultAdapter adapter = new POIResultAdapter(this, null);
 		poi_search_result_list.setAdapter(adapter);
 
 	}

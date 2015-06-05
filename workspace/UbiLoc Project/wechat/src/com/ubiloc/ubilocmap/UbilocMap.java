@@ -1,5 +1,6 @@
 package com.ubiloc.ubilocmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mapsforge.android.maps.MapView;
@@ -18,6 +19,10 @@ import com.donal.wechat.R;
 import com.ubiloc.component.ComponentUtil;
 import com.ubiloc.layer.MapLayersManager;
 import com.ubiloc.overlays.BaseOverlayItem;
+import com.ubiloc.overlays.BitmapOverlay;
+import com.ubiloc.overlays.BitmapOverlayItem;
+import com.ubiloc.search.PoiObject;
+import com.ubiloc.search.PoiTools;
 
 import eu.geopaparazzi.mapsforge.mapsdirmanager.maps.tiles.GeopackageTileDownloader;
 import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
@@ -243,6 +248,22 @@ public class UbilocMap {
 
 		mMapView.getController().setZoom(defaultLevel);
 		return this;
+	}
+
+	public void addPois(List<PoiObject> pois) {
+
+		// 画图,使用测试数据
+		BitmapOverlay overlay = new BitmapOverlay(context);
+		List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
+		for (PoiObject poi : pois) {
+			int draw_rs = PoiTools.getDrawableByClass(poi.getPoi_class());
+			BitmapOverlayItem overlayItem1 = new BitmapOverlayItem(context,
+					poi.getPoi_loc(), draw_rs);
+			overlayItems.add(overlayItem1);
+			overlay.setBitmapOverlayItems(overlayItems);
+		}
+		addOverlay(overlay);
+
 	}
 
 }

@@ -27,7 +27,6 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.donal.wechat.R;
 import com.ubiloc.navigation.OnNavigationListener;
@@ -37,8 +36,10 @@ import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.overlays.LineOverlay;
 import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.overlays.PolygonOverlay;
+import com.ubiloc.search.NavigationActivity;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
+import com.ubiloc.search.PoiObject;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -57,6 +58,7 @@ public class UbilocMapActivity extends MapActivity {
 	private Thread myThread;
 	private VerticalMenu verticalMenu;
 	private EditText search_input;
+	private View map_poi_search;
 	private View result_to_list;
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
@@ -301,6 +303,15 @@ public class UbilocMapActivity extends MapActivity {
 		verticalMenu.addMenuItem(item7);
 		View menu_item_navigation = inflater.inflate(
 				R.layout.menu_item_icon_text, null);
+		menu_item_navigation.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Intent nav_intent = new Intent(view.getContext(),
+						NavigationActivity.class);
+				view.getContext().startActivity(nav_intent);
+			}
+		});
 		verticalMenu.addMenuItem(menu_item_navigation);
 		// =====================================================================
 		search_input = (EditText) findViewById(R.id.search_input);
@@ -314,6 +325,22 @@ public class UbilocMapActivity extends MapActivity {
 				view.getContext().startActivity(poi_intent);
 			}
 		});
+		map_poi_search = findViewById(R.id.map_poi_search);
+		map_poi_search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String input = search_input.getText().toString();
+				List<PoiObject> poiObjects = POIDataManager.getInstance()
+						.getPoiByKeyword_alpha(
+								POIDataManager.POI_KEW_WORDS_FIRE_HYDRAN);
+				// 周,使用下面的方法测试
+				// List<PoiObject> poiObjects = POIDataManager.getInstance()
+				// .getPoiByKeyword(input);
+				UbilocMap.getInstance().addPois(poiObjects);
+
+			}
+		});
 	}
 
 	@Override
@@ -325,8 +352,8 @@ public class UbilocMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String data = POIDataManager.getInstance().getData();
-		Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+		// String data = POIDataManager.getInstance().getData();
+		// Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

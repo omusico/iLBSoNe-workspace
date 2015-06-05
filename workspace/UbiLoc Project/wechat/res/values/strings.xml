@@ -262,6 +262,9 @@
     <string name="pdr_origin_K">步行参数</string>
     <string name="navigation_user">好友</string>
     <string name="navigation_poi">POI</string>
+    <string name="input_nav_start_location">输入起点&#8230;</string>
+    <string name="input_nav_end_location">输入终点&#8230;</string>
+    <string name="input_nav_my_location">我的位置</string>
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
     <!-- ========================================================================================================= -->
 

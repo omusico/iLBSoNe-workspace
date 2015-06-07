@@ -1,4 +1,4 @@
-package com.ubiloc.ubilocmap;
+package com.ubiloc.checkin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,117 +7,61 @@ import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.mapgenerator.MapGenerator;
 import org.mapsforge.core.model.GeoPoint;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
 
 import com.donal.wechat.R;
 import com.ubiloc.component.ComponentUtil;
-import com.ubiloc.layer.MapLayersManager;
 import com.ubiloc.overlays.BaseOverlayItem;
 import com.ubiloc.overlays.BitmapOverlay;
 import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.search.PoiObject;
 import com.ubiloc.search.PoiTools;
+import com.ubiloc.ubilocmap.ArrayOverlay;
 
 import eu.geopaparazzi.mapsforge.mapsdirmanager.maps.tiles.GeopackageTileDownloader;
 import eu.geopaparazzi.spatialite.database.spatial.SpatialDatabasesManager;
 import eu.geopaparazzi.spatialite.database.spatial.core.tables.SpatialRasterTable;
 
-/**
- * 地图操作类，将地图进行封装，此类采用单例模式，首先需要使用init进行初始化
- * 
- * @author crazy
- * @Date 2015-5-20
- */
-public class UbilocMap {
-	private Context context;
-	private static UbilocMap mUbilocMap;
+public class CheckinMap {
+	private Context mContext;
+	private static CheckinMap mCheckinMap;
 	private MapView mMapView;
 	private MapGenerator mapGenerator;
 	private GeoPoint mapCenter;
 	private ArrayOverlay overlays;
-	private boolean isMapDataAvailable = false;
-	private int maxLevel = 20;
+	private boolean isMapDataAvailable = true;
+	private int maxLevel = 22;
 	private int minLevel = 20;
 	private int defaultLevel = 20;
 
-	private UbilocMap(MapView mapView, Context context) {
+	private CheckinMap(MapView mapView, Context context) {
 		this.mMapView = mapView;
-		this.context = context;
-		int result = MapLayersManager.getInstance().initData();
-		handleResult(result);
+		this.mContext = context;
 		initMapComponent();
 	}
 
 	/**
-	 * init UbilocMap
+	 * 初始化
 	 * 
 	 * @param mapView
 	 * @param context
-	 * @return
 	 */
-	public static UbilocMap init(MapView mapView, Context context) {
-		if (mUbilocMap == null) {
-			mUbilocMap = new UbilocMap(mapView, context);
-
-		}
-		return mUbilocMap;
+	public static void init(MapView mapView, Context context) {
+		mCheckinMap = new CheckinMap(mapView, context);
 	}
 
-	/**
-	 * get the handle of UbilocMap
-	 * 
-	 * @return
-	 */
-	public static UbilocMap getInstance() {
-		return mUbilocMap;
-	}
-
-	public MapView getMapView() {
-		return mMapView;
-	}
-
-	/**
-	 * 判断地图数据是否可用
-	 * 
-	 * @param result
-	 * 
-	 */
-	private void handleResult(int result) {
-		if (result == MapLayersManager.SUCCESS)
-			isMapDataAvailable = true;
-		else {
-			isMapDataAvailable = false;
-			AlertDialog.Builder builder = new Builder(context);
-			builder.setTitle(R.string.no_map_data).setPositiveButton(
-					R.string.ok, new AlertDialog.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int arg1) {
-							dialog.dismiss();
-						}
-
-					});
-			builder.setNegativeButton(R.string.cancel,
-					new AlertDialog.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int arg1) {
-							dialog.dismiss();
-						}
-					});
-			builder.create().show();
-		}
+	public static CheckinMap getInstance() {
+		return mCheckinMap;
 	}
 
 	/**
 	 * init the mapView and overlays
 	 */
 	private void initMapComponent() {
-		overlays = new ArrayOverlay(context, mMapView);
+		overlays = new ArrayOverlay(mContext, mMapView);
 		mMapView.getOverlays().clear();
 		mMapView.getOverlays().add(overlays);
 
@@ -142,7 +86,7 @@ public class UbilocMap {
 					mMapView.setMapGenerator(mapGenerator);
 					mapCenter = mapGenerator.getStartPoint();
 					int minLevel = mapGenerator.getStartZoomLevel();
-					mMapView.getController().setZoom(19);
+					mMapView.getController().setZoom(20);
 					mMapView.getController().setCenter(
 							new GeoPoint(-0.000487, 109.513775));
 
@@ -154,12 +98,16 @@ public class UbilocMap {
 		}
 	}
 
+	public MapView getMapView() {
+		return mMapView;
+	}
+
 	/**
 	 * add an overlay
 	 * 
 	 * @return
 	 */
-	public UbilocMap addOverlay(BaseOverlayItem overlayItem) {
+	public CheckinMap addOverlay(BaseOverlayItem overlayItem) {
 		overlays.addOverlayItem(overlayItem);
 		overlays.requestRedraw();
 		return this;
@@ -170,7 +118,7 @@ public class UbilocMap {
 	 * 
 	 * @return
 	 */
-	public UbilocMap addOverlays(List<BaseOverlayItem> overlayItems) {
+	public CheckinMap addOverlays(List<BaseOverlayItem> overlayItems) {
 		for (BaseOverlayItem overlayItem : overlayItems) {
 			overlays.addOverlayItem(overlayItem);
 		}
@@ -183,7 +131,7 @@ public class UbilocMap {
 	 * 
 	 * @return
 	 */
-	public UbilocMap removeOverlay(BaseOverlayItem overlayItem) {
+	public CheckinMap removeOverlay(BaseOverlayItem overlayItem) {
 		overlays.removeOverlayItem(overlayItem);
 		overlays.requestRedraw();
 		return this;
@@ -194,11 +142,11 @@ public class UbilocMap {
 	 * 
 	 * @return
 	 */
-	public UbilocMap removeAllOverlays() {
+	public CheckinMap removeAllOverlays() {
 		overlays.removeAllOverlayItems();
 		overlays.requestRedraw();
 		mMapView.getOverlays().clear();
-		overlays = new ArrayOverlay(context, mMapView);
+		overlays = new ArrayOverlay(mContext, mMapView);
 		mMapView.getOverlays().add(overlays);
 		return this;
 	}
@@ -209,7 +157,7 @@ public class UbilocMap {
 	 * @param center
 	 * @return
 	 */
-	public UbilocMap setMapCenter(GeoPoint center) {
+	public CheckinMap setMapCenter(GeoPoint center) {
 		mMapView.getController().setCenter(center);
 		return this;
 	}
@@ -220,11 +168,11 @@ public class UbilocMap {
 	 * @param level
 	 * @return
 	 */
-	public UbilocMap setMapLevel(int level) {
+	public CheckinMap setMapLevel(int level) {
 		if (level <= maxLevel && level >= minLevel) {
 			mMapView.getController().setZoom(level);
 		} else {
-			Toast.makeText(context, R.string.map_level_beyond_constraints,
+			Toast.makeText(mContext, R.string.map_level_beyond_constraints,
 					Toast.LENGTH_SHORT).show();
 		}
 		return this;
@@ -235,8 +183,8 @@ public class UbilocMap {
 	 * 
 	 * @return
 	 */
-	public UbilocMap resetMapview() {
-		overlays = new ArrayOverlay(context, mMapView);
+	public CheckinMap resetMapview() {
+		overlays = new ArrayOverlay(mContext, mMapView);
 		mMapView.getOverlays().clear();
 		mMapView.getOverlays().add(overlays);
 
@@ -249,11 +197,11 @@ public class UbilocMap {
 	public void addPois(List<PoiObject> pois) {
 
 		// 画图,使用测试数据
-		BitmapOverlay overlay = new BitmapOverlay(context);
+		BitmapOverlay overlay = new BitmapOverlay(mContext);
 		List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
 		for (PoiObject poi : pois) {
 			int draw_rs = PoiTools.getDrawableByClass(poi.getPoi_class());
-			BitmapOverlayItem overlayItem1 = new BitmapOverlayItem(context,
+			BitmapOverlayItem overlayItem1 = new BitmapOverlayItem(mContext,
 					poi.getPoi_loc(), draw_rs);
 			overlayItems.add(overlayItem1);
 			overlay.setBitmapOverlayItems(overlayItems);
@@ -261,5 +209,4 @@ public class UbilocMap {
 		addOverlay(overlay);
 
 	}
-
 }

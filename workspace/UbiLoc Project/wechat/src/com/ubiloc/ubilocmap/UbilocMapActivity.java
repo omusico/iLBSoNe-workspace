@@ -2,10 +2,6 @@ package com.ubiloc.ubilocmap;
 
 import im.WeChat;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,37 +9,33 @@ import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.core.model.GeoPoint;
 
-import service.ConnectAndSendService;
 import tools.SysApplication;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubiloc.checkin.CheckinActivity;
 import com.ubiloc.model.MovingObj;
-import com.ubiloc.overlays.BitmapOverlay;
-import com.ubiloc.overlays.BitmapOverlayItem;
+import com.ubiloc.navigation.NavigationActivity;
 import com.ubiloc.overlays.LineOverlay;
-import com.ubiloc.overlays.PointOverlay;
-import com.ubiloc.overlays.PolygonOverlay;
-import com.ubiloc.pdr.OnNavigationListener;
 import com.ubiloc.pdr.PdrManager;
-import com.ubiloc.search.NavigationActivity;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
+import com.ubiloc.simulate.SimulatedDataManager;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -130,236 +122,8 @@ public class UbilocMapActivity extends MapActivity {
 		// =====================================================================
 		verticalMenu = (VerticalMenu) findViewById(R.id.vertical_menu);
 		verticalMenu.setControlBackground(R.drawable.menu_control);
-		LayoutInflater inflater = LayoutInflater.from(this);
-		View item1 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img1 = (ImageView) item1
-				.findViewById(R.id.menu_item_img);
-		item_img1.setBackgroundResource(R.drawable.draw_point);
-		verticalMenu.addMenuItem(item1);
-		item1.setOnClickListener(new OnClickListener() {
+		initVerticalMenu();
 
-			@Override
-			public void onClick(View arg0) {
-				// 画点,使用测试数据
-				PointOverlay overlay = new PointOverlay();
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(40.3066720566464, 116.75557503421));
-				coords.add(new GeoPoint(40.3064612343892, 116.755124502335));
-				coords.add(new GeoPoint(40.4055593616439, 116.766092650115));
-				coords.add(new GeoPoint(40.405610614, 116.777595110572));
-				overlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(overlay);
-			}
-		});
-
-		View item2 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img2 = (ImageView) item2
-				.findViewById(R.id.menu_item_img);
-		item_img2.setBackgroundResource(R.drawable.draw_line);
-		verticalMenu.addMenuItem(item2);
-		item2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// 画线，使用测试数据
-				LineOverlay overlay = new LineOverlay();
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(40.3066720566464, 116.75557503421));
-				coords.add(new GeoPoint(40.3064612343892, 116.755124502335));
-				coords.add(new GeoPoint(40.4055593616439, 116.766092650115));
-				coords.add(new GeoPoint(40.405610614, 116.777595110572));
-				overlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(overlay);
-			}
-		});
-
-		View item3 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img3 = (ImageView) item3
-				.findViewById(R.id.menu_item_img);
-		item_img3.setBackgroundResource(R.drawable.draw_surface);
-		verticalMenu.addMenuItem(item3);
-		item3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// 画面,使用测试数据
-				PolygonOverlay overlay = new PolygonOverlay();
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(40.3066720566464, 116.75557503421));
-				coords.add(new GeoPoint(40.3064612343892, 116.755124502335));
-				coords.add(new GeoPoint(40.4055593616439, 116.766092650115));
-				coords.add(new GeoPoint(40.405610614, 116.777595110572));
-				overlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(overlay);
-			}
-		});
-
-		View item4 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img4 = (ImageView) item4
-				.findViewById(R.id.menu_item_img);
-		item_img4.setBackgroundResource(R.drawable.draw_bitmap);
-		item4.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// 画图,使用测试数据
-				BitmapOverlay overlay = new BitmapOverlay(
-						UbilocMapActivity.this);
-				List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
-				BitmapOverlayItem overlayItem1 = new BitmapOverlayItem(
-						UbilocMapActivity.this, new GeoPoint(-0.000487,
-								109.513775),
-						R.drawable.draw_bitmap_fire_hydrant);
-				overlayItems.add(overlayItem1);
-				// BitmapOverlayItem overlayItem2 = new BitmapOverlayItem(
-				// UbilocMapActivity.this, new GeoPoint(40.3064612343892,
-				// 116.755124502335),
-				// R.drawable.draw_bitmap_test_img3);
-				// overlayItems.add(overlayItem2);
-				// BitmapOverlayItem overlayItem3 = new BitmapOverlayItem(
-				// UbilocMapActivity.this, new GeoPoint(40.4055593616439,
-				// 116.766092650115),
-				// R.drawable.draw_bitmap_default);
-				// overlayItems.add(overlayItem3);
-				// BitmapOverlayItem overlayItem4 = new BitmapOverlayItem(
-				// UbilocMapActivity.this, new GeoPoint(40.405610614,
-				// 116.777595110572),
-				// R.drawable.draw_bitmap_test_img2);
-				// overlayItems.add(overlayItem4);
-				overlay.setBitmapOverlayItems(overlayItems);
-				UbilocMap.getInstance().addOverlay(overlay);
-			}
-		});
-		verticalMenu.addMenuItem(item4);
-
-		View item5 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img5 = (ImageView) item5
-				.findViewById(R.id.menu_item_img);
-		item_img5.setBackgroundResource(R.drawable.draw_clear);
-		item5.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// 清除所有图层
-				UbilocMap.getInstance().removeAllOverlays();
-
-				// 画点,使用测试数据
-				PointOverlay overlay = new PointOverlay();
-				List<GeoPoint> coords = new ArrayList<GeoPoint>();
-				coords.add(new GeoPoint(-0.000487, 109.513775));
-				overlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(overlay);
-				UbilocMap.getInstance().setMapCenter(
-						new GeoPoint(-0.000487, 109.513775));
-			}
-		});
-		verticalMenu.addMenuItem(item5);
-
-		final List<GeoPoint> coords = new ArrayList<GeoPoint>();
-
-		View item6 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img6 = (ImageView) item6
-				.findViewById(R.id.menu_item_img);
-		item_img6.setBackgroundResource(R.drawable.draw_navigation);
-		item6.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {// 测试pdr方法
-
-				PdrManager.init(view.getContext());
-
-				// ConstConfig.sObjTask=new SendMovingObjTask();
-				// new ConnectMsgTask().execute();
-				PdrManager.getInstance().setOnNavigationListener(
-						new OnNavigationListener() {
-
-							@Override
-							public void OnPositionChanged(double lat, double lon) {
-								try {
-									String[] s = new String[] {
-											String.valueOf(lon),
-											String.valueOf(lat) };
-
-									MovingObj mObj = new MovingObj(0, "ww",
-											lon, lat);
-									mlist.add(mObj);
-
-									if (mlist.size() >= 5) {
-										Intent mintent = new Intent(
-												UbilocMapActivity.this,
-												ConnectAndSendService.class);
-										Bundle bundle = new Bundle();
-										bundle.putSerializable("MovingObjMsg",
-												(Serializable) mlist);
-										mintent.putExtras(bundle);
-										startService(mintent);
-										mlist.clear();
-
-									}
-									// ConstConfig.sObjTask.execute(s);
-									// 监听位置改变lon经度，lat纬度
-									// userid=WCApplication.getInstance().getLoginUid();
-									coords.add(new GeoPoint(lon, lat));
-									// 清除所有图层
-									UbilocMap.getInstance().removeAllOverlays();
-									LineOverlay overlay = new LineOverlay();
-									overlay.setCoords(coords);
-									UbilocMap.getInstance().addOverlay(overlay);
-									UbilocMap.getInstance().setMapCenter(
-											new GeoPoint(lon, lat));
-								} catch (Exception e) {
-									Log.e("error_error", e.toString());
-								}
-							}
-						});
-				PdrManager.getInstance().startPDR();
-			}
-		});
-		/*
-		 * try { ConstConfig.sender.disconnect(); } catch (IOException e1) { //
-		 * TODO Auto-generated catch block e1.printStackTrace(); }
-		 */
-		verticalMenu.addMenuItem(item6);
-
-		View item7 = inflater.inflate(R.layout.menu_item, null);
-		ImageView item_img7 = (ImageView) item7
-				.findViewById(R.id.menu_item_img);
-		item_img7.setBackgroundResource(R.drawable.draw_save);
-		item7.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				// 保存文件
-				String path = Environment.getExternalStorageDirectory()
-						.getAbsolutePath() + "/ubiloc/wgs84.txt";
-				File file = new File(path);
-				try {
-					BufferedWriter writer = new BufferedWriter(new FileWriter(
-							file));
-					for (GeoPoint coord : coords) {
-						writer.write(coord.getLongitude() + " "
-								+ coord.getLatitude() + "\n");
-					}
-					writer.close();
-
-				} catch (Exception e) {
-
-				}
-			}
-		});
-		verticalMenu.addMenuItem(item7);
-		View menu_item_navigation = inflater.inflate(
-				R.layout.menu_item_icon_text, null);
-		menu_item_navigation.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				Intent nav_intent = new Intent(view.getContext(),
-						NavigationActivity.class);
-				view.getContext().startActivity(nav_intent);
-			}
-		});
-		verticalMenu.addMenuItem(menu_item_navigation);
 		// =====================================================================
 		search_input = (EditText) findViewById(R.id.search_input);
 		result_to_list = findViewById(R.id.result_to_list);
@@ -388,6 +152,182 @@ public class UbilocMapActivity extends MapActivity {
 
 			}
 		});
+	}
+
+	/**
+	 * 初始化菜单布局
+	 */
+	private void initVerticalMenu() {
+		LayoutInflater inflater = LayoutInflater.from(this);
+		// =================================================================================
+		// 定位，pdr方法的入口
+		final List<GeoPoint> coords = new ArrayList<GeoPoint>();
+
+		View menu_item_locate = inflater.inflate(R.layout.menu_item_icon_text,
+				verticalMenu, false);
+		ImageView item_locate_img = (ImageView) menu_item_locate
+				.findViewById(R.id.menu_item_img);
+		item_locate_img.setBackgroundResource(R.drawable.menu_item_locate);
+		TextView item_locate_txt = (TextView) menu_item_locate
+				.findViewById(R.id.menu_item_text);
+		item_locate_txt.setText(R.string.menu_item_locate);
+		menu_item_locate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {// 测试pdr方法
+				// 使用模拟数据
+				// 清除所有图层
+				UbilocMap.getInstance().removeAllOverlays();
+				LineOverlay overlay = new LineOverlay();
+				overlay.setCoords(SimulatedDataManager.getInstance()
+						.getRoute1());
+				UbilocMap.getInstance().addOverlay(overlay);
+				// PdrManager.init(view.getContext());
+				//
+				// // ConstConfig.sObjTask=new SendMovingObjTask();
+				// // new ConnectMsgTask().execute();
+				// PdrManager.getInstance().setOnNavigationListener(
+				// new OnNavigationListener() {
+				//
+				// @Override
+				// public void OnPositionChanged(double lat, double lon) {
+				// try {
+				// String[] s = new String[] {
+				// String.valueOf(lon),
+				// String.valueOf(lat) };
+				//
+				// MovingObj mObj = new MovingObj(0, "ww",
+				// lon, lat);
+				// mlist.add(mObj);
+				//
+				// if (mlist.size() >= 5) {
+				// Intent mintent = new Intent(
+				// UbilocMapActivity.this,
+				// ConnectAndSendService.class);
+				// Bundle bundle = new Bundle();
+				// bundle.putSerializable("MovingObjMsg",
+				// (Serializable) mlist);
+				// mintent.putExtras(bundle);
+				// startService(mintent);
+				// mlist.clear();
+				//
+				// }
+				// // ConstConfig.sObjTask.execute(s);
+				// // 监听位置改变lon经度，lat纬度
+				// // userid=WCApplication.getInstance().getLoginUid();
+				// coords.add(new GeoPoint(lon, lat));
+				// // 清除所有图层
+				// UbilocMap.getInstance().removeAllOverlays();
+				// LineOverlay overlay = new LineOverlay();
+				// overlay.setCoords(coords);
+				// UbilocMap.getInstance().addOverlay(overlay);
+				// UbilocMap.getInstance().setMapCenter(
+				// new GeoPoint(lon, lat));
+				// } catch (Exception e) {
+				// Log.e("error_error", e.toString());
+				// }
+				// }
+				// });
+				// PdrManager.getInstance().startPDR();
+			}
+		});
+
+		verticalMenu.addMenuItem(menu_item_locate);
+		// =================================================================================
+		// 保存pdr方法计算出的位置
+		/*
+		 * try { ConstConfig.sender.disconnect(); } catch (IOException e1) { //
+		 * TODO Auto-generated catch block e1.printStackTrace(); }
+		 */
+		// verticalMenu.addMenuItem(item6);
+		//
+		// View item7 = inflater.inflate(R.layout.menu_item, null);
+		// ImageView item_img7 = (ImageView) item7
+		// .findViewById(R.id.menu_item_img);
+		// item_img7.setBackgroundResource(R.drawable.draw_save);
+		// item7.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View view) {
+		// // 保存文件
+		// String path = Environment.getExternalStorageDirectory()
+		// .getAbsolutePath() + "/ubiloc/wgs84.txt";
+		// File file = new File(path);
+		// try {
+		// BufferedWriter writer = new BufferedWriter(new FileWriter(
+		// file));
+		// for (GeoPoint coord : coords) {
+		// writer.write(coord.getLongitude() + " "
+		// + coord.getLatitude() + "\n");
+		// }
+		// writer.close();
+		//
+		// } catch (Exception e) {
+		//
+		// }
+		// }
+		// });
+		// verticalMenu.addMenuItem(item7);
+		// =================================================================================
+		// 导航功能
+		View menu_item_navigation = inflater.inflate(
+				R.layout.menu_item_icon_text, verticalMenu, false);
+		ImageView item_navigation_img = (ImageView) menu_item_navigation
+				.findViewById(R.id.menu_item_img);
+		item_navigation_img
+				.setBackgroundResource(R.drawable.menu_item_navigation);
+		TextView item_navigation_txt = (TextView) menu_item_navigation
+				.findViewById(R.id.menu_item_text);
+		item_navigation_txt.setText(R.string.menu_item_navigation);
+		menu_item_navigation.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Intent nav_intent = new Intent(view.getContext(),
+						NavigationActivity.class);
+				view.getContext().startActivity(nav_intent);
+			}
+		});
+		verticalMenu.addMenuItem(menu_item_navigation);
+		// =================================================================================
+		// 好友位置显示
+		View menu_item_friend = inflater.inflate(R.layout.menu_item_icon_text,
+				verticalMenu, false);
+		ImageView item_friend_img = (ImageView) menu_item_friend
+				.findViewById(R.id.menu_item_img);
+		item_friend_img.setBackgroundResource(R.drawable.menu_item_friend);
+		TextView item_friend_txt = (TextView) menu_item_friend
+				.findViewById(R.id.menu_item_text);
+		item_friend_txt.setText(R.string.menu_item_friend);
+		menu_item_friend.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Toast.makeText(view.getContext(), "好友位置显示，该功能尚未实现",
+						Toast.LENGTH_SHORT).show();
+			}
+		});
+		verticalMenu.addMenuItem(menu_item_friend);
+		// =================================================================================
+		// 签到
+		View menu_item_checkin = inflater.inflate(R.layout.menu_item_icon_text,
+				verticalMenu, false);
+		ImageView item_checkin_img = (ImageView) menu_item_checkin
+				.findViewById(R.id.menu_item_img);
+		item_checkin_img.setBackgroundResource(R.drawable.menu_item_checkin);
+		TextView item_checkin_txt = (TextView) menu_item_checkin
+				.findViewById(R.id.menu_item_text);
+		item_checkin_txt.setText(R.string.menu_item_checkin);
+		menu_item_checkin.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Intent checkin_itent = new Intent(view.getContext(),
+						CheckinActivity.class);
+				view.getContext().startActivity(checkin_itent);
+			}
+		});
+		verticalMenu.addMenuItem(menu_item_checkin);
 	}
 
 	@Override

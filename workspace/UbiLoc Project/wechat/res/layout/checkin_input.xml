@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        style="@style/my_info_item_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/checkin_input_bg"
+            android:gravity="top"
+            android:hint="@string/checkin_input_hint" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/checkin_locate"
+        style="@style/my_info_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/menu_item_locate" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/checkin_get_location"
+            android:textColor="@color/DeepSkyBlue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     android:background="#eeeeee"
     android:orientation="vertical" >
-
-    <include layout="@layout/navigation_top" />
-
-    <include layout="@layout/navigation_input_user" />
-
+    
+<include layout="@layout/checkin_top"/>
+<include layout="@layout/checkin_input"/>
+<include layout="@layout/checkin_map"/>
 </LinearLayout>

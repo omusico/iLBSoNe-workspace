@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name ="vertical_menu_control_size">35dp</dimen>
-    <dimen name="vertical_menu_item_size">35dp</dimen>
+    <dimen name ="vertical_menu_control_size">45dp</dimen>
+    <dimen name="vertical_menu_item_size">45dp</dimen>
     <dimen name="vertical_menu_item_icon_size">14dp</dimen>
 </resources>

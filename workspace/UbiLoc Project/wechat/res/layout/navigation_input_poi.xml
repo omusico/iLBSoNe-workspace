@@ -67,21 +67,12 @@
                 android:layout_height="15dp"
                 android:background="@drawable/navigation_end_point" />
 
-<!--             <TextView -->
-<!--                 android:layout_width="match_parent" -->
-<!--                 android:layout_height="wrap_content" -->
-<!--                 android:layout_marginLeft="5dp" -->
-<!--                 android:background="@null" -->
-<!--                 android:textSize="18sp" -->
-<!--                 android:textColor="@color/DeepSkyBlue" -->
-<!--                 android:text="@string/input_nav_friend_location" /> -->
-            <Spinner 
-                android:id="@+id/navigation_select_friend"
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                style="@style/spinner_style"
-                android:prompt="@string/input_nav_friend_location" />
+                android:background="@null"
+                android:hint="@string/input_nav_end_location" />
         </LinearLayout>
     </LinearLayout>
 

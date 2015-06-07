@@ -3,7 +3,7 @@ package com.ubiloc.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapsforge.core.model.GeoPoint;
+import com.ubiloc.simulate.SimulatedDataManager;
 
 public class POIDataManager {
 	private String data = "";
@@ -49,30 +49,7 @@ public class POIDataManager {
 	public List<PoiObject> getPoiByKeyword_alpha(String keyword) {
 		List<PoiObject> pois = new ArrayList<PoiObject>();
 		if (keyword.equals(POI_KEW_WORDS_FIRE_HYDRAN)) {
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-1",
-					new GeoPoint(-0.000487, 109.513773), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-2",
-					new GeoPoint(-0.000485, 109.513775), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-3",
-					new GeoPoint(-0.000487, 109.513772), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-4",
-					new GeoPoint(-0.000489, 109.513775), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-5",
-					new GeoPoint(-0.000460, 109.513775), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-6",
-					new GeoPoint(-0.000487, 109.513777), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-7",
-					new GeoPoint(-0.000487, 109.513780), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-8",
-					new GeoPoint(-0.000490, 109.513775), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-9",
-					new GeoPoint(-0.000495, 109.513773), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-10",
-					new GeoPoint(-0.000484, 109.513772), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-11",
-					new GeoPoint(-0.000485, 109.513771), 4, "4楼的消防栓"));
-			pois.add(new PoiObject(PoiClass.POI_CLASS_FIRE_HYDRAN, "消防栓-12",
-					new GeoPoint(-0.000481, 109.513774), 4, "4楼的消防栓"));
+			pois.addAll(SimulatedDataManager.getInstance().getFireHydran());
 		}
 		if (keyword.equals(POI_KEW_WORDS_EXIT)) {
 

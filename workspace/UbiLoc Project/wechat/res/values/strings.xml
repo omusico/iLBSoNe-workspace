@@ -248,7 +248,7 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <!--========================================================================================================== -->
+    <!-- ========================================================================================================== -->
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
     <string name="map_level_beyond_constraints">超出可显示的级别</string>
     <string name="input_pdr_origin_position">输入PDR方法的初始位置</string>
@@ -267,7 +267,26 @@
     <string name="input_nav_start_location">输入起点&#8230;</string>
     <string name="input_nav_end_location">输入终点&#8230;</string>
     <string name="input_nav_my_location">我的位置</string>
+    <string name="input_nav_friend_location">选择好友</string>
     <!-- map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map==map== -->
+    <!-- ========================================================================================================= -->
+
+
+    <!-- ========================================================================================================= -->
+    <!-- menu_vertical_item -->
+    <string name="menu_item_locate">定位</string>
+    <string name="menu_item_navigation">导航</string>
+    <string name="menu_item_friend">好友</string>
+    <string name="menu_item_checkin">签到</string>
+    <string name="checkin_activity_top">签到</string>
+    <string name="checkin_get_location">获取当前的位置</string>
+    <string name="checkin_chek_btn">发表</string>
+    <!-- menu_vertical_item -->
+    <!-- ========================================================================================================= -->
+    <!-- ========================================================================================================= -->
+    <!-- check in -->
+    <string name="checkin_input_hint">说点什么吧&#8230;</string>
+    <!-- check in -->
     <!-- ========================================================================================================= -->
 
 </resources>

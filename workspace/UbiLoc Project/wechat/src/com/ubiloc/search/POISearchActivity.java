@@ -36,9 +36,9 @@ public class POISearchActivity extends Activity {
 
 			@Override
 			public void onClick(View view) {
+				String input = search_input.getText().toString();
 				List<PoiObject> poiObjects = POIDataManager.getInstance()
-						.getPoiByKeyword_alpha(
-								POIDataManager.POI_KEW_WORDS_FIRE_HYDRAN);
+						.getPoiByKeyword_alpha(input);
 				POIResultAdapter adapter = new POIResultAdapter(
 						POISearchActivity.this, poiObjects);
 				poi_search_result_list.setAdapter(adapter);

@@ -33,7 +33,7 @@ public class LineOverlay implements BaseOverlayItem {
 	@Override
 	public void draw(Canvas canvas, Projection projection, Paint paint) {
 		if (mCoords != null && mCoords.size() > 0) {
-			paint.setColor(Color.GREEN);
+			paint.setColor(Color.RED);
 			paint.setAlpha(130);
 			paint.setAntiAlias(true);// 去除锯齿
 			Point lastScreenPoint = new Point();

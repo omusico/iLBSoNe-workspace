@@ -13,6 +13,7 @@
         android:gravity="center" >
 
         <EditText
+            android:id="@+id/checkin_edit"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="@drawable/checkin_input_bg"

@@ -10,6 +10,7 @@ import org.mapsforge.core.model.GeoPoint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 
 import com.donal.wechat.R;
 import com.ubiloc.overlays.PointOverlay;
@@ -18,6 +19,7 @@ public class CheckinActivity extends MapActivity implements OnClickListener {
 	private View back;
 	private MapView mMapView;
 	private View checkin_publish;
+	private EditText checkin_edit;
 	private View checkin_locate;
 
 	public CheckinActivity() {
@@ -41,6 +43,7 @@ public class CheckinActivity extends MapActivity implements OnClickListener {
 		back.setOnClickListener(this);
 		checkin_publish = findViewById(R.id.checkin_publish);
 		checkin_publish.setOnClickListener(this);
+		checkin_edit = (EditText) findViewById(R.id.checkin_edit);
 		checkin_locate = findViewById(R.id.checkin_locate);
 		checkin_locate.setOnClickListener(this);
 	}
@@ -58,6 +61,9 @@ public class CheckinActivity extends MapActivity implements OnClickListener {
 			break;
 		}
 		case R.id.checkin_publish: {
+			String input = checkin_edit.getText().toString();
+			GeoPoint location = new GeoPoint(-0.000487, 109.513775);
+			// 发表的信息
 			CheckinActivity.this.finish();
 			break;
 		}

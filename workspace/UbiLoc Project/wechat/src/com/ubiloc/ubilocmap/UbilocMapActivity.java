@@ -57,16 +57,13 @@ public class UbilocMapActivity extends MapActivity {
 	private Thread myThread;
 	private VerticalMenu verticalMenu;
 	private EditText search_input;
+	private View search_clear;
 	private View map_poi_search;
 	private View result_to_list;
 	// private static String userid;
 
-
 	private static List<MovingObj> mlist;
-
-
-
-	
+	private long mDataVersion = 0;
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -94,26 +91,26 @@ public class UbilocMapActivity extends MapActivity {
 		mlist = new ArrayList<MovingObj>();
 		// userid=WCApplication.getInstance().getLoginUid();
 
-		 myThread = new Thread(new Runnable() {
-		
-		 @Override
-		 public void run() {
-		 try {
-		 Thread.sleep(2000);
-		 handler.sendEmptyMessage(1);
-		 } catch (InterruptedException e) {
-		
-		 e.printStackTrace();
-		 }
-		
-		 }
-		 });
-		 myThread.start();
-		 FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
-		 appContext);
+		myThread = new Thread(new Runnable() {
 
-		//UbilocMap.init(mMapView, UbilocMapActivity.this);
-		//initView();
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(2000);
+					handler.sendEmptyMessage(1);
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+
+			}
+		});
+		myThread.start();
+		FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
+				appContext);
+
+		// UbilocMap.init(mMapView, UbilocMapActivity.this);
+		// initView();
 	}
 
 	/**
@@ -128,6 +125,19 @@ public class UbilocMapActivity extends MapActivity {
 
 		// =====================================================================
 		search_input = (EditText) findViewById(R.id.search_input);
+		search_clear = findViewById(R.id.search_clear);
+		search_clear.setOnClickListener(new OnClickListener() {// 清除查询结果
+
+					@Override
+					public void onClick(View view) {
+						search_input.setText("");
+						UbilocMap.getInstance().removeAllOverlays();
+						// 数据同步
+						POIDataManager.getInstance().clearCurPois();
+						mDataVersion = POIDataManager.getInstance()
+								.getDataVersion();
+					}
+				});
 		result_to_list = findViewById(R.id.result_to_list);
 		result_to_list.setOnClickListener(new OnClickListener() {
 
@@ -142,14 +152,18 @@ public class UbilocMapActivity extends MapActivity {
 		map_poi_search.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View view) {
 				String input = search_input.getText().toString();
 				List<PoiObject> poiObjects = POIDataManager.getInstance()
-						.getPoiByKeyword_alpha(
-								POIDataManager.POI_KEW_WORDS_FIRE_HYDRAN);
+						.getPoiByKeyword_alpha(input);
+
+				mDataVersion = POIDataManager.getInstance().getDataVersion();
 				// 周,使用下面的方法测试
 				// List<PoiObject> poiObjects = POIDataManager.getInstance()
 				// .getPoiByKeyword(input);
+				Toast.makeText(view.getContext(),
+						"共搜索到" + poiObjects.size() + "个", Toast.LENGTH_LONG)
+						.show();
 				UbilocMap.getInstance().addPois(poiObjects);
 
 			}
@@ -301,6 +315,22 @@ public class UbilocMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		synchronizeData();
+
+	}
+
+	/**
+	 * 地图端同步数据
+	 */
+	private void synchronizeData() {
+		if (mDataVersion != POIDataManager.getInstance().getDataVersion()) {// 同步数据
+			List<PoiObject> poiObjects = POIDataManager.getInstance()
+					.getCurPoi();
+			mDataVersion = POIDataManager.getInstance().getDataVersion();
+			UbilocMap.getInstance().addPois(poiObjects);
+			mDataVersion = POIDataManager.getInstance().getDataVersion();
+		}
+
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class UbilocMap {
 	private ArrayOverlay overlays;
 	private boolean isMapDataAvailable = false;
 	private int maxLevel = 20;
-	private int minLevel = 20;
+	private int minLevel = 22;
 	private int defaultLevel = 20;
 
 	private UbilocMap(MapView mapView, Context context) {
@@ -221,7 +221,7 @@ public class UbilocMap {
 	 * @return
 	 */
 	public UbilocMap setMapLevel(int level) {
-		if (level <= maxLevel && level >= minLevel) {
+		if (level <= maxLevel || level >= minLevel) {
 			mMapView.getController().setZoom(level);
 		} else {
 			Toast.makeText(context, R.string.map_level_beyond_constraints,
@@ -246,6 +246,11 @@ public class UbilocMap {
 		return this;
 	}
 
+	/**
+	 * 绘制poi
+	 * 
+	 * @param pois
+	 */
 	public void addPois(List<PoiObject> pois) {
 
 		// 画图,使用测试数据

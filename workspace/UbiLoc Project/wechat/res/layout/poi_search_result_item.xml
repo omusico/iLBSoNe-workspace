@@ -35,6 +35,7 @@
                 android:gravity="center" >
 
                 <ImageView
+                    android:id="@+id/poi_img"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:background="@drawable/draw_bitmap_fire_hydrant" />

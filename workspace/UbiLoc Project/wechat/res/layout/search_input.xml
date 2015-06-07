@@ -21,6 +21,7 @@
             android:singleLine="true" />
 
         <RelativeLayout
+            android:id="@+id/search_clear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

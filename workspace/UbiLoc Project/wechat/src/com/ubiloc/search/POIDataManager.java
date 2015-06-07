@@ -14,13 +14,27 @@ public class POIDataManager {
 	private List<PoiObject> cur_pois;
 	// ===================================================================================
 	// POI查询测试数据
-	public static final String POI_KEW_WORDS_FIRE_HYDRAN = "poi_key_words_fire_hydran";
-	public static final String POI_KEW_WORDS_EXIT = "poi_key_words_exit";
-	public static final String POI_KEW_WORDS_STAIR = "poi_key_words_stair";
-	public static final String POI_KEW_WORDS_ELEVATOR = "poi_key_words_elevator";
-	public static final String POI_KEW_WORDS_WC = "poi_key_words_wc";
-	public static final String POI_KEW_WORDS_LAB = "poi_key_words_lab";
-	public static final String POI_KEW_WORDS_BOARD_ROOM = "poi_key_words_board_room";
+	// public static final String POI_KEW_WORDS_FIRE_HYDRAN =
+	// "poi_key_words_fire_hydran";
+	// public static final String POI_KEW_WORDS_EXIT = "poi_key_words_exit";
+	// public static final String POI_KEW_WORDS_STAIR = "poi_key_words_stair";
+	// public static final String POI_KEW_WORDS_ELEVATOR =
+	// "poi_key_words_elevator";
+	// public static final String POI_KEW_WORDS_WC = "poi_key_words_wc";
+	// public static final String POI_KEW_WORDS_LAB = "poi_key_words_lab";
+	// public static final String POI_KEW_WORDS_BOARD_ROOM =
+	// "poi_key_words_board_room";
+	/**
+	 * 用户地图和列表数据的同步
+	 */
+	private long data_version = 0;
+	public static final String POI_KEW_WORDS_FIRE_HYDRAN = "灭火器,消防栓";
+	public static final String POI_KEW_WORDS_EXIT = "安全出口";
+	public static final String POI_KEW_WORDS_STAIR = "楼梯";
+	public static final String POI_KEW_WORDS_ELEVATOR = "电梯";
+	public static final String POI_KEW_WORDS_WC = "男厕所，女厕所，厕所";
+	public static final String POI_KEW_WORDS_LAB = "实验室";
+	public static final String POI_KEW_WORDS_BOARD_ROOM = "会议室";
 
 	// ===================================================================================
 	private POIDataManager() {
@@ -48,28 +62,33 @@ public class POIDataManager {
 	 */
 	public List<PoiObject> getPoiByKeyword_alpha(String keyword) {
 		List<PoiObject> pois = new ArrayList<PoiObject>();
-		if (keyword.equals(POI_KEW_WORDS_FIRE_HYDRAN)) {
+		if (POI_KEW_WORDS_FIRE_HYDRAN.contains(keyword)) {
 			pois.addAll(SimulatedDataManager.getInstance().getFireHydran());
 		}
-		if (keyword.equals(POI_KEW_WORDS_EXIT)) {
+		if (POI_KEW_WORDS_EXIT.contains(keyword)) {
+			pois.addAll(SimulatedDataManager.getInstance().getExit());
+		}
+		if (POI_KEW_WORDS_STAIR.contains(keyword)) {
+			// pois.addAll(SimulatedDataManager.getInstance().getExit());
 
 		}
-		if (keyword.equals(POI_KEW_WORDS_STAIR)) {
+		if (POI_KEW_WORDS_ELEVATOR.contains(keyword)) {
+			pois.addAll(SimulatedDataManager.getInstance().getElevator());
 
 		}
-		if (keyword.equals(POI_KEW_WORDS_ELEVATOR)) {
+		if (POI_KEW_WORDS_WC.contains(keyword)) {
+			pois.addAll(SimulatedDataManager.getInstance().getWC());
 
 		}
-		if (keyword.equals(POI_KEW_WORDS_WC)) {
-
-		}
-		if (keyword.equals(POI_KEW_WORDS_LAB)) {
+		if (POI_KEW_WORDS_BOARD_ROOM.contains(keyword)) {
+			pois.addAll(SimulatedDataManager.getInstance().getBoadRoom());
 
 		}
 		if (keyword.equals(POI_KEW_WORDS_LAB)) {
 
 		}
 		cur_pois = pois;
+		data_version = System.currentTimeMillis();
 		return pois;
 	}
 
@@ -91,5 +110,14 @@ public class POIDataManager {
 	 */
 	public List<PoiObject> getCurPoi() {
 		return cur_pois;
+	}
+
+	public void clearCurPois() {
+		cur_pois = null;
+		data_version = System.currentTimeMillis();
+	}
+
+	public long getDataVersion() {
+		return data_version;
 	}
 }

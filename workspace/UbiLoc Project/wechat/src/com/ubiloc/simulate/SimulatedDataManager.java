@@ -63,7 +63,7 @@ public class SimulatedDataManager {
 	 * 
 	 * @return
 	 */
-	public List<PoiObject> getBoadElevator() {
+	public List<PoiObject> getElevator() {
 		List<PoiObject> pois = new ArrayList<PoiObject>();
 		pois.add(new PoiObject(PoiClass.POI_CLASS_ELEVATOR, "电梯", new GeoPoint(
 				-0.000505, 109.513757), 4, "4楼电梯入口"));

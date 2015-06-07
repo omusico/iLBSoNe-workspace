@@ -2,6 +2,7 @@ package com.ubiloc.ubilocmap;
 
 import im.WeChat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.core.model.GeoPoint;
 
+import service.ConnectAndSendService;
 import tools.SysApplication;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,11 +34,11 @@ import com.ubiloc.checkin.CheckinActivity;
 import com.ubiloc.model.MovingObj;
 import com.ubiloc.navigation.NavigationActivity;
 import com.ubiloc.overlays.LineOverlay;
+import com.ubiloc.pdr.OnNavigationListener;
 import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
-import com.ubiloc.simulate.SimulatedDataManager;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -56,15 +59,14 @@ public class UbilocMapActivity extends MapActivity {
 	private EditText search_input;
 	private View map_poi_search;
 	private View result_to_list;
-	// private static Intent mintent;
-
-	// private MOMClient sender;
-	private static List<MovingObj> mlist;
-	// private String userid;
-	// private int threadCount=0;
-	// private JavaToJsonThread jtojThread;
-
 	// private static String userid;
+
+
+	private static List<MovingObj> mlist;
+
+
+
+	
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -92,26 +94,26 @@ public class UbilocMapActivity extends MapActivity {
 		mlist = new ArrayList<MovingObj>();
 		// userid=WCApplication.getInstance().getLoginUid();
 
-		// myThread = new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// try {
-		// Thread.sleep(2000);
-		// handler.sendEmptyMessage(1);
-		// } catch (InterruptedException e) {
-		//
-		// e.printStackTrace();
-		// }
-		//
-		// }
-		// });
-		// myThread.start();
-		// FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
-		// appContext);
+		 myThread = new Thread(new Runnable() {
+		
+		 @Override
+		 public void run() {
+		 try {
+		 Thread.sleep(2000);
+		 handler.sendEmptyMessage(1);
+		 } catch (InterruptedException e) {
+		
+		 e.printStackTrace();
+		 }
+		
+		 }
+		 });
+		 myThread.start();
+		 FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
+		 appContext);
 
-		UbilocMap.init(mMapView, UbilocMapActivity.this);
-		initView();
+		//UbilocMap.init(mMapView, UbilocMapActivity.this);
+		//initView();
 	}
 
 	/**
@@ -171,103 +173,63 @@ public class UbilocMapActivity extends MapActivity {
 		TextView item_locate_txt = (TextView) menu_item_locate
 				.findViewById(R.id.menu_item_text);
 		item_locate_txt.setText(R.string.menu_item_locate);
+		verticalMenu.addMenuItem(menu_item_locate);
 		menu_item_locate.setOnClickListener(new OnClickListener() {
 
+			// =================================================================================
+			// 保存pdr方法计算出的位置
 			@Override
 			public void onClick(View view) {// 测试pdr方法
-				// 使用模拟数据
-				// 清除所有图层
-				UbilocMap.getInstance().removeAllOverlays();
-				LineOverlay overlay = new LineOverlay();
-				overlay.setCoords(SimulatedDataManager.getInstance()
-						.getRoute1());
-				UbilocMap.getInstance().addOverlay(overlay);
-				// PdrManager.init(view.getContext());
-				//
-				// // ConstConfig.sObjTask=new SendMovingObjTask();
-				// // new ConnectMsgTask().execute();
-				// PdrManager.getInstance().setOnNavigationListener(
-				// new OnNavigationListener() {
-				//
-				// @Override
-				// public void OnPositionChanged(double lat, double lon) {
-				// try {
-				// String[] s = new String[] {
-				// String.valueOf(lon),
-				// String.valueOf(lat) };
-				//
-				// MovingObj mObj = new MovingObj(0, "ww",
-				// lon, lat);
-				// mlist.add(mObj);
-				//
-				// if (mlist.size() >= 5) {
-				// Intent mintent = new Intent(
-				// UbilocMapActivity.this,
-				// ConnectAndSendService.class);
-				// Bundle bundle = new Bundle();
-				// bundle.putSerializable("MovingObjMsg",
-				// (Serializable) mlist);
-				// mintent.putExtras(bundle);
-				// startService(mintent);
-				// mlist.clear();
-				//
-				// }
-				// // ConstConfig.sObjTask.execute(s);
-				// // 监听位置改变lon经度，lat纬度
-				// // userid=WCApplication.getInstance().getLoginUid();
-				// coords.add(new GeoPoint(lon, lat));
-				// // 清除所有图层
-				// UbilocMap.getInstance().removeAllOverlays();
-				// LineOverlay overlay = new LineOverlay();
-				// overlay.setCoords(coords);
-				// UbilocMap.getInstance().addOverlay(overlay);
-				// UbilocMap.getInstance().setMapCenter(
-				// new GeoPoint(lon, lat));
-				// } catch (Exception e) {
-				// Log.e("error_error", e.toString());
-				// }
-				// }
-				// });
-				// PdrManager.getInstance().startPDR();
+
+				PdrManager.init(view.getContext());
+
+				// ConstConfig.sObjTask=new SendMovingObjTask();
+				// new ConnectMsgTask().execute();
+				PdrManager.getInstance().setOnNavigationListener(
+						new OnNavigationListener() {
+
+							@Override
+							public void OnPositionChanged(double lat, double lon) {
+								try {
+									String[] s = new String[] {
+											String.valueOf(lon),
+											String.valueOf(lat) };
+
+									MovingObj mObj = new MovingObj("ww", lon,
+											lat);
+									mlist.add(mObj);
+
+									if (mlist.size() >= 5) {
+										Intent mintent = new Intent(
+												UbilocMapActivity.this,
+												ConnectAndSendService.class);
+										Bundle bundle = new Bundle();
+										bundle.putSerializable("MovingObjMsg",
+												(Serializable) mlist);
+										mintent.putExtras(bundle);
+										startService(mintent);
+										mlist.clear();
+
+									}
+									// ConstConfig.sObjTask.execute(s);
+									// 监听位置改变lon经度，lat纬度
+									// userid=WCApplication.getInstance().getLoginUid();
+									coords.add(new GeoPoint(lon, lat));
+									// 清除所有图层
+									UbilocMap.getInstance().removeAllOverlays();
+									LineOverlay overlay = new LineOverlay();
+									overlay.setCoords(coords);
+									UbilocMap.getInstance().addOverlay(overlay);
+									UbilocMap.getInstance().setMapCenter(
+											new GeoPoint(lon, lat));
+								} catch (Exception e) {
+									Log.e("error_error", e.toString());
+								}
+							}
+						});
+				PdrManager.getInstance().startPDR();
 			}
 		});
-
-		verticalMenu.addMenuItem(menu_item_locate);
-		// =================================================================================
-		// 保存pdr方法计算出的位置
-		/*
-		 * try { ConstConfig.sender.disconnect(); } catch (IOException e1) { //
-		 * TODO Auto-generated catch block e1.printStackTrace(); }
-		 */
-		// verticalMenu.addMenuItem(item6);
-		//
-		// View item7 = inflater.inflate(R.layout.menu_item, null);
-		// ImageView item_img7 = (ImageView) item7
-		// .findViewById(R.id.menu_item_img);
-		// item_img7.setBackgroundResource(R.drawable.draw_save);
-		// item7.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View view) {
-		// // 保存文件
-		// String path = Environment.getExternalStorageDirectory()
-		// .getAbsolutePath() + "/ubiloc/wgs84.txt";
-		// File file = new File(path);
-		// try {
-		// BufferedWriter writer = new BufferedWriter(new FileWriter(
-		// file));
-		// for (GeoPoint coord : coords) {
-		// writer.write(coord.getLongitude() + " "
-		// + coord.getLatitude() + "\n");
-		// }
-		// writer.close();
-		//
-		// } catch (Exception e) {
-		//
-		// }
-		// }
-		// });
-		// verticalMenu.addMenuItem(item7);
 		// =================================================================================
 		// 导航功能
 		View menu_item_navigation = inflater.inflate(
@@ -339,8 +301,6 @@ public class UbilocMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// String data = POIDataManager.getInstance().getData();
-		// Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

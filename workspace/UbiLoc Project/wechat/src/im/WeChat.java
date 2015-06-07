@@ -187,7 +187,7 @@ public class WeChat extends AWechatActivity implements OnScrollListener, OnRefre
 					XMPPConnection connection = XmppConnectionManager.getInstance()
 							.getConnection();
 					connection.connect();
-					connection.login(userId, password, "android"); 
+					connection.login(userId, password,"android"); 
 					//离线消息处理——wr
 					OfflineMessageManager offlineManager = new OfflineMessageManager(  
 							connection);

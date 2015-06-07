@@ -63,6 +63,7 @@ public class CheckinActivity extends MapActivity implements OnClickListener {
 		case R.id.checkin_publish: {
 			String input = checkin_edit.getText().toString();
 			GeoPoint location = new GeoPoint(-0.000487, 109.513775);
+
 			// 发表的信息
 			CheckinActivity.this.finish();
 			break;

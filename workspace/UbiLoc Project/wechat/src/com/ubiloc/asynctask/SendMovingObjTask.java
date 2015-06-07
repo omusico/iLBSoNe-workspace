@@ -21,7 +21,7 @@ public class SendMovingObjTask extends AsyncTask<String, Void, Void> {
 		// TODO Auto-generated method stub
 		mlist=new ArrayList<MovingObj>();
 		userid=WCApplication.getInstance().getLoginUid();
-		MovingObj mObj=new MovingObj(0, "ww", Double.parseDouble(params[0]), Double.parseDouble(params[1]));
+		MovingObj mObj=new MovingObj("ww", Double.parseDouble(params[0]), Double.parseDouble(params[1]));
 		mlist.add(mObj);
 		/*try {
 			JavaBeanToJsonTool.javaTojsonAndSend(mlist, null);

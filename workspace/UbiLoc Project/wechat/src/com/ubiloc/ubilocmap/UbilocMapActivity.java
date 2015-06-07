@@ -64,15 +64,14 @@ public class UbilocMapActivity extends MapActivity {
 	private EditText search_input;
 	private View map_poi_search;
 	private View result_to_list;
-	// private static Intent mintent;
-
-	// private MOMClient sender;
-	private static List<MovingObj> mlist;
-	// private String userid;
-	// private int threadCount=0;
-	// private JavaToJsonThread jtojThread;
-
 	// private static String userid;
+
+
+	private static List<MovingObj> mlist;
+
+
+
+	
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -100,26 +99,26 @@ public class UbilocMapActivity extends MapActivity {
 		mlist = new ArrayList<MovingObj>();
 		// userid=WCApplication.getInstance().getLoginUid();
 
-		// myThread = new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// try {
-		// Thread.sleep(2000);
-		// handler.sendEmptyMessage(1);
-		// } catch (InterruptedException e) {
-		//
-		// e.printStackTrace();
-		// }
-		//
-		// }
-		// });
-		// myThread.start();
-		// FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
-		// appContext);
+		 myThread = new Thread(new Runnable() {
+		
+		 @Override
+		 public void run() {
+		 try {
+		 Thread.sleep(2000);
+		 handler.sendEmptyMessage(1);
+		 } catch (InterruptedException e) {
+		
+		 e.printStackTrace();
+		 }
+		
+		 }
+		 });
+		 myThread.start();
+		 FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,
+		 appContext);
 
-		UbilocMap.init(mMapView, UbilocMapActivity.this);
-		initView();
+		//UbilocMap.init(mMapView, UbilocMapActivity.this);
+		//initView();
 	}
 
 	/**

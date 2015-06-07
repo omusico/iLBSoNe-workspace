@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">wechat</string>
+    <string name="app_name">iSoNe</string>
     <string name="main_wechat">会话</string>
     <string name="main_friend">通讯录</string>
     <string name="main_map">地图</string>

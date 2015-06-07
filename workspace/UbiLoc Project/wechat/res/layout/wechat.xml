@@ -35,16 +35,6 @@
             android:textSize="18sp"
             />
         
-        <ImageView
-            android:layout_centerVertical="true"
-            android:id="@+id/xindicator"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_toRightOf="@+id/titleBarView"
-            android:layout_marginLeft="8dp"
-            android:visibility="invisible"
-            android:background="@drawable/round_1"/>
-        
         <View 
             android:id="@+id/viewbar"
         android:layout_width="match_parent"
@@ -69,6 +59,16 @@
         android:background="#e4e4e4"
         android:layout_alignParentBottom="true"
         /> -->
+
+        <ImageView
+            android:id="@+id/xindicator"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_above="@+id/geomsgbtn"
+            android:layout_toRightOf="@+id/titleBarView"
+            android:background="@drawable/round_1"
+            android:visibility="invisible" />
+
     </RelativeLayout>
      <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/xrefresh"

@@ -1,8 +1,12 @@
 package ui.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.mapsforge.core.model.GeoPoint;
+
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,8 @@ import bean.UserInfo;
 
 import com.donal.wechat.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.ubiloc.search.PoiObject;
+import com.ubiloc.ubilocmap.UbilocMap;
 
 import config.CommonValue;
 
@@ -23,6 +29,7 @@ public class FriendMapCardAdaper extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<UserInfo> cards;
 	public static final String mytag = "Test";
+	private OnClickListener onFriendClickListener;
 
 	static class CellHolder {
 		TextView alpha;
@@ -73,14 +80,12 @@ public class FriendMapCardAdaper extends BaseAdapter {
 		ImageLoader.getInstance().displayImage(
 				CommonValue.BASE_URL + model.userHead, cell.avatarImageView,
 				CommonValue.DisplayOptions.default_options);
-		convertView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// ((Friend)context).createChat(model.userId+XmppConnectionManager.BASE_XMPP_SERVER_NAME);
-				// Log.i(model.userId);
-			}
-		});
+		convertView.setOnClickListener(onFriendClickListener);
 		return convertView;
+	}
+	
+	public void setOnClickListener(OnClickListener onFriendClickListener){
+		this.onFriendClickListener=onFriendClickListener;
+		
 	}
 }

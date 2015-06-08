@@ -1,6 +1,7 @@
 package service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.ubiloc.model.MovingObj;
+import com.ubiloc.tools.ConstConfig;
 
 public class ConnectAndSendService extends IntentService {
 
@@ -37,7 +39,7 @@ public class ConnectAndSendService extends IntentService {
 		super.onCreate();
 		Log.v(TAG,"onCreate");
 		if(flag==0){
-			sender=new MOMClient("192.168.1.101",3009,"sender");
+			sender=new MOMClient("192.168.1.240",3009,"sender");
 		}
 		//
 	}
@@ -85,13 +87,16 @@ public class ConnectAndSendService extends IntentService {
 				
 				listObj=(List<MovingObj>)intent.getSerializableExtra("MovingObjMsg");
 				Log.v(TAG,listObj.toString());
-				String fiveObj=new Gson().toJson(listObj);
-				String mObj="1002"+"#"+fiveObj;
+				MovingObj endObj=listObj.get(4);
+				String fiveObj=new Gson().toJson(endObj);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+				//long timetemplet=Timestamp(System.currentTimeMillis());
+				String mObj=ConstConfig.LOC_SEND_OPERATOR+"#"+fiveObj;
 				//下面一步出现问题
 				//JSONArray jArray=JSONArray.fromObject(listObj);
 				Log.v(TAG,fiveObj);
 				m=new Message();
-				m.setRecipient("receiver");
+				m.setRecipient("LBSReceiver");
 				m.setSender("sender");
 				//Log.v(TAG,"message");
 				try {

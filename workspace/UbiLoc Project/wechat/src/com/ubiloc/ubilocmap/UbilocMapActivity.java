@@ -3,6 +3,7 @@ package com.ubiloc.ubilocmap;
 import im.WeChat;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -64,7 +64,7 @@ public class UbilocMapActivity extends MapActivity {
 	private View search_clear;
 	private View map_poi_search;
 	private View result_to_list;
-	// private static String userid;
+	private static String userid;
 
 	private static List<MovingObj> mlist;
 	private long mDataVersion = 0;
@@ -121,7 +121,7 @@ public class UbilocMapActivity extends MapActivity {
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		mlist = new ArrayList<MovingObj>();
 		//FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,appContext);
-		// userid=WCApplication.getInstance().getLoginUid();
+		userid=WCApplication.getInstance().getLoginUid();
 
 		myThread = new Thread(new Runnable() {
 
@@ -240,9 +240,9 @@ public class UbilocMapActivity extends MapActivity {
 									String[] s = new String[] {
 											String.valueOf(lon),
 											String.valueOf(lat) };
-
-									MovingObj mObj = new MovingObj("ww", lon,
-											lat);
+									Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+									MovingObj mObj=new MovingObj(userid, lon, lat, timestamp);
+									//MovingObj mObj = new MovingObj(userid, lon,lat,timestamp);
 									mlist.add(mObj);
 
 									if (mlist.size() >= 5) {
@@ -412,6 +412,9 @@ public class UbilocMapActivity extends MapActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						SysApplication.getInstance().exit();
+						Intent stopIntent=new Intent(UbilocMapActivity.this,
+								ConnectAndSendService.class);
+						stopService(stopIntent);
 						appContext.exit();
 					}
 				})

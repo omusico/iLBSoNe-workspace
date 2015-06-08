@@ -4,61 +4,57 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-    <RelativeLayout 
-        android:layout_height="44dp"
+
+    <RelativeLayout
+        style="@style/my_info_item_style"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        >
-        
-        <TextView 
+        android:layout_height="wrap_content" >
+
+        <TextView
             android:id="@+id/titleBarView"
             android:layout_width="wrap_content"
-      		android:layout_height="wrap_content"
-            android:text="我的好友"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            />
-        
-        <ImageView
-            android:layout_centerVertical="true"
-            android:id="@+id/xindicator"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_toRightOf="@+id/titleBarView"
-            android:layout_marginLeft="8dp"
-            android:visibility="invisible"
-           />
-        <Button android:id="@+id/addFriendBtn"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:text="添加好友"
-            	android:layout_toRightOf="@+id/xindicator"
-            	android:layout_marginLeft="10dp"
-            	android:layout_marginTop="5dp"/>
-        
-        <View 
+            android:text="@string/my_friends"
+            android:textColor="@color/title_text_color"
+            android:textSize="@dimen/title_text_size" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/search_button_bg"
+            android:padding="3dp"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/addFriendBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_friend" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e4e4e4"
-        android:layout_alignParentBottom="true"
-        />
-    </RelativeLayout>
-    
+        android:background="#e4e4e4" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/xrefresh"
         android:layout_width="match_parent"
-   		android:layout_height="match_parent"
-   		>
+        android:layout_height="match_parent" >
+
         <ListView
-	        android:id="@+id/xlistview"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:divider="#00000000"
-	        android:footerDividersEnabled="false"
-	        android:headerDividersEnabled="false"
-	        android:fadingEdge="none"
-	        android:cacheColorHint="#00000000"
-	        android:listSelector="#00000000" />
+            android:id="@+id/xlistview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:fadingEdge="none"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="#00000000" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

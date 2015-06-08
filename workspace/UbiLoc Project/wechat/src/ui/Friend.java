@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.Button;
 import android.widget.ListView;
 import bean.StrangerEntity;
 import bean.UserInfo;
@@ -31,42 +30,43 @@ import bean.UserInfo;
 import com.donal.wechat.R;
 
 import config.ApiClent;
+import config.ApiClent.ClientCallback;
 import config.AppActivity;
 import config.CommonValue;
-import config.ApiClent.ClientCallback;
 
 /**
  * wechat
- *
+ * 
  * @author donal
- *
+ * 
  */
-public class Friend extends AppActivity implements OnScrollListener, OnRefreshListener{
-	
+public class Friend extends AppActivity implements OnScrollListener,
+		OnRefreshListener {
+
 	private int lvDataState;
 	private int currentPage;
-	
+
 	private ListView xlistView;
-	private Button addFriendBtn;
+	private View addFriendBtn;
 	private List<UserInfo> datas;
 	private FriendCardAdapter mAdapter;
 	private SwipeRefreshLayout swipeLayout;
-	
+
 	private FriendReceiver receiver = null;
-	
+
 	private void init() {
 		receiver = new FriendReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(CommonValue.ADD_FRIEND_ACTION);
 		registerReceiver(receiver, filter);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(receiver);
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,89 +75,92 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 		init();
 		getFriendCardFromCache();
 		addfriend();
-		
+
 	}
-	
+
 	private void addfriend() {
-		addFriendBtn=(Button) findViewById(R.id.addFriendBtn);
+		addFriendBtn = findViewById(R.id.addFriendBtn);
 		addFriendBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent=new Intent(Friend.this,FindFriend.class);
+				Intent intent = new Intent(Friend.this, FindFriend.class);
 				startActivity(intent);
-				
+
 			}
 		});
-		
+
 	}
 
 	private void initUI() {
 		swipeLayout = (SwipeRefreshLayout) findViewById(R.id.xrefresh);
 		swipeLayout.setOnRefreshListener(this);
-	    swipeLayout.setColorScheme(android.R.color.holo_blue_bright, 
-	            android.R.color.holo_green_light, 
-	            android.R.color.holo_orange_light, 
-	            android.R.color.holo_red_light);
-		xlistView = (ListView)findViewById(R.id.xlistview);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+		xlistView = (ListView) findViewById(R.id.xlistview);
 		xlistView.setOnScrollListener(this);
-        xlistView.setDividerHeight(0);
-        datas = new ArrayList<UserInfo>();
+		xlistView.setDividerHeight(0);
+		datas = new ArrayList<UserInfo>();
 		mAdapter = new FriendCardAdapter(this, datas);
 		xlistView.setAdapter(mAdapter);
 	}
-	
-	public void show2OptionsDialog(final String[] arg ,final UserInfo model){
-		new AlertDialog.Builder(context).setTitle(null).setItems(arg,
-				new DialogInterface.OnClickListener(){
-			public void onClick(DialogInterface dialog, int which){
-				switch(which){
-				case 0:
-					try {
-						ApiClent.deleteFriend(appContext, appContext.getLoginApiKey(), model.userId, null);
-						datas.remove(model);
-						mAdapter.notifyDataSetChanged();
-					} catch (Exception e) {
-						e.printStackTrace();
+
+	public void show2OptionsDialog(final String[] arg, final UserInfo model) {
+		new AlertDialog.Builder(context).setTitle(null)
+				.setItems(arg, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							try {
+								ApiClent.deleteFriend(appContext,
+										appContext.getLoginApiKey(),
+										model.userId, null);
+								datas.remove(model);
+								mAdapter.notifyDataSetChanged();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+						}
 					}
-					break;
-				}
-			}
-		}).show();
+				}).show();
 	}
-	
+
 	private void getFriendCardFromCache() {
 		currentPage = 1;
 		getMyFriend(currentPage, UIHelper.LISTVIEW_ACTION_REFRESH);
 	}
-	
+
 	private void getMyFriend(int page, final int action) {
 		String apiKey = appContext.getLoginApiKey();
-		ApiClent.getMyFriend(appContext, apiKey, page+"", UIHelper.LISTVIEW_COUNT+"", new ClientCallback() {
-			@Override
-			public void onSuccess(Object data) {
-				StrangerEntity entity = (StrangerEntity)data;
-				switch (entity.status) {
-				case 1:
-					handleFriends(entity, action);
-					break;
-				default:
-					showToast(entity.msg);
-					break;
-				}
-			}
-			
-			@Override
-			public void onFailure(String message) {
-				showToast(message);
-			}
-			
-			@Override
-			public void onError(Exception e) {
-			}
-		});
+		ApiClent.getMyFriend(appContext, apiKey, page + "",
+				UIHelper.LISTVIEW_COUNT + "", new ClientCallback() {
+					@Override
+					public void onSuccess(Object data) {
+						StrangerEntity entity = (StrangerEntity) data;
+						switch (entity.status) {
+						case 1:
+							handleFriends(entity, action);
+							break;
+						default:
+							showToast(entity.msg);
+							break;
+						}
+					}
+
+					@Override
+					public void onFailure(String message) {
+						showToast(message);
+					}
+
+					@Override
+					public void onError(Exception e) {
+					}
+				});
 	}
-	
+
 	private void handleFriends(StrangerEntity entity, int action) {
 		switch (action) {
 		case UIHelper.LISTVIEW_ACTION_INIT:
@@ -169,15 +172,14 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 			datas.addAll(entity.userList);
 			break;
 		}
-		if(entity.userList.size() == UIHelper.LISTVIEW_COUNT){					
+		if (entity.userList.size() == UIHelper.LISTVIEW_COUNT) {
 			lvDataState = UIHelper.LISTVIEW_DATA_MORE;
 			mAdapter.notifyDataSetChanged();
-		}
-		else {
+		} else {
 			lvDataState = UIHelper.LISTVIEW_DATA_FULL;
 			mAdapter.notifyDataSetChanged();
 		}
-		if(datas.isEmpty()){
+		if (datas.isEmpty()) {
 			lvDataState = UIHelper.LISTVIEW_DATA_EMPTY;
 		}
 		swipeLayout.setRefreshing(false);
@@ -185,9 +187,9 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 
 	@Override
 	public void onBackPressed() {
-		isExit(); 
+		isExit();
 	}
-	
+
 	public void createChat(String userId) {
 		Intent intent = new Intent(context, Chating.class);
 		intent.putExtra("to", userId);
@@ -198,19 +200,19 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		if (lvDataState != UIHelper.LISTVIEW_DATA_MORE) {
-            return;
-        }
-        if (firstVisibleItem + visibleItemCount >= totalItemCount
-                && totalItemCount != 0) {
-        	lvDataState = UIHelper.LISTVIEW_DATA_LOADING;
-        	currentPage++;
-        	getMyFriend(currentPage, UIHelper.LISTVIEW_ACTION_SCROLL);
-        }
+			return;
+		}
+		if (firstVisibleItem + visibleItemCount >= totalItemCount
+				&& totalItemCount != 0) {
+			lvDataState = UIHelper.LISTVIEW_DATA_LOADING;
+			currentPage++;
+			getMyFriend(currentPage, UIHelper.LISTVIEW_ACTION_SCROLL);
+		}
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		
+
 	}
 
 	@Override
@@ -219,12 +221,11 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 			lvDataState = UIHelper.LISTVIEW_DATA_LOADING;
 			currentPage = 1;
 			getMyFriend(currentPage, UIHelper.LISTVIEW_ACTION_REFRESH);
-		}
-		else {
+		} else {
 			swipeLayout.setRefreshing(false);
 		}
 	}
-	
+
 	private class FriendReceiver extends BroadcastReceiver {
 
 		@Override
@@ -234,7 +235,7 @@ public class Friend extends AppActivity implements OnScrollListener, OnRefreshLi
 				UserInfo user = (UserInfo) intent.getSerializableExtra("user");
 				datas.add(0, user);
 				mAdapter.notifyDataSetChanged();
-			} 
+			}
 		}
 	}
 }

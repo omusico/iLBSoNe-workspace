@@ -43,6 +43,7 @@ import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
 import com.ubiloc.search.UserSearchManager;
+import com.ubiloc.tools.ConstConfig;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -240,11 +241,9 @@ public class UbilocMapActivity extends MapActivity {
 							public void OnPositionChanged(double x, double y,
 									double lat, double lon) {
 								try {
-									String[] s = new String[] {
-											String.valueOf(lon),
-											String.valueOf(lat) };
+									
 									Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
-									MovingObj mObj=new MovingObj(userid, lon, lat, timestamp);
+									MovingObj mObj=new MovingObj(userid, x, y, timestamp);
 									//MovingObj mObj = new MovingObj(userid, lon,lat,timestamp);
 									mlist.add(mObj);
 
@@ -253,6 +252,7 @@ public class UbilocMapActivity extends MapActivity {
 												UbilocMapActivity.this,
 												ConnectAndSendService.class);
 										Bundle bundle = new Bundle();
+										bundle.putString(ConstConfig.MSG_TYPE, ConstConfig.LOC_SEND_OPERATOR);
 										bundle.putSerializable("MovingObjMsg",
 												(Serializable) mlist);
 										mintent.putExtras(bundle);

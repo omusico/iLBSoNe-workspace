@@ -1,8 +1,10 @@
 package com.ubiloc.model;
 
+import java.io.Serializable;
 
 
-public class MORangeRequest{
+
+public class MORangeRequest implements Serializable{
 	/**
 	 * 用户的id
 	 */

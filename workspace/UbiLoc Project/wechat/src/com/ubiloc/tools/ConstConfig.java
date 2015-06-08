@@ -5,6 +5,8 @@ package com.ubiloc.tools;
 public class ConstConfig {
 	public static int MSG_OBJ=0;
 	
+	//发送消息类型
+		public static String MSG_TYPE="type";
 	//PDR位置坐标发送操作
 		public static String LOC_SEND_OPERATOR = "0201";
 		

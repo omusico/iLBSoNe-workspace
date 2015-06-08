@@ -262,7 +262,7 @@
     <string name="pdr_origin_ori">初始朝向</string>
     <string name="pdr_origin_perx">初始X坐标</string>
     <string name="pdr_origin_pery">初始Y坐标</string>
-    <string name="hint_search_input">输入查询关键字</string>
+    <string name="hint_search_input">输入查询关键字&#8230;</string>
     <string name="list">列表</string>
     <string name="map">地图</string>
     <string name="search">搜索</string>
@@ -292,6 +292,13 @@
     <!-- check in -->
     <string name="checkin_input_hint">说点什么吧&#8230;</string>
     <!-- check in -->
+    <!-- ========================================================================================================= -->
+    <!-- ========================================================================================================= -->
+    <!-- search user by distance -->
+    <string name="search_user_dialog_title">查询附近的好友</string>
+    <string name="search_user_distance">查询距离</string>
+    <string name="meter">(米)</string>
+    <!-- search user by distance -->
     <!-- ========================================================================================================= -->
 
 </resources>

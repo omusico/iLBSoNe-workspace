@@ -277,7 +277,8 @@ public class PdrManager {
 			Log.i("正北偏角：", String.valueOf(temp[2]));
 
 			if (mOnNavigationListener != null) {
-				mOnNavigationListener.OnPositionChanged(temp[0], temp[1]);
+				mOnNavigationListener.OnPositionChanged(positionX, positionY,
+						temp[0], temp[1]);
 			}
 		}
 	}

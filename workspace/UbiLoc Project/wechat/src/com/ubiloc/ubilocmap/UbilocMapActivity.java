@@ -41,6 +41,7 @@ import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
+import com.ubiloc.search.UserSearchManager;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -87,6 +88,7 @@ public class UbilocMapActivity extends MapActivity {
 			case INIT_VIEW: {
 				UbilocMap.init(mMapView, UbilocMapActivity.this);
 				initView();
+				UserSearchManager.init(UbilocMapActivity.this);
 				break;
 			}
 			case NAV_POI: {
@@ -234,7 +236,8 @@ public class UbilocMapActivity extends MapActivity {
 						new OnNavigationListener() {
 
 							@Override
-							public void OnPositionChanged(double lat, double lon) {
+							public void OnPositionChanged(double x, double y,
+									double lat, double lon) {
 								try {
 									String[] s = new String[] {
 											String.valueOf(lon),
@@ -354,8 +357,7 @@ public class UbilocMapActivity extends MapActivity {
 
 			@Override
 			public void onClick(View view) {
-				Toast.makeText(view.getContext(), "好友位置显示，该功能尚未实现",
-						Toast.LENGTH_SHORT).show();
+				UserSearchManager.getInstance().searchUserByDistance();
 			}
 		});
 		verticalMenu.addMenuItem(menu_item_friend);

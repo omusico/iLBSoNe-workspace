@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -118,8 +119,8 @@ public class UbilocMapActivity extends MapActivity {
 		SysApplication.getInstance().addActivity(this);
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
-
 		mlist = new ArrayList<MovingObj>();
+		//FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,appContext);
 		// userid=WCApplication.getInstance().getLoginUid();
 
 		myThread = new Thread(new Runnable() {

@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
@@ -267,4 +268,19 @@ public class UbilocMap {
 
 	}
 
+	/**
+	 * 地图上绘制好友图像
+	 * @param pois
+	 * @param bitmap
+	 */
+	
+	public void addFriendImage(GeoPoint geoPoint,Bitmap bitmap){
+		BitmapOverlay overlay = new BitmapOverlay(context);
+		
+			BitmapOverlayItem overlayItem1 =new BitmapOverlayItem(context, geoPoint, bitmap);
+			List<BitmapOverlayItem> overlayItems=new ArrayList<BitmapOverlayItem>();
+			overlayItems.add(overlayItem1);
+			overlay.setBitmapOverlayItems(overlayItems);
+			addOverlay(overlay);
+	}
 }

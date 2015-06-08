@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.donal.wechat.R;
+import com.ubiloc.tools.MORangeRequestTools;
+import com.ubiloc.ubilocmap.UbilocMapActivity;
 
 public class UserSearchManager {
 	private static UserSearchManager mUserSearchManager;
@@ -50,8 +52,17 @@ public class UserSearchManager {
 			@Override
 			public void onClick(View view) {
 				String dis = distance.getText().toString();
-				Toast.makeText(mContext, dis, Toast.LENGTH_SHORT).show();
-				dialog.dismiss();
+				if (!dis.equals("")) {
+
+					MORangeRequestTools.RangRequest(mContext,
+							UbilocMapActivity.userid, dis);
+
+					dialog.dismiss();
+				} else {
+
+					Toast.makeText(mContext, "输入内容不能为空", Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
 		View cancle = dialog_content.findViewById(R.id.search_users_cancle);

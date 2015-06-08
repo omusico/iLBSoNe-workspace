@@ -122,9 +122,9 @@ public class UbilocMapActivity extends MapActivity {
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		mlist = new ArrayList<MovingObj>();
-		//FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,appContext);
-		userid=WCApplication.getInstance().getLoginUid();
-
+		// FriendHeadList.initHeadList(xlistView,
+		// UbilocMapActivity.this,appContext);
+		userid = WCApplication.getInstance().getLoginUid();
 
 		myThread = new Thread(new Runnable() {
 
@@ -241,10 +241,13 @@ public class UbilocMapActivity extends MapActivity {
 							public void OnPositionChanged(double x, double y,
 									double lat, double lon) {
 								try {
-									
-									Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
-									MovingObj mObj=new MovingObj(userid, x, y, timestamp);
-									//MovingObj mObj = new MovingObj(userid, lon,lat,timestamp);
+
+									Timestamp timestamp = new Timestamp(System
+											.currentTimeMillis());
+									MovingObj mObj = new MovingObj(userid, x,
+											y, timestamp);
+									// MovingObj mObj = new MovingObj(userid,
+									// lon,lat,timestamp);
 									mlist.add(mObj);
 
 									if (mlist.size() >= 5) {
@@ -252,7 +255,8 @@ public class UbilocMapActivity extends MapActivity {
 												UbilocMapActivity.this,
 												ConnectAndSendService.class);
 										Bundle bundle = new Bundle();
-										bundle.putString(ConstConfig.MSG_TYPE, ConstConfig.LOC_SEND_OPERATOR);
+										bundle.putString(ConstConfig.MSG_TYPE,
+												ConstConfig.LOC_SEND_OPERATOR);
 										bundle.putSerializable("MovingObjMsg",
 												(Serializable) mlist);
 										mintent.putExtras(bundle);
@@ -413,12 +417,13 @@ public class UbilocMapActivity extends MapActivity {
 
 	@Override
 	public void onBackPressed() {
-		new AlertDialog.Builder(UbilocMapActivity.this).setTitle("确定退出吗?")
+		new AlertDialog.Builder(UbilocMapActivity.this)
+				.setTitle("确定退出吗?")
 				.setNeutralButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						SysApplication.getInstance().exit();
-						Intent stopIntent=new Intent(UbilocMapActivity.this,
+						Intent stopIntent = new Intent(UbilocMapActivity.this,
 								ConnectAndSendService.class);
 						stopService(stopIntent);
 						appContext.exit();

@@ -97,6 +97,7 @@ public class ReceiveGeoMsgTask extends AsyncTask<Void, Void, Void> {
 		super.onPostExecute(result);
 		//新建异步任务通过通过消息中间件发送坐标信息
 		new SendCoordinateTask().execute();
+		
 	}
 	
 	

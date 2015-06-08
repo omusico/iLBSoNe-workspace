@@ -48,7 +48,7 @@ public class ConnectAndSendService extends IntentService {
 		senderId=UbilocMapActivity.userid;
 		Log.v(TAG,"onCreate");
 		if(flag==0){
-			sender=new MOMClient("192.168.1.240",3009,senderId);
+			sender=new MOMClient("192.168.1.240",3009,"sender");
 		}
 		//
 	}
@@ -106,7 +106,7 @@ public class ConnectAndSendService extends IntentService {
 				Log.v(TAG,fiveObj);
 				m=new Message();
 				m.setRecipient("LBSReceiver");
-				m.setSender(senderId);
+				m.setSender("sender");
 				//Log.v(TAG,"message");
 				try {
 					Log.v(TAG, "beforesend");
@@ -129,7 +129,7 @@ public class ConnectAndSendService extends IntentService {
 					String mObj=ConstConfig.Range_MO_Query+"#"+sendObj;
 					m=new Message();
 					m.setRecipient("LBSReceiver");
-					m.setSender(senderId);
+					m.setSender("sender");
 					//Log.v(TAG,"message");
 					try {
 						Log.v(TAG, "beforesend");
@@ -185,7 +185,7 @@ public class ConnectAndSendService extends IntentService {
 					String mObj=ConstConfig.MO_LOGIN+"#"+sendObj;
 					m=new Message();
 					m.setRecipient("LBSReceiver");
-					m.setSender(senderId);
+					m.setSender("sender");
 					//Log.v(TAG,"message");
 					try {
 						Log.v(TAG, "beforesend");

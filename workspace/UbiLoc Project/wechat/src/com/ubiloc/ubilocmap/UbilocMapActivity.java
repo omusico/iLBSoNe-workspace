@@ -44,6 +44,7 @@ import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
 import com.ubiloc.search.UserSearchManager;
 import com.ubiloc.tools.ConstConfig;
+import com.ubiloc.tools.MORangeRequestTools;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -132,6 +133,8 @@ public class UbilocMapActivity extends MapActivity {
 			public void run() {
 				try {
 					Thread.sleep(2000);
+					//登录向LBS服务器发送消息
+					MORangeRequestTools.LoginSend(UbilocMapActivity.this, userid);
 					handler.sendEmptyMessage(1);
 				} catch (InterruptedException e) {
 

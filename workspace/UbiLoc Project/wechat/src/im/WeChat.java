@@ -75,8 +75,7 @@ public class WeChat extends AWechatActivity implements OnScrollListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wechat);
-		//登录向LBS服务器发送消息
-		MORangeRequestTools.LoginSend(WeChat.this, WCApplication.getInstance().getLoginUid());
+		
 		initUI();
 		getHistoryChat();
 		XMPPConnection connection = XmppConnectionManager.getInstance()
@@ -87,6 +86,8 @@ public class WeChat extends AWechatActivity implements OnScrollListener,
 
 		// 通过异步任务建立对消息中间件消息的监听
 		new ReceiveGeoMsgTask().execute();
+		
+		
 
 	}
 

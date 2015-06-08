@@ -16,7 +16,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,7 +41,6 @@ import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
-import com.ubiloc.simulate.SimulatedDataManager;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -120,7 +118,8 @@ public class UbilocMapActivity extends MapActivity {
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		mlist = new ArrayList<MovingObj>();
-		//FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,appContext);
+		// FriendHeadList.initHeadList(xlistView,
+		// UbilocMapActivity.this,appContext);
 		// userid=WCApplication.getInstance().getLoginUid();
 
 		myThread = new Thread(new Runnable() {
@@ -291,48 +290,52 @@ public class UbilocMapActivity extends MapActivity {
 
 			@Override
 			public void onClick(View view) {
-				// Intent nav_intent = new Intent(view.getContext(),
-				// NavigationActivity.class);
-				// view.getContext().startActivity(nav_intent);
-				List<GeoPoint> route1Coner = SimulatedDataManager.getInstance()
-						.getRoute1Coner();
-				LineOverlay route1Line = new LineOverlay();
-				route1Line.setCoords(route1Coner);
-				route1Line.setKey(OVERLAY_KEY_ROUTE);
-				UbilocMap.getInstance().addOverlay(route1Line);
-				GeoPoint endPoint = (GeoPoint) route1Coner.get(route1Coner
-						.size() - 1);
-				BitmapOverlay bitmapOverlay = new BitmapOverlay(
-						UbilocMapActivity.this);
-				List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
-				overlayItems.add(new BitmapOverlayItem(UbilocMapActivity.this,
-						endPoint, R.drawable.nav_end));
-				bitmapOverlay.setBitmapOverlayItems(overlayItems);
-				bitmapOverlay.setKey(OVERLAY_KEY_END_POINT);
-				UbilocMap.getInstance().addOverlay(bitmapOverlay);
-
-				new Thread(new Runnable() {
-					private List<GeoPoint> route1 = SimulatedDataManager
-							.getInstance().getRoute1();
-
-					@Override
-					public void run() {
-						for (GeoPoint cur_location : route1) {
-							Bundle data = new Bundle();
-							data.putSerializable(NavigationActivity.KEY,
-									cur_location);
-							Message msg = new Message();
-							msg.what = NAV_POI;
-							msg.setData(data);
-							handler.sendMessageDelayed(msg, 10);
-							try {
-								Thread.sleep(500);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}).start();
+				Intent nav_intent = new Intent(view.getContext(),
+						NavigationActivity.class);
+				view.getContext().startActivity(nav_intent);
+				// 使用模拟数据展示效果
+				// List<GeoPoint> route1Coner =
+				// SimulatedDataManager.getInstance()
+				// .getRoute1Coner();
+				// LineOverlay route1Line = new LineOverlay();
+				// route1Line.setCoords(route1Coner);
+				// route1Line.setKey(OVERLAY_KEY_ROUTE);
+				// UbilocMap.getInstance().addOverlay(route1Line);
+				// GeoPoint endPoint = (GeoPoint) route1Coner.get(route1Coner
+				// .size() - 1);
+				// BitmapOverlay bitmapOverlay = new BitmapOverlay(
+				// UbilocMapActivity.this);
+				// List<BitmapOverlayItem> overlayItems = new
+				// ArrayList<BitmapOverlayItem>();
+				// overlayItems.add(new
+				// BitmapOverlayItem(UbilocMapActivity.this,
+				// endPoint, R.drawable.nav_end));
+				// bitmapOverlay.setBitmapOverlayItems(overlayItems);
+				// bitmapOverlay.setKey(OVERLAY_KEY_END_POINT);
+				// UbilocMap.getInstance().addOverlay(bitmapOverlay);
+				//
+				// new Thread(new Runnable() {
+				// private List<GeoPoint> route1 = SimulatedDataManager
+				// .getInstance().getRoute1();
+				//
+				// @Override
+				// public void run() {
+				// for (GeoPoint cur_location : route1) {
+				// Bundle data = new Bundle();
+				// data.putSerializable(NavigationActivity.KEY,
+				// cur_location);
+				// Message msg = new Message();
+				// msg.what = NAV_POI;
+				// msg.setData(data);
+				// handler.sendMessageDelayed(msg, 10);
+				// try {
+				// Thread.sleep(500);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
+				// }
+				// }
+				// }).start();
 
 			}
 		});

@@ -7,6 +7,10 @@ import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.core.model.GeoPoint;
 
+import ui.Me;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +18,8 @@ import android.widget.EditText;
 
 import com.donal.wechat.R;
 import com.ubiloc.overlays.PointOverlay;
+
+import config.WCApplication;
 
 public class CheckinActivity extends MapActivity implements OnClickListener {
 	private View back;
@@ -63,9 +69,15 @@ public class CheckinActivity extends MapActivity implements OnClickListener {
 		case R.id.checkin_publish: {
 			String input = checkin_edit.getText().toString();
 			GeoPoint location = new GeoPoint(-0.000487, 109.513775);
-
 			// 发表的信息
 			CheckinActivity.this.finish();
+			
+			SharedPreferences checkMsg=getSharedPreferences("checkMsg", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = checkMsg.edit();
+			editor.clear().commit();
+			editor.putString("Msg", input);
+			editor.putString("Loc", String.valueOf(location.getLongitude())+","+String.valueOf(location.getLatitude()));
+			editor.commit();
 			break;
 		}
 		case R.id.checkin_locate: {

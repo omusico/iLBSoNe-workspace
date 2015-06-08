@@ -80,8 +80,25 @@ public class Me extends AppActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.me);
 		initUI();
+		
+		//模拟签到
+		/*String checkMsg=getIntent().getExtras().getString("checkMsg");
+		if(checkMsg!=null){
+			datas.set(2, new KeyValue("签到信息", checkMsg));
+			fieldAdapter.notifyDataSetChanged();
+		}*/
 	}
-	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		SharedPreferences checkMsg=getSharedPreferences("checkMsg", Context.MODE_PRIVATE);
+		String check_msg=checkMsg.getString("Msg", "我还没用签到呢！");
+		String check_loc=checkMsg.getString("Loc", "尚未签到");
+		datas.set(2, new KeyValue("签到信息", check_msg));
+		datas.set(3, new KeyValue("位置", "三楼434房间"+"————坐标："+check_loc));
+		fieldAdapter.notifyDataSetChanged();
+	}
 	private void initUI() {
 		initTextEditDialog();
 		initdesDialog();
@@ -116,6 +133,8 @@ public class Me extends AppActivity {
 		UserEntity user = appContext.getLoginInfo();
 		datas.add(new KeyValue("昵称", user.userInfo.nickName));
 		datas.add(new KeyValue("个性签名", user.userInfo.description));
+		datas.add(new KeyValue("签到信息", ""));
+		datas.add(new KeyValue("位置", ""));
 		fieldAdapter.notifyDataSetChanged();
 	}
 	

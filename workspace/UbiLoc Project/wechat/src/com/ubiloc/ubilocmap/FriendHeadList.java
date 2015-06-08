@@ -70,7 +70,7 @@ public class FriendHeadList {
 		@Override
 		public void onClick(View v) {
 			Log.v(Head_TAG, "onclicked");
-			flag=flag+1;
+			
 			UbilocMap uMap=UbilocMap.getInstance();
 			
 			
@@ -89,7 +89,7 @@ public class FriendHeadList {
 				GeoPoint gPoint=new GeoPoint(-0.000531,109.514215);
 				uMap.addFriendImage(gPoint, bitmap);
 			}
-			
+			flag=flag+1;
 		}
 	};
 	

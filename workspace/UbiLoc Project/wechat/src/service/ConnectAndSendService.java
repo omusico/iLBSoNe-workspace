@@ -1,6 +1,7 @@
 package service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.ubiloc.model.MORangeRequest;
 import com.ubiloc.model.MovingObj;
+import com.ubiloc.tools.ConstConfig;
 
 public class ConnectAndSendService extends IntentService {
 
@@ -21,6 +24,7 @@ public class ConnectAndSendService extends IntentService {
 	private List<MovingObj> listObj;
 	//private JSONArray jArray;
 	private MovingObj mObj;
+	private MORangeRequest mRequest;
 	private Message m;
 	private static int flag=0;
 	public ConnectAndSendService() {
@@ -37,7 +41,7 @@ public class ConnectAndSendService extends IntentService {
 		super.onCreate();
 		Log.v(TAG,"onCreate");
 		if(flag==0){
-			sender=new MOMClient("192.168.1.101",3009,"sender");
+			sender=new MOMClient("192.168.1.240",3009,"sender");
 		}
 		//
 	}
@@ -82,16 +86,19 @@ public class ConnectAndSendService extends IntentService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}}
+				String type=intent.getStringExtra("type");
 				
+				
+				if(type.equals(ConstConfig.LOC_SEND_OPERATOR)){
 				listObj=(List<MovingObj>)intent.getSerializableExtra("MovingObjMsg");
 				Log.v(TAG,listObj.toString());
-				String fiveObj=new Gson().toJson(listObj);
-				String mObj="1002"+"#"+fiveObj;
-				//下面一步出现问题
-				//JSONArray jArray=JSONArray.fromObject(listObj);
+				MovingObj endObj=listObj.get(4);
+				String fiveObj=new Gson().toJson(endObj);
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+				String mObj=ConstConfig.LOC_SEND_OPERATOR+"#"+fiveObj;
 				Log.v(TAG,fiveObj);
 				m=new Message();
-				m.setRecipient("receiver");
+				m.setRecipient("LBSReceiver");
 				m.setSender("sender");
 				//Log.v(TAG,"message");
 				try {
@@ -108,16 +115,18 @@ public class ConnectAndSendService extends IntentService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				/*Iterator<MovingObj> iter=listObj.iterator();
-				while(iter.hasNext()){
-					Log.v(TAG, "beforesend");
-					mObj=iter.next();
-					jObject = JSONObject.fromObject(mObj);
+				
+				}else if(type.equals(ConstConfig.Range_MO_Query)){
+					mRequest=(MORangeRequest) intent.getSerializableExtra("RangeQuery");
+					String sendObj=new Gson().toJson(mRequest);
+					String mObj=ConstConfig.Range_MO_Query+"#"+sendObj;
 					m=new Message();
-					m.setRecipient("receiver");
+					m.setRecipient("LBSReceiver");
 					m.setSender("sender");
+					//Log.v(TAG,"message");
 					try {
-						m.setContent(jObject);
+						Log.v(TAG, "beforesend");
+						m.setContent(mObj);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -129,9 +138,6 @@ public class ConnectAndSendService extends IntentService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					Log.v(TAG, m.toString());
-				}*/
-				//jObject=JSONObject.
-		
+				}
 	}
 }

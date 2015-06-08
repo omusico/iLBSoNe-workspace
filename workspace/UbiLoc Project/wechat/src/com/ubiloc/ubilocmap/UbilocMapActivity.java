@@ -3,6 +3,7 @@ package com.ubiloc.ubilocmap;
 import im.WeChat;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
 import com.ubiloc.search.UserSearchManager;
+import com.ubiloc.tools.ConstConfig;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -63,7 +65,7 @@ public class UbilocMapActivity extends MapActivity {
 	private View search_clear;
 	private View map_poi_search;
 	private View result_to_list;
-	// private static String userid;
+	private static String userid;
 
 	private static List<MovingObj> mlist;
 	private long mDataVersion = 0;
@@ -120,9 +122,9 @@ public class UbilocMapActivity extends MapActivity {
 		mMapView = (MapView) findViewById(R.id.mapView);
 		xlistView = (ListView) findViewById(R.id.xmaplist);
 		mlist = new ArrayList<MovingObj>();
-		// FriendHeadList.initHeadList(xlistView,
-		// UbilocMapActivity.this,appContext);
-		// userid=WCApplication.getInstance().getLoginUid();
+		//FriendHeadList.initHeadList(xlistView, UbilocMapActivity.this,appContext);
+		userid=WCApplication.getInstance().getLoginUid();
+
 
 		myThread = new Thread(new Runnable() {
 
@@ -239,12 +241,10 @@ public class UbilocMapActivity extends MapActivity {
 							public void OnPositionChanged(double x, double y,
 									double lat, double lon) {
 								try {
-									String[] s = new String[] {
-											String.valueOf(lon),
-											String.valueOf(lat) };
-
-									MovingObj mObj = new MovingObj("ww", lon,
-											lat);
+									
+									Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+									MovingObj mObj=new MovingObj(userid, x, y, timestamp);
+									//MovingObj mObj = new MovingObj(userid, lon,lat,timestamp);
 									mlist.add(mObj);
 
 									if (mlist.size() >= 5) {
@@ -252,6 +252,7 @@ public class UbilocMapActivity extends MapActivity {
 												UbilocMapActivity.this,
 												ConnectAndSendService.class);
 										Bundle bundle = new Bundle();
+										bundle.putString(ConstConfig.MSG_TYPE, ConstConfig.LOC_SEND_OPERATOR);
 										bundle.putSerializable("MovingObjMsg",
 												(Serializable) mlist);
 										mintent.putExtras(bundle);
@@ -417,6 +418,9 @@ public class UbilocMapActivity extends MapActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						SysApplication.getInstance().exit();
+						Intent stopIntent=new Intent(UbilocMapActivity.this,
+								ConnectAndSendService.class);
+						stopService(stopIntent);
 						appContext.exit();
 					}
 				})

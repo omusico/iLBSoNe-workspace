@@ -1,8 +1,10 @@
 package com.ubiloc.model;
 
+import java.io.Serializable;
 
 
-public class MOLogInRequest{
+
+public class MOLogInRequest implements Serializable{
 	/**
 	 * 登录用户的ID
 	 */

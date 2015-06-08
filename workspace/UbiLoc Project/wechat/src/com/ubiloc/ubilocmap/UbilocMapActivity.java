@@ -65,7 +65,7 @@ public class UbilocMapActivity extends MapActivity {
 	private View search_clear;
 	private View map_poi_search;
 	private View result_to_list;
-	private static String userid;
+	public static String userid;
 
 	private static List<MovingObj> mlist;
 	private long mDataVersion = 0;

@@ -42,6 +42,7 @@ import android.widget.TextView;
 
 import com.donal.wechat.R;
 import com.ubiloc.asynctask.ReceiveGeoMsgTask;
+import com.ubiloc.tools.MORangeRequestTools;
 
 import config.CommonValue;
 import config.MessageManager;
@@ -74,6 +75,8 @@ public class WeChat extends AWechatActivity implements OnScrollListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wechat);
+		//登录向LBS服务器发送消息
+		MORangeRequestTools.LoginSend(WeChat.this, WCApplication.getInstance().getLoginUid());
 		initUI();
 		getHistoryChat();
 		XMPPConnection connection = XmppConnectionManager.getInstance()

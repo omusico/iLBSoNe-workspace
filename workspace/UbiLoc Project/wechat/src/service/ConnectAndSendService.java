@@ -8,24 +8,30 @@ import java.util.List;
 import ubimessage.MessageITException;
 import ubimessage.client.MOMClient;
 import ubimessage.message.Message;
+import ubimessage.message.MessageListener;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.ubiloc.model.MOLogInRequest;
 import com.ubiloc.model.MORangeRequest;
 import com.ubiloc.model.MovingObj;
 import com.ubiloc.tools.ConstConfig;
+import com.ubiloc.ubilocmap.UbilocMapActivity;
 
 public class ConnectAndSendService extends IntentService {
 
 	public static MOMClient sender;
+	//public static String userid;
 	private static String TAG="TAG_Service";
 	private List<MovingObj> listObj;
 	//private JSONArray jArray;
 	private MovingObj mObj;
 	private MORangeRequest mRequest;
+	private MOLogInRequest lRequest;
 	private Message m;
+	private String senderId;
 	private static int flag=0;
 	public ConnectAndSendService() {
 		super("ConnectAndSendService");
@@ -39,9 +45,10 @@ public class ConnectAndSendService extends IntentService {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		senderId=UbilocMapActivity.userid;
 		Log.v(TAG,"onCreate");
 		if(flag==0){
-			sender=new MOMClient("192.168.1.240",3009,"sender");
+			sender=new MOMClient("192.168.1.240",3009,senderId);
 		}
 		//
 	}
@@ -99,7 +106,7 @@ public class ConnectAndSendService extends IntentService {
 				Log.v(TAG,fiveObj);
 				m=new Message();
 				m.setRecipient("LBSReceiver");
-				m.setSender("sender");
+				m.setSender(senderId);
 				//Log.v(TAG,"message");
 				try {
 					Log.v(TAG, "beforesend");
@@ -122,7 +129,63 @@ public class ConnectAndSendService extends IntentService {
 					String mObj=ConstConfig.Range_MO_Query+"#"+sendObj;
 					m=new Message();
 					m.setRecipient("LBSReceiver");
-					m.setSender("sender");
+					m.setSender(senderId);
+					//Log.v(TAG,"message");
+					try {
+						Log.v(TAG, "beforesend");
+						m.setContent(mObj);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						sender.sendMessage(m);
+						Log.v(TAG, "sended");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					sender.setMessageListener(new MessageListener() {
+						
+						@Override
+						public void messageReceived(Message m) {
+							String refiveobj="";
+							try {
+								refiveobj = (String) m.getContent();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							String[] marray=refiveobj.split("#");
+							if(marray[0].equals(ConstConfig.NAVI_PATH)){
+								Log.v(TAG, marray[1]);
+							}else if(marray[0].equals(ConstConfig.Range_MO_Results)){
+								Log.v(TAG, marray[1]);
+							}else if(marray[0].equals(ConstConfig.KNN_MO_Results)){
+								Log.v(TAG, marray[1]);
+							}
+							
+							
+						}
+						
+						@Override
+						public void exceptionRaised(Exception arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}
+				else if(type.equals(ConstConfig.MO_LOGIN)){
+					lRequest=(MOLogInRequest) intent.getSerializableExtra("Login");
+					String sendObj=new Gson().toJson(lRequest);
+					String mObj=ConstConfig.MO_LOGIN+"#"+sendObj;
+					m=new Message();
+					m.setRecipient("LBSReceiver");
+					m.setSender(senderId);
 					//Log.v(TAG,"message");
 					try {
 						Log.v(TAG, "beforesend");

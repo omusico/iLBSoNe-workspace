@@ -2,13 +2,16 @@ package com.ubiloc.navigation;
 
 import org.mapsforge.core.model.GeoPoint;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.donal.wechat.R;
 import com.ubiloc.ubilocmap.UbilocMap;
@@ -21,7 +24,7 @@ public class NavigationActivity extends Activity implements OnClickListener {
 	/**
 	 * 切换至动态导航
 	 */
-	private View navigation_user;
+	private View switch2navigation_user;
 	/**
 	 * 切换至静态导航
 	 */
@@ -29,9 +32,21 @@ public class NavigationActivity extends Activity implements OnClickListener {
 	/**
 	 * 路线查询
 	 */
-	private View switch2navigation_search;
+	private View navigation_search;
 
+	/**
+	 * 选择好友
+	 */
 	private Spinner navigation_select_friend;
+	/**
+	 * 动态导航
+	 */
+	private View navigation_input_user;
+	/**
+	 * poi静态导航
+	 */
+	private View navigation_input_poi;
+
 	/**
 	 * POI导航
 	 */
@@ -72,15 +87,18 @@ public class NavigationActivity extends Activity implements OnClickListener {
 	/**
 	 * 初始化布局
 	 */
+	@SuppressLint("CutPasteId")
 	private void initView() {
 		back = findViewById(R.id.back);
-		navigation_user = findViewById(R.id.navigation_user);
+		switch2navigation_user = findViewById(R.id.navigation_user);
 		switch2navigation_poi = findViewById(R.id.navigation_poi);
-		switch2navigation_search = findViewById(R.id.navigation_search);
+		navigation_search = findViewById(R.id.navigation_search);
 		back.setOnClickListener(this);
-		navigation_user.setOnClickListener(this);
+		switch2navigation_user.setOnClickListener(this);
 		switch2navigation_poi.setOnClickListener(this);
-		switch2navigation_search.setOnClickListener(this);
+		navigation_search.setOnClickListener(this);
+		navigation_input_user = findViewById(R.id.nav_input_user);
+		navigation_input_poi = findViewById(R.id.nav_input_poi);
 
 	}
 
@@ -97,48 +115,65 @@ public class NavigationActivity extends Activity implements OnClickListener {
 			break;
 		}
 		case R.id.navigation_user: {// 动态导航
+			navigation_input_poi.setVisibility(View.GONE);
+			navigation_input_user.setVisibility(View.VISIBLE);
+			pressedUserInput(true);
+			pressedPoiInput(false);
 			break;
 		}
 		case R.id.navigation_poi: {// 静态导航
+			navigation_input_poi.setVisibility(View.VISIBLE);
+			navigation_input_user.setVisibility(View.GONE);
+			pressedUserInput(false);
+			pressedPoiInput(true);
 			break;
 		}
 		case R.id.navigation_search: {// 路线搜索
-		// new Thread(new Runnable() {
-		// private double lat = -0.000396;
-		// private double lon = 109.514149;
-		//
-		// @Override
-		// public void run() {
-		// // -0.000715,109.514151
-		// // 2： -0.000606,109.514149
-		// // 3： -0.000606,109.514162
-		// // 4： -0.000531,109.514215
-		// // 5： -0.000419,109.514050
-		// // 6： -0.000420,109.513585
-		// // 7： -0.000394,109.513585
-		// // 8： -0.000396,109.513541
-		// while (true) {
-		// Bundle data = new Bundle();
-		// data.putSerializable(KEY, new GeoPoint(lat, lon));
-		// Message msg = new Message();
-		// msg.what = NAV_POI;
-		// msg.setData(data);
-		// handler.sendMessageDelayed(msg, 100);
-		// // handler.sendMessage(msg);
-		// lon += 0.000001;
-		// // try {
-		// // Thread.sleep(100);
-		// // } catch (InterruptedException e) {
-		// // e.printStackTrace();
-		// // }
-		// }
-		// }
-		// }).run();
 			NavigationActivity.this.finish();
 			break;
 		}
 		default:
 			break;
+		}
+	}
+
+	/**
+	 * 动态导航界面切换
+	 */
+	private void pressedUserInput(boolean isPressed) {
+		ImageView img = (ImageView) findViewById(R.id.navigation_user_img);
+		TextView txt = (TextView) findViewById(R.id.navigation_user_txt);
+		int normal_color = this.getResources().getColor(
+				R.color.navigation_txt_normal_color);
+		int pressed_color = this.getResources().getColor(
+				R.color.navigation_txt_pressed_color);
+		if (isPressed) {
+			img.setBackgroundResource(R.drawable.navigation_user_pressed);
+			txt.setTextColor(pressed_color);
+		} else {
+
+			img.setBackgroundResource(R.drawable.navigation_user_normal);
+			txt.setTextColor(normal_color);
+		}
+	}
+
+	/**
+	 * 静态导航界面切换
+	 */
+	private void pressedPoiInput(boolean isPressed) {
+		ImageView img = (ImageView) findViewById(R.id.navigation_poi_img);
+		TextView txt = (TextView) findViewById(R.id.navigation_poi_txt);
+		int normal_color = this.getResources().getColor(
+				R.color.navigation_txt_normal_color);
+		int pressed_color = this.getResources().getColor(
+				R.color.navigation_txt_pressed_color);
+		if (isPressed) {
+			img.setBackgroundResource(R.drawable.navigation_building_pressed);
+			txt.setTextColor(pressed_color);
+		} else {
+
+			img.setBackgroundResource(R.drawable.navigation_building_normal);
+			txt.setTextColor(normal_color);
 		}
 	}
 }

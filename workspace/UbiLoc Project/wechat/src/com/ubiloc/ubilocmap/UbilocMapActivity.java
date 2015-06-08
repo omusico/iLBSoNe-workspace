@@ -33,8 +33,9 @@ import com.donal.wechat.R;
 import com.ubiloc.checkin.CheckinActivity;
 import com.ubiloc.model.MovingObj;
 import com.ubiloc.navigation.NavigationActivity;
+import com.ubiloc.overlays.BitmapOverlay;
+import com.ubiloc.overlays.BitmapOverlayItem;
 import com.ubiloc.overlays.LineOverlay;
-import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.pdr.OnNavigationListener;
 import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.POIDataManager;
@@ -66,21 +67,25 @@ public class UbilocMapActivity extends MapActivity {
 
 	private static List<MovingObj> mlist;
 	private long mDataVersion = 0;
-
+	/**
+	 * 初始化界面
+	 */
+	public static final int INIT_VIEW = 1;
 	/**
 	 * POI导航
 	 */
 	public static final int NAV_POI = 2;
 	public static final String KEY = "key";
+	public static final String OVERLAY_KEY_USER_LOCATION = "user_location";
+	public static final String OVERLAY_KEY_END_POINT = "end_point";
+	public static final String OVERLAY_KEY_ROUTE = "route";
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
-
-		List<GeoPoint> coords = new ArrayList<GeoPoint>();
 
 		public void handleMessage(Message msg) {
 
 			switch (msg.what) {
-			case 1: {
+			case INIT_VIEW: {
 				UbilocMap.init(mMapView, UbilocMapActivity.this);
 				initView();
 				break;
@@ -88,11 +93,15 @@ public class UbilocMapActivity extends MapActivity {
 			case NAV_POI: {
 				Bundle data = msg.getData();
 				GeoPoint centerPoint = (GeoPoint) data.getSerializable(KEY);
-				coords.add(centerPoint);
-				PointOverlay pointOverlay = new PointOverlay();
-				pointOverlay.setCoords(coords);
-				UbilocMap.getInstance().addOverlay(pointOverlay);
-				UbilocMap.getInstance().setMapCenter(centerPoint);
+				BitmapOverlay bitmapOverlay = new BitmapOverlay(
+						UbilocMapActivity.this);
+				List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
+				overlayItems.add(new BitmapOverlayItem(UbilocMapActivity.this,
+						centerPoint, R.drawable.user_location));
+				bitmapOverlay.setBitmapOverlayItems(overlayItems);
+				bitmapOverlay.setKey(OVERLAY_KEY_USER_LOCATION);
+				UbilocMap.getInstance().addOverlay(bitmapOverlay);
+				// UbilocMap.getInstance().setMapCenter(centerPoint);
 				break;
 			}
 			default:
@@ -284,10 +293,26 @@ public class UbilocMapActivity extends MapActivity {
 				// Intent nav_intent = new Intent(view.getContext(),
 				// NavigationActivity.class);
 				// view.getContext().startActivity(nav_intent);
+				List<GeoPoint> route1Coner = SimulatedDataManager.getInstance()
+						.getRoute1Coner();
+				LineOverlay route1Line = new LineOverlay();
+				route1Line.setCoords(route1Coner);
+				route1Line.setKey(OVERLAY_KEY_ROUTE);
+				UbilocMap.getInstance().addOverlay(route1Line);
+				GeoPoint endPoint = (GeoPoint) route1Coner.get(route1Coner
+						.size() - 1);
+				BitmapOverlay bitmapOverlay = new BitmapOverlay(
+						UbilocMapActivity.this);
+				List<BitmapOverlayItem> overlayItems = new ArrayList<BitmapOverlayItem>();
+				overlayItems.add(new BitmapOverlayItem(UbilocMapActivity.this,
+						endPoint, R.drawable.nav_end));
+				bitmapOverlay.setBitmapOverlayItems(overlayItems);
+				bitmapOverlay.setKey(OVERLAY_KEY_END_POINT);
+				UbilocMap.getInstance().addOverlay(bitmapOverlay);
 
 				new Thread(new Runnable() {
 					private List<GeoPoint> route1 = SimulatedDataManager
-							.getInstance().getRoute2();
+							.getInstance().getRoute1();
 
 					@Override
 					public void run() {

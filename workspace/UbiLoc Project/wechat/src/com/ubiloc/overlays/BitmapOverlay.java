@@ -51,8 +51,8 @@ public class BitmapOverlay implements BaseOverlayItem {
 								R.drawable.draw_bitmap_default);
 					Point screenPoint = new Point();
 					projection.toPixels(geoPoint, screenPoint);
-					canvas.drawBitmap(bitmap, screenPoint.x, screenPoint.y,
-							paint);
+					canvas.drawBitmap(bitmap, screenPoint.x - bitmap.getWidth()
+							/ 2, screenPoint.y - bitmap.getHeight() / 2, paint);
 				}
 			}
 		}

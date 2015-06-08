@@ -145,6 +145,32 @@ public class SimulatedDataManager {
 	}
 
 	/**
+	 * 获取模拟路径1的转角点
+	 * 
+	 * @return
+	 */
+	public List<GeoPoint> getRoute1Coner() {
+		List<GeoPoint> route1 = new ArrayList<GeoPoint>();
+		// 1： -0.000715, 109.514151
+		// 2：-0.000606 ,109.514149
+		// 3：-0.000606, 109.514162
+		// 4：-0.000531, 109.514215
+		// 5：-0.000419, 109.514050
+		// 6：-0.000420, 109.513585
+		// 7：-0.000394 ,109.513585
+		// 8：-0.000396,109.513541
+		route1.add(new GeoPoint(-0.000715, 109.514151));
+		route1.add(new GeoPoint(-0.000606, 109.514149));
+		route1.add(new GeoPoint(-0.000606, 109.514162));
+		route1.add(new GeoPoint(-0.000531, 109.514215));
+		route1.add(new GeoPoint(-0.000419, 109.514050));
+		route1.add(new GeoPoint(-0.000420, 109.513585));
+		route1.add(new GeoPoint(-0.000394, 109.513585));
+		route1.add(new GeoPoint(-0.000396, 109.513541));
+		return route1;
+	}
+
+	/**
 	 * 获取模拟路径2
 	 * 
 	 * @return
@@ -185,6 +211,34 @@ public class SimulatedDataManager {
 				-0.000723, 109.514299, 3));
 		route2.addAll(calculateRoutesByEndPoints(-0.000723, 109.514299,
 				-0.000723, 109.514224, 15));
+		return route2;
+	}
+
+	/**
+	 * 获取模拟路径2转角点
+	 * 
+	 * @return
+	 */
+	public List<GeoPoint> getRoute2Coner() {
+		List<GeoPoint> route2 = new ArrayList<GeoPoint>();
+		// 1： -0.000532,109.513759
+		// 2： -0.000532,109.513794
+		// 3： -0.000418,109.513792
+		// 4： -0.000419,109.514050
+		// 5： -0.000612,109.514323
+		// 6： -0.000710,109.514323
+		// 7： -0.000710,109.514299
+		// 8： -0.000723,109.514299
+		// 9： -0.000723,109.514224
+		route2.add(new GeoPoint(-0.000532, 109.513759));
+		route2.add(new GeoPoint(-0.000532, 109.513794));
+		route2.add(new GeoPoint(-0.000418, 109.513792));
+		route2.add(new GeoPoint(-0.000419, 109.514050));
+		route2.add(new GeoPoint(-0.000612, 109.514323));
+		route2.add(new GeoPoint(-0.000710, 109.514323));
+		route2.add(new GeoPoint(-0.000710, 109.514299));
+		route2.add(new GeoPoint(-0.000723, 109.514299));
+		route2.add(new GeoPoint(-0.000723, 109.514224));
 		return route2;
 	}
 

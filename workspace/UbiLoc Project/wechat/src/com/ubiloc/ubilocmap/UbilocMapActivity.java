@@ -34,11 +34,13 @@ import com.ubiloc.checkin.CheckinActivity;
 import com.ubiloc.model.MovingObj;
 import com.ubiloc.navigation.NavigationActivity;
 import com.ubiloc.overlays.LineOverlay;
+import com.ubiloc.overlays.PointOverlay;
 import com.ubiloc.pdr.OnNavigationListener;
 import com.ubiloc.pdr.PdrManager;
 import com.ubiloc.search.POIDataManager;
 import com.ubiloc.search.POISearchActivity;
 import com.ubiloc.search.PoiObject;
+import com.ubiloc.simulate.SimulatedDataManager;
 import com.verticalmenu.VerticalMenu;
 
 import config.WCApplication;
@@ -64,13 +66,33 @@ public class UbilocMapActivity extends MapActivity {
 
 	private static List<MovingObj> mlist;
 	private long mDataVersion = 0;
+
+	/**
+	 * POI导航
+	 */
+	public static final int NAV_POI = 2;
+	public static final String KEY = "key";
 	@SuppressLint("HandlerLeak")
 	final private Handler handler = new Handler() {
+
+		List<GeoPoint> coords = new ArrayList<GeoPoint>();
+
 		public void handleMessage(Message msg) {
+
 			switch (msg.what) {
 			case 1: {
 				UbilocMap.init(mMapView, UbilocMapActivity.this);
 				initView();
+				break;
+			}
+			case NAV_POI: {
+				Bundle data = msg.getData();
+				GeoPoint centerPoint = (GeoPoint) data.getSerializable(KEY);
+				coords.add(centerPoint);
+				PointOverlay pointOverlay = new PointOverlay();
+				pointOverlay.setCoords(coords);
+				UbilocMap.getInstance().addOverlay(pointOverlay);
+				UbilocMap.getInstance().setMapCenter(centerPoint);
 				break;
 			}
 			default:
@@ -259,9 +281,33 @@ public class UbilocMapActivity extends MapActivity {
 
 			@Override
 			public void onClick(View view) {
-				Intent nav_intent = new Intent(view.getContext(),
-						NavigationActivity.class);
-				view.getContext().startActivity(nav_intent);
+				// Intent nav_intent = new Intent(view.getContext(),
+				// NavigationActivity.class);
+				// view.getContext().startActivity(nav_intent);
+
+				new Thread(new Runnable() {
+					private List<GeoPoint> route1 = SimulatedDataManager
+							.getInstance().getRoute2();
+
+					@Override
+					public void run() {
+						for (GeoPoint cur_location : route1) {
+							Bundle data = new Bundle();
+							data.putSerializable(NavigationActivity.KEY,
+									cur_location);
+							Message msg = new Message();
+							msg.what = NAV_POI;
+							msg.setData(data);
+							handler.sendMessageDelayed(msg, 10);
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}).start();
+
 			}
 		});
 		verticalMenu.addMenuItem(menu_item_navigation);

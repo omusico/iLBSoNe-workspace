@@ -119,14 +119,28 @@ public class SimulatedDataManager {
 		// 6：-0.000420, 109.513585
 		// 7：-0.000394 ,109.513585
 		// 8：-0.000396,109.513541
-		route1.add(new GeoPoint(-0.000715, 109.514151));
-		route1.add(new GeoPoint(-0.000606, 109.514149));
-		route1.add(new GeoPoint(-0.000606, 109.514162));
-		route1.add(new GeoPoint(-0.000531, 109.514215));
-		route1.add(new GeoPoint(-0.000419, 109.514050));
-		route1.add(new GeoPoint(-0.000420, 109.513585));
-		route1.add(new GeoPoint(-0.000394, 109.513585));
-		route1.add(new GeoPoint(-0.000396, 109.513541));
+		// route1.add(new GeoPoint(-0.000715, 109.514151));
+		// route1.add(new GeoPoint(-0.000606, 109.514149));
+		// route1.add(new GeoPoint(-0.000606, 109.514162));
+		// route1.add(new GeoPoint(-0.000531, 109.514215));
+		// route1.add(new GeoPoint(-0.000419, 109.514050));
+		// route1.add(new GeoPoint(-0.000420, 109.513585));
+		// route1.add(new GeoPoint(-0.000394, 109.513585));
+		// route1.add(new GeoPoint(-0.000396, 109.513541));
+		route1.addAll(calculateRoutesByEndPoints(-0.000715, 109.514151,
+				-0.000606, 109.514149, 17));
+		route1.addAll(calculateRoutesByEndPoints(-0.000606, 109.514149,
+				-0.000606, 109.514162, 4));
+		route1.addAll(calculateRoutesByEndPoints(-0.000606, 109.514162,
+				-0.000531, 109.514215, 14));
+		route1.addAll(calculateRoutesByEndPoints(-0.000531, 109.514215,
+				-0.000419, 109.514050, 29));
+		route1.addAll(calculateRoutesByEndPoints(-0.000419, 109.514050,
+				-0.000420, 109.513585, 68));
+		route1.addAll(calculateRoutesByEndPoints(-0.000420, 109.513585,
+				-0.000394, 109.513585, 3));
+		route1.addAll(calculateRoutesByEndPoints(-0.000394, 109.513585,
+				-0.000396, 109.513541, 5));
 		return route1;
 	}
 
@@ -146,15 +160,60 @@ public class SimulatedDataManager {
 		// 7： -0.000710,109.514299
 		// 8： -0.000723,109.514299
 		// 9： -0.000723,109.514224
-		route2.add(new GeoPoint(-0.000532, 109.513759));
-		route2.add(new GeoPoint(-0.000532, 109.513794));
-		route2.add(new GeoPoint(-0.000418, 109.513792));
-		route2.add(new GeoPoint(-0.000419, 109.514050));
-		route2.add(new GeoPoint(-0.000612, 109.514323));
-		route2.add(new GeoPoint(-0.000710, 109.514323));
-		route2.add(new GeoPoint(-0.000710, 109.514323));
-		route2.add(new GeoPoint(-0.000723, 109.514299));
-		route2.add(new GeoPoint(-0.000723, 109.514224));
+		// route2.add(new GeoPoint(-0.000532, 109.513759));
+		// route2.add(new GeoPoint(-0.000532, 109.513794));
+		// route2.add(new GeoPoint(-0.000418, 109.513792));
+		// route2.add(new GeoPoint(-0.000419, 109.514050));
+		// route2.add(new GeoPoint(-0.000612, 109.514323));
+		// route2.add(new GeoPoint(-0.000710, 109.514323));
+		// route2.add(new GeoPoint(-0.000710, 109.514299));
+		// route2.add(new GeoPoint(-0.000723, 109.514299));
+		// route2.add(new GeoPoint(-0.000723, 109.514224));
+		route2.addAll(calculateRoutesByEndPoints(-0.000532, 109.513759,
+				-0.000532, 109.513794, 6));
+		route2.addAll(calculateRoutesByEndPoints(-0.000532, 109.513794,
+				-0.000418, 109.513792, 17));
+		route2.addAll(calculateRoutesByEndPoints(-0.000418, 109.513792,
+				-0.000419, 109.514050, 38));
+		route2.addAll(calculateRoutesByEndPoints(-0.000419, 109.514050,
+				-0.000612, 109.514323, 49));
+		route2.addAll(calculateRoutesByEndPoints(-0.000612, 109.514323,
+				-0.000710, 109.514323, 14));
+		route2.addAll(calculateRoutesByEndPoints(-0.000710, 109.514323,
+				-0.000710, 109.514299, 5));
+		route2.addAll(calculateRoutesByEndPoints(-0.000710, 109.514299,
+				-0.000723, 109.514299, 3));
+		route2.addAll(calculateRoutesByEndPoints(-0.000723, 109.514299,
+				-0.000723, 109.514224, 15));
 		return route2;
+	}
+
+	/**
+	 * 通过起点和终点的经纬度以及步数计算轨迹的所有点
+	 * 
+	 * @param s_lat
+	 *            起点纬度
+	 * @param s_lon
+	 *            起点经度
+	 * @param e_lat
+	 *            终点纬度
+	 * @param e_lon
+	 *            终点经度
+	 * @param step
+	 *            步数
+	 */
+	public List<GeoPoint> calculateRoutesByEndPoints(double s_lat,
+			double s_lon, double e_lat, double e_lon, int step) {
+		List<GeoPoint> route = new ArrayList<GeoPoint>();
+		double lat_step = (e_lat - s_lat) / step;
+		double lon_step = (e_lon - s_lon) / step;
+		for (int i = 0; i < step; i++) {
+			double lat_noise = Math.random() / 600000;
+			double lon_noise = Math.random() / 600000;
+			route.add(new GeoPoint(s_lat + i * lat_step + lat_noise, s_lon + i
+					* lon_step + lon_noise));
+		}
+		// route.add(new GeoPoint(e_lat, e_lon));
+		return route;
 	}
 }

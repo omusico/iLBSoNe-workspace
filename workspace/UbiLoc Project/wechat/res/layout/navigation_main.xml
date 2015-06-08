@@ -7,6 +7,13 @@
 
     <include layout="@layout/navigation_top" />
 
-    <include layout="@layout/navigation_input_user" />
+    <include
+        android:id="@+id/nav_input_user"
+        layout="@layout/navigation_input_user" />
+
+    <include
+        android:id="@+id/nav_input_poi"
+        layout="@layout/navigation_input_poi"
+        android:visibility="gone" />
 
 </LinearLayout>

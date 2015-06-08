@@ -4,87 +4,72 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-    <RelativeLayout 
-        android:layout_height="90dp"
+
+    <RelativeLayout
+        style="@style/my_info_item_style"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        >
-        <!-- <Button
-            android:id="@+id/leftBarButton"
-            android:layout_width="90dp"
-            android:layout_height="44dp"
-            android:drawableLeft="@drawable/btn_back_normal"
-            android:background="@null"
-            android:layout_centerVertical="true"
-            android:text="返回"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:drawablePadding="-20dp"
-            android:paddingLeft="12dp"
-            android:onClick="ButtonClick"
-            /> -->
-        
-        <TextView 
+        android:layout_height="wrap_content" >
+
+        <TextView
             android:id="@+id/titleBarView"
             android:layout_width="wrap_content"
-      		android:layout_height="wrap_content"
-            android:text="会话"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            />
-        
-        <View 
-            android:id="@+id/viewbar"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e4e4e4"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@+id/titleBarView"
-        />
-        <Button android:id="@+id/geomsgbtn"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/viewbar"
-            android:layout_marginTop="4dp"
-            android:text="服务消息"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            />
-        <!-- <View 
-            android:id="@+id/viewbartwo"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e4e4e4"
-        android:layout_alignParentBottom="true"
-        /> -->
+            android:layout_centerHorizontal="true"
+            android:text="@string/message"
+            android:textColor="@color/title_text_color"
+            android:textSize="@dimen/title_text_size" />
 
         <ImageView
             android:id="@+id/xindicator"
             android:layout_width="23dp"
             android:layout_height="23dp"
-            android:layout_above="@+id/geomsgbtn"
             android:layout_toRightOf="@+id/titleBarView"
             android:background="@drawable/round_1"
             android:visibility="invisible" />
-
     </RelativeLayout>
-     <android.support.v4.widget.SwipeRefreshLayout
+
+    <View
+        android:id="@+id/viewbar"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/titleBarView"
+        android:background="#e4e4e4" />
+
+    <RelativeLayout
+        android:id="@+id/geomsgbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/service_bg_normal"
+        android:padding="3dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="4dp"
+            android:text="@string/service_information"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/xrefresh"
         android:layout_width="match_parent"
-   		android:layout_height="match_parent"
-   		>
-    
-    <ListView
-        android:id="@+id/xlistview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="#00000000"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:fadingEdge="none"
-        android:cacheColorHint="#00000000"
-        android:listSelector="#00000000" />
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/xlistview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:fadingEdge="none"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="#00000000" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>
